@@ -1,0 +1,24 @@
+﻿[General]
+-versioning (save/load operations per version)
+-localisation
+
+[!Important!]
+-connection checks without program flow disruption
+-code refactoring
+-reset password utility
+
+[Minor improvements]
+-print orientation
+-custom print settings
+-administrator/backup files and restore
+-diaxeirisi otan ena project allazei onoma ston fakelo
+	-ayto mallon tha ginei prosthetontas sto Administrator menu ena item pou tha psaxnei invalid project note .db files
+-maximize comment box, restore to normal view
+-logout and then minimize
+
+[Far dreams]
+-popup window on new change
+-client server model
+-logging for administration
+
+[Just an idea]
