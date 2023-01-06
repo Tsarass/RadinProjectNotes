@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Net.Mail;
 
 namespace RadinProjectNotes
 {
@@ -67,6 +68,11 @@ namespace RadinProjectNotes
 
                 }
             }
+        }
+
+        public bool ExistsInDisk()
+        {
+            return File.Exists(this.AttachmentSavedToDiskFilePath);
         }
 
         /// <summary>

@@ -154,7 +154,7 @@ namespace RadinProjectNotes
         {
             string attachmentFilePath = attachment.SavedToDisk ? attachment.AttachmentSavedToDiskFilePath : attachment.OriginalFilePath;
 
-            Icon icon = null;
+            Icon icon;
             //if icon is cached, use this
             if (attachment.Icon != null)
             {
@@ -177,8 +177,8 @@ namespace RadinProjectNotes
             attachment.Icon = icon;
 
             ListViewItem newitem = new ListViewItem();
-            string fileNameInList = "";
-            if (!File.Exists(attachment.AttachmentSavedToDiskFilePath) && (attachment.SavedToDisk))
+            string fileNameInList;
+            if (!attachment.ExistsInDisk() && (attachment.SavedToDisk))
             {
                 fileNameInList = $"(not found){attachment.FileName}";
             }
@@ -196,7 +196,7 @@ namespace RadinProjectNotes
         {
             if (e.KeyCode == Keys.Delete)
             {
-                DeleteSelectedAttachment();
+                DeleteSelectedAttachments();
             }
         }
 
@@ -214,15 +214,18 @@ namespace RadinProjectNotes
 
         private void removeAttachmentBtn_Click(object sender, EventArgs e)
         {
-            DeleteSelectedAttachment();
+            DeleteSelectedAttachments();
         }
 
-        private void DeleteSelectedAttachment()
+        private void DeleteSelectedAttachments()
         {
             if (attachmentListView.SelectedItems.Count > 0)
             {
-                currentNote.attachmentLibrary.RemoveAttachmentById((Guid)attachmentListView.SelectedItems[0].Tag, true);
-                attachmentListView.SelectedItems[0].Remove();
+                foreach (ListViewItem selectedItem in attachmentListView.SelectedItems)
+                {
+                    currentNote.attachmentLibrary.RemoveAttachmentById((Guid)selectedItem.Tag, true);
+                    selectedItem.Remove();
+                }
             }
         }
 
@@ -246,7 +249,7 @@ namespace RadinProjectNotes
                     DialogResult dlg = MessageBox.Show($"Could not locate file {attachmentToOpen.FileName}. Remove it from the attachment list?", "File not found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     if (dlg == DialogResult.Yes)
                     {
-                        DeleteSelectedAttachment();
+                        DeleteSelectedAttachments();
                     }
                 }
             }
@@ -267,19 +270,6 @@ namespace RadinProjectNotes
         private void AddComment_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Copy;
-        }
-
-        private void AddComment_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            /*
-            if (((int)e.KeyChar == 22) && (Control.ModifierKeys == Keys.Control))
-            {
-                if (Clipboard.ContainsImage())
-                {
-                    CreateAttachmentFromClipboardImage();
-                }
-                
-            }*/
         }
 
         private void CreateAttachmentFromClipboardImage()

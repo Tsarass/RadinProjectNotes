@@ -33,13 +33,16 @@ namespace RadinProjectNotes
         {
             foreach (var attachment in note.attachmentLibrary.GetAttachments())
             {
-                ListViewItem newItem = new ListViewItem(attachment.FileName);
-                newItem.Checked = false;
-                newItem.Tag = attachment.Id;
+                if (attachment.ExistsInDisk()) 
+                {
+                    ListViewItem newItem = new ListViewItem(attachment.FileName);
+                    newItem.Checked = false;
+                    newItem.Tag = attachment.Id;
 
-                newItem.ToolTipText = attachment.FileName;
+                    newItem.ToolTipText = attachment.FileName;
 
-                attachmentListView.Items.Add(newItem);
+                    attachmentListView.Items.Add(newItem);
+                }
             }
         }
 
@@ -58,7 +61,12 @@ namespace RadinProjectNotes
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Prepare a dummy string, thos would appear in the dialog
+            if (!ListViewHasItemsSelected())
+            {
+                return;
+            }
+
+            // Prepare a dummy string, this would appear in the dialog
             string dummyFileName = "Save Here";
 
             SaveFileDialog sf = new SaveFileDialog();
@@ -95,6 +103,17 @@ namespace RadinProjectNotes
                 Cursor.Current = Cursors.Default;
             }
 
+        }
+
+        private bool ListViewHasItemsSelected()
+        {
+            foreach (ListViewItem item in attachmentListView.SelectedItems)
+            {
+                if (item.Checked)
+                    return true;
+            }
+
+            return false;
         }
 
         private void SaveAttachment(string sourcePath, string destinationFolder)

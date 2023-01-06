@@ -123,10 +123,11 @@ namespace RadinProjectNotes
             this.lblCommentTitle.Text = Note.CreatedByUsername + " posted on " + Note.DateCreatedString;
             this.boxCommentPreview.Text = Note.noteText;
 
-            if(Note.attachmentLibrary.attachments.Count > 0)
+            int validAttachments = Note.attachmentLibrary.NumberOfValidAttachments();
+            if (validAttachments > 0)
             {
                 splitButton1.Visible = true;
-                splitButton1.Text = Note.attachmentLibrary.attachments.Count > 1 ? $"{Note.attachmentLibrary.attachments.Count} Attachments" : $"{Note.attachmentLibrary.attachments.Count} Attachment";
+                splitButton1.Text = validAttachments > 1 ? $"{validAttachments} Attachments" : $"{validAttachments} Attachment";
             }
             else
             {
@@ -214,19 +215,35 @@ namespace RadinProjectNotes
 
             attachmentMenuStrip.Items.Clear();
 
+            int validAttachments = 0;
             foreach (var attachment in Note.attachmentLibrary.attachments)
             {
-                if (File.Exists(attachment.AttachmentSavedToDiskFilePath))
+                if (attachment.ExistsInDisk())
                 {
-                    ToolStripMenuItem newMenuItem = new ToolStripMenuItem(GetAttachmentMenuItemFilename(attachment.FileName), attachment.Icon.ToBitmap());
-                    newMenuItem.Tag = attachment.Id;
-                    newMenuItem.Font = attachmentMenuStrip.Font;
-                    newMenuItem.Click += new EventHandler(MenuItemClickHandler);
-                    attachmentMenuStrip.Items.Add(newMenuItem);
+                    AddAttachmentToolStripMenuItem(attachment);
+
+                    validAttachments++;
                 }
             }
 
-            //create download attachments submenu
+            if (validAttachments > 0)
+            {
+                CreateDownloadAttachmentsSubmenu();
+            }
+
+        }
+
+        private void AddAttachmentToolStripMenuItem(Attachment attachment)
+        {
+            ToolStripMenuItem newMenuItem = new ToolStripMenuItem(GetAttachmentMenuItemFilename(attachment.FileName), attachment.Icon.ToBitmap());
+            newMenuItem.Tag = attachment.Id;
+            newMenuItem.Font = attachmentMenuStrip.Font;
+            newMenuItem.Click += new EventHandler(MenuItemClickHandler);
+            attachmentMenuStrip.Items.Add(newMenuItem);
+        }
+
+        private void CreateDownloadAttachmentsSubmenu()
+        {
             ToolStripSeparator line = new ToolStripSeparator();
             Stream bmpStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RadinProjectNotes.icons.save.png");
             Bitmap saveIconBmp = new Bitmap(bmpStream);
@@ -250,6 +267,7 @@ namespace RadinProjectNotes
             }
             catch (AttachmentLibrary.AttachmentNotFound)
             {
+                MessageBox.Show("Selected attachment not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

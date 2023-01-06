@@ -124,6 +124,20 @@ namespace RadinProjectNotes
             }
         }
 
+        public int NumberOfValidAttachments()
+        {
+            int count = 0;
+            foreach (var attachment in attachments)
+            {
+                if (attachment.ExistsInDisk())
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
         public void RemoveAttachmentById(Guid id, bool deleteFromDisk = false)
         {
             Attachment attachmentToRemove;
