@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace RadinProjectNotes
             
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnDeleteUser_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count <= 0)
             {
@@ -56,7 +57,7 @@ namespace RadinProjectNotes
 
             Guid guid = new Guid(listView1.SelectedItems[0].Text);
 
-            if (ServerConnection.credentials.MatchUserOrNull(guid).ID == ServerConnection.credentials.currentUser.ID)
+            if (guid == ServerConnection.credentials.currentUser.ID)
             {
                 MessageBox.Show(this, "Can't delete current user!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -124,7 +125,7 @@ namespace RadinProjectNotes
             SetSaveStatus(saved: false);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnChangePermissions_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count <= 0)
             {
@@ -132,7 +133,7 @@ namespace RadinProjectNotes
             }
 
             //get selected user's Guid
-            Guid guid = new Guid(listView1.SelectedItems[0].Text);
+            Guid guidOfSelectedUser = new Guid(listView1.SelectedItems[0].Text);
 
             if (comboBox1.SelectedIndex < 0)
             {
@@ -143,7 +144,7 @@ namespace RadinProjectNotes
 
             //if selected user is the current user (admin),
             //reset to admin
-            if (ServerConnection.credentials.currentUser == ServerConnection.credentials.MatchUserOrNull(guid))
+            if (ServerConnection.credentials.currentUser.ID == guidOfSelectedUser)
             {
                 toSet = Permissions.All;
             }
@@ -163,14 +164,21 @@ namespace RadinProjectNotes
                 }
             }
 
-            User user = ServerConnection.credentials.userDatabase.SetUserPermissions(guid, toSet);
-            if (user != null)
+            User userFromSelectedGuid;
+            try
             {
-                string adminText = user.IsAdmin ? "Yes" : "No";
-                listView1.SelectedItems[0].SubItems[3].Text = adminText;
-
-                SetSaveStatus(saved: false);
+                userFromSelectedGuid = ServerConnection.credentials.userDatabase.SetUserPermissions(guidOfSelectedUser, toSet);
             }
+            catch (UserDatabase.UserNotFound ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string adminText = userFromSelectedGuid.IsAdmin ? "Yes" : "No";
+            listView1.SelectedItems[0].SubItems[3].Text = adminText;
+
+            SetSaveStatus(saved: false);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -183,7 +191,7 @@ namespace RadinProjectNotes
             }
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void btnDiscard_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Discard changes and close?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
@@ -192,7 +200,7 @@ namespace RadinProjectNotes
             }
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void btnChangeUsername_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count <= 0)
             {
@@ -207,15 +215,22 @@ namespace RadinProjectNotes
 
             //get selected user's Guid
             Guid guid = new Guid(listView1.SelectedItems[0].Text);
-
-            User user = ServerConnection.credentials.MatchUserOrNull(guid);
-            if (user != null)
+            User user;
+            try
             {
-                user.username = textBox3.Text;
-                listView1.SelectedItems[0].SubItems[1].Text = textBox3.Text;
-
-                SetSaveStatus(saved: false);
+                user = ServerConnection.credentials.FindUserById(guid);
             }
+            catch (UserDatabase.UserNotFound ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            user.username = textBox3.Text;
+            listView1.SelectedItems[0].SubItems[1].Text = textBox3.Text;
+
+            SetSaveStatus(saved: false);
+
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -229,7 +244,7 @@ namespace RadinProjectNotes
             }
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void btnChangePassword_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count <= 0)
             {
@@ -244,16 +259,23 @@ namespace RadinProjectNotes
 
             //get selected user's Guid
             Guid guid = new Guid(listView1.SelectedItems[0].Text);
-
-            User user = ServerConnection.credentials.MatchUserOrNull(guid);
-            if (user != null)
+            User user;
+            try
             {
-                string password = textBox4.Text;
-                user.password = User.HashPassword(password, guid);
-                listView1.SelectedItems[0].SubItems[2].Text = user.password;
-
-                SetSaveStatus(saved: false);
+                user = ServerConnection.credentials.FindUserById(guid);
             }
+            catch (UserDatabase.UserNotFound ex)
+            {
+                MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string password = textBox4.Text;
+            user.password = User.HashPassword(password, guid);
+            listView1.SelectedItems[0].SubItems[2].Text = user.password;
+
+            SetSaveStatus(saved: false);
+
         }
 
         private void AdminPanel_FormClosing(object sender, FormClosingEventArgs e)
@@ -288,15 +310,22 @@ namespace RadinProjectNotes
             {
                 //get selected user's Guid
                 Guid guid = new Guid(listView1.SelectedItems[0].Text);
-
-                User user = ServerConnection.credentials.MatchUserOrNull(guid);
-                if (user != null)
+                User user;
+                try
                 {
-                    user.password = Security.ResetPassword;
-                    listView1.SelectedItems[0].SubItems[2].Text = user.password;
-
-                    SetSaveStatus(saved: false);
+                    user = ServerConnection.credentials.FindUserById(guid);
                 }
+                catch (UserDatabase.UserNotFound ex)
+                {
+                    MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                user.password = Security.ResetPassword;
+                listView1.SelectedItems[0].SubItems[2].Text = user.password;
+
+                SetSaveStatus(saved: false);
+
             }
         }
     }

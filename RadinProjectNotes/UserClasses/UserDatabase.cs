@@ -53,10 +53,10 @@ namespace RadinProjectNotes
                 }
             }
 
-            return null;
+            throw new UserNotFound(id);
         }
 
-        public User FindUserOrNull(string username, string password)
+        public User MatchUsernameAndPassword(string username, string password)
         {
             //password may be hashed already or not, so check for both
             foreach(User user in this.userData)
@@ -78,10 +78,10 @@ namespace RadinProjectNotes
                 }
             }
 
-            return null;
+            throw new InvalidUsernamePassword();
         }
 
-        public User FindUserOrNull(Guid id)
+        public User FindUserById(Guid id)
         {
             foreach (User user in this.userData)
             {
@@ -91,7 +91,7 @@ namespace RadinProjectNotes
                 }
             }
 
-            return null;
+            throw new UserNotFound(id);
         }
 
         public bool ChangePassword(string username, string newPassword)
@@ -130,6 +130,16 @@ namespace RadinProjectNotes
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)userData).GetEnumerator();
+        }
+
+        public class UserNotFound : Exception
+        {
+            public UserNotFound(Guid id) : base(String.Format("User with id {0} not found", id.ToString())) { }
+        }
+
+        public class InvalidUsernamePassword : Exception
+        {
+            public InvalidUsernamePassword() : base("Invalid username and password provided.") { }
         }
     }
 }

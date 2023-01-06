@@ -102,12 +102,12 @@ namespace RadinProjectNotes
                 {
                     //find the guid of the user
                     Guid id = this.userCreated.ID;
-                    User user = ServerConnection.credentials.MatchUserOrNull(id);
-                    if (user != null)
+                    try
                     {
+                        User user = ServerConnection.credentials.FindUserById(id);
                         return user.displayName;
                     }
-                    else
+                    catch (UserDatabase.UserNotFound)
                     {
                         return "<Unknown user>";
                     }

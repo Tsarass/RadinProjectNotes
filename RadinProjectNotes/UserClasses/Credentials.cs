@@ -66,14 +66,14 @@ namespace RadinProjectNotes
             return newUser;
         }
 
-        public User MatchUserOrNull(string username, string password)
+        public User CheckUsernameAndPassword(string username, string password)
         {
-            return userDatabase.FindUserOrNull(username, password);
+            return userDatabase.MatchUsernameAndPassword(username, password);
         }
 
-        public User MatchUserOrNull(Guid id)
+        public User FindUserById(Guid id)
         {
-            return userDatabase.FindUserOrNull(id);
+            return userDatabase.FindUserById(id);
         }
 
         public bool DeleteUser(Guid id)
@@ -177,10 +177,14 @@ namespace RadinProjectNotes
         {
             if (currentUser != null)
             {
-                User user = this.MatchUserOrNull(currentUser.ID);
-                if (user != null)
+                try
                 {
+                    User user = this.FindUserById(currentUser.ID);
                     currentUser = user;
+                }
+                catch (UserDatabase.UserNotFound ex)
+                {
+                    Debug.WriteLine(ex.Message.ToString());
                 }
             }
         }

@@ -42,9 +42,9 @@ namespace RadinProjectNotesUnitTests
         {
             string newPassword = "new mock password";
             addMockUser();
-            Assert.IsNotNull(ServerConnection.credentials.MatchUserOrNull(mockUsername, mockPassword));
+            Assert.DoesNotThrow(() => ServerConnection.credentials.CheckUsernameAndPassword(mockUsername, mockPassword));
             ServerConnection.credentials.userDatabase.ChangePassword(mockUsername, newPassword);
-            Assert.IsNotNull(ServerConnection.credentials.MatchUserOrNull(mockUsername, newPassword));
+            Assert.DoesNotThrow(() => ServerConnection.credentials.CheckUsernameAndPassword(mockUsername, newPassword));
         }
     }
 }

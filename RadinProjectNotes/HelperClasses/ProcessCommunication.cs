@@ -22,14 +22,20 @@ namespace RadinProjectNotes
         public static void SendMessageToOpenProcess()
         {
             uint threadId;
-            using (var mmf = MemoryMappedFile.OpenExisting(ThreadIDFileName, MemoryMappedFileRights.Read))
-            using (var accessor = mmf.CreateViewAccessor(0, IntPtr.Size, MemoryMappedFileAccess.Read))
+            try
             {
-                accessor.Read(0, out threadId);
+                using (var mmf = MemoryMappedFile.OpenExisting(ThreadIDFileName, MemoryMappedFileRights.Read))
+                using (var accessor = mmf.CreateViewAccessor(0, IntPtr.Size, MemoryMappedFileAccess.Read))
+                {
+                    accessor.Read(0, out threadId);
+                }
+
+                PostThreadMessage(threadId, message, IntPtr.Zero, IntPtr.Zero);
             }
+            catch
+            {
 
-            PostThreadMessage(threadId, message, IntPtr.Zero, IntPtr.Zero);
-
+            }
         }
 
         public static void SetupMemoryMappedFile()

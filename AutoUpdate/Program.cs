@@ -40,7 +40,7 @@ namespace AutoUpdate
             //run the updater for the executable
             FileInfo fi = new FileInfo(executablePath);
             string executableDestination = Path.Combine(updateToPath, fi.Name);
-            MainExecutableUpdate update = new MainExecutableUpdate(executablePath, executableDestination);
+            MainExecutableUpdater update = new MainExecutableUpdater(executablePath, executableDestination);
 
             FilesUpdater filesUpdater = new FilesUpdater(updateFromPath, updateToPath);
 
@@ -85,7 +85,6 @@ namespace AutoUpdate
             FileInfo fi = new FileInfo(args[1]);
             updateFromPath = fi.DirectoryName;
 
-            string destPath = Path.Combine(updateToPath, fi.Name);
             executableName = Path.GetFileNameWithoutExtension(fi.Name);
             
         }
@@ -106,14 +105,6 @@ namespace AutoUpdate
             }
 
             return true;
-        }
-
-        static void WriteArgs(string[] args)
-        {
-            foreach (var arg in args)
-            {
-                Console.WriteLine(arg);
-            }
         }
 
     }

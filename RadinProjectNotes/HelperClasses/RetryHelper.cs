@@ -32,12 +32,12 @@ namespace RadinProjectNotes
                 {
                     if (attempts == times)
                     {
-                        Debug.WriteLine("Max attempts reached!", ex);
-                        MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Debug.WriteLine("Max attempts reached!", ex.Message.ToString());
+                        //MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
 
-                    Debug.WriteLine($"Exception caught on attempt {attempts} - will retry after delay {delay}", ex);
+                    Debug.WriteLine($"Exception caught on attempt {attempts} - will retry after delay {delay}", ex.Message.ToString());
 
                     Task.Delay(delay).Wait();
                 }

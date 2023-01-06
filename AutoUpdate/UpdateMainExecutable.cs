@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace AutoUpdate
 {
-    public class MainExecutableUpdate
+    public class MainExecutableUpdater
     {
         string executableFromPath = ""; //path from where to copy the file
         string executableToPath = "";   //path to which we copy the file
 
-        public MainExecutableUpdate(string executableFromPath, string executableToPath)
+        public MainExecutableUpdater(string executableFromPath, string executableToPath)
         {
             this.executableFromPath = executableFromPath;
             this.executableToPath = executableToPath;

@@ -87,13 +87,17 @@ namespace RadinProjectNotes
                     return;
                 }
             }
+
             //check credentials
-            User user = ServerConnection.credentials.MatchUserOrNull(txtUsername.Text, txtPassword.Text);
-            if (user == null)
+            User user;
+            try
             {
-                string prompt = "Invalid login credentials.";
+                user = ServerConnection.credentials.CheckUsernameAndPassword(txtUsername.Text, txtPassword.Text);
+            }
+            catch (UserDatabase.InvalidUsernamePassword ex)
+            {
                 this.Visible = true;
-                MessageBox.Show(this, prompt, "Invalid login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, ex.Message.ToString(), "Invalid login", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
