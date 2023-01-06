@@ -76,11 +76,19 @@ namespace RadinProjectNotes
                 for (int i = 0; i < attachmentListView.Items.Count; i++)
                 {
                     ListViewItem item = attachmentListView.Items[i];
-                    Attachment attachment = note.attachmentLibrary.FindAttachment((Guid)item.Tag);
+                    Attachment attachmentToSave;
+                    try
+                    {
+                        attachmentToSave = note.attachmentLibrary.FindAttachmentById((Guid)item.Tag);
+                    }
+                    catch (AttachmentLibrary.AttachmentNotFound)
+                    {
+                        continue;
+                    }
 
                     if (item.Checked)
                     {
-                        SaveAttachment(attachment.AttachmentSavedToDiskFilePath, Path.Combine(savePath,attachment.FileName));
+                        SaveAttachment(attachmentToSave.AttachmentSavedToDiskFilePath, Path.Combine(savePath,attachmentToSave.FileName));
                     }
                 }
 

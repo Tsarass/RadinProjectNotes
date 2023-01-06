@@ -243,17 +243,22 @@ namespace RadinProjectNotes
         {
             ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
             //find attachment by Guid (Tag)
-            Attachment match = Note.attachmentLibrary.FindAttachment((Guid)clickedItem.Tag);
-
-            if (match != null)
+            Attachment attachmentToOpen;
+            try
             {
-                bool success = match.OpenFile();
-
-                if (!success)
-                {
-                    MessageBox.Show($"Could not open file {clickedItem.Text}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                attachmentToOpen = Note.attachmentLibrary.FindAttachmentById((Guid)clickedItem.Tag);
             }
+            catch (AttachmentLibrary.AttachmentNotFound)
+            {
+                return;
+            }
+
+            bool couldOpenFile = attachmentToOpen.TryOpenFile();
+            if (!couldOpenFile)
+            {
+                MessageBox.Show($"Could not open file {clickedItem.Text}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
         }
 
         private void MenuDownloadAttachmentsClickHandler(object sender, EventArgs e)

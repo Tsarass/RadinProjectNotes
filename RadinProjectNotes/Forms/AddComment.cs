@@ -126,16 +126,17 @@ namespace RadinProjectNotes
                 }
 
                 Attachment attachment = new Attachment(filename);
-                if (SuccessfullyAddedAttachment(attachment))
+                try
                 {
-                    AddAttachmentToList(attachment);
+                    currentNote.attachmentLibrary.AddAttachment(attachment);
                 }
+                catch (AttachmentLibrary.AttachmentAlreadyExists)
+                {
+                    continue;
+                }
+                
+                AddAttachmentToList(attachment);
             }
-        }
-
-        private bool SuccessfullyAddedAttachment(Attachment attachment)
-        {
-            return currentNote.attachmentLibrary.AddAttachment(attachment) != null;
         }
 
         private void AddAttachmentsToList(AttachmentLibrary attachmentLibrary)
@@ -220,8 +221,7 @@ namespace RadinProjectNotes
         {
             if (attachmentListView.SelectedItems.Count > 0)
             {
-                Attachment attachment = currentNote.attachmentLibrary.FindAttachment((Guid)attachmentListView.SelectedItems[0].Tag);
-                currentNote.attachmentLibrary.RemoveAttachment(attachment, true);
+                currentNote.attachmentLibrary.RemoveAttachmentById((Guid)attachmentListView.SelectedItems[0].Tag, true);
                 attachmentListView.SelectedItems[0].Remove();
             }
         }
@@ -230,20 +230,24 @@ namespace RadinProjectNotes
         {
             if (attachmentListView.SelectedItems.Count > 0)
             {
-                Attachment match = currentNote.attachmentLibrary.FindAttachment((Guid)attachmentListView.SelectedItems[0].Tag);
-                if (match != null)
+                Attachment attachmentToOpen;
+                try
                 {
-                    bool fileFound = match.OpenFile();  //OpenFile returns false if file not found
-                    if (!fileFound)
+                    attachmentToOpen = currentNote.attachmentLibrary.FindAttachmentById((Guid)attachmentListView.SelectedItems[0].Tag);
+                }
+                catch (AttachmentLibrary.AttachmentNotFound)
+                {
+                    return;
+                }
+
+                bool fileFound = attachmentToOpen.TryOpenFile();  //OpenFile returns false if file not found
+                if (!fileFound)
+                {
+                    DialogResult dlg = MessageBox.Show($"Could not locate file {attachmentToOpen.FileName}. Remove it from the attachment list?", "File not found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (dlg == DialogResult.Yes)
                     {
-                        DialogResult dlg = MessageBox.Show($"Could not locate file {match.FileName}. Remove it from the attachment list?", "File not found", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                        if (dlg == DialogResult.Yes)
-                        {
-                            DeleteSelectedAttachment();
-                        }
-                        
+                        DeleteSelectedAttachment();
                     }
-                        
                 }
             }
         }

@@ -1,6 +1,7 @@
 ﻿using ProtoBuf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 
@@ -73,32 +74,18 @@ namespace RadinProjectNotes
             AttachmentIconsLoaded = true;
         }
 
-        /// <summary>
-        /// Traverses the list of attachments and returns the matching attachment,
-        /// otherwise, returns null.
-        /// </summary>
-        /// <param name="attachment"></param>
-        /// <returns></returns>
         private Attachment FindAttachment(Attachment attachment)
         {
-            foreach (var _attachment in attachments)
-            {
-                if (_attachment.Id == attachment.Id)
-                {
-                    return _attachment;
-                }
-            }
-
-            return null;
+            return FindAttachmentById(attachment.Id);
         }
 
         /// <summary>
-        /// Traverses the list of attachments and returns the matching attachment,
-        /// otherwise, returns null.
+        /// Find the attachment in the library by id.
         /// </summary>
         /// <param name="Id"></param>
-        /// <returns></returns>
-        public Attachment FindAttachment(Guid Id)
+        /// <returns>The matching attachment.</returns>
+        /// <exception cref="AttachmentNotFound"></exception>
+        public Attachment FindAttachmentById(Guid Id)
         {
             foreach (var _attachment in attachments)
             {
@@ -108,36 +95,54 @@ namespace RadinProjectNotes
                 }
             }
 
-            return null;
+            throw new AttachmentNotFound();
         }
 
-        public Attachment AddAttachment(Attachment attachment)
+        private bool AttachmentExistsInLibrary(Attachment attachment)
         {
-            if (FindAttachment(attachment) is null)
+            try
+            {
+                FindAttachment(attachment);
+            }
+            catch (AttachmentNotFound)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public void AddAttachment(Attachment attachment)
+        {
+            if (AttachmentExistsInLibrary(attachment))
+            {
+                throw new AttachmentAlreadyExists();
+            }
+            else
             {
                 attachments.Add(attachment);
-                return attachment;
             }
-
-            return null;
         }
 
-        public Attachment RemoveAttachment(Attachment attachment, bool deleteFromDisk = false)
+        public void RemoveAttachmentById(Guid id, bool deleteFromDisk = false)
         {
-            Attachment match = FindAttachment(attachment);
-            if (match != null)
+            Attachment attachmentToRemove;
+            try
             {
-                attachments.Remove(match);
-
-                if (deleteFromDisk)
-                {
-                    match.DeleteFromDisk();
-                }
-
-                return match;
+                attachmentToRemove = FindAttachmentById(id);
+            }
+            catch (AttachmentNotFound ex)
+            {
+                Debug.Write(ex.Message.ToString());
+                return;
             }
 
-            return null;
+            attachments.Remove(attachmentToRemove);
+
+            if (deleteFromDisk)
+            {
+                attachmentToRemove.DeleteFromDisk();
+            }
         }
 
         public List<Attachment> GetAttachments()
@@ -164,6 +169,16 @@ namespace RadinProjectNotes
             {
                 attachment.DeleteFromDisk();
             }
+        }
+
+        public class AttachmentNotFound : Exception
+        {
+            public AttachmentNotFound() : base("Attachment not found.") { }
+        }
+
+        public class AttachmentAlreadyExists : Exception
+        {
+            public AttachmentAlreadyExists() : base("Attachment already exists in library.") { }
         }
     }
    

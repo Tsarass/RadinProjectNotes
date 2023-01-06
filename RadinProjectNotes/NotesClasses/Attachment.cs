@@ -69,7 +69,11 @@ namespace RadinProjectNotes
             }
         }
 
-        public bool OpenFile()
+        /// <summary>
+        /// Tries to open the file associated with current attachment.
+        /// </summary>
+        /// <returns>True if file could be opened.</returns>
+        public bool TryOpenFile()
         {
             try
             {
