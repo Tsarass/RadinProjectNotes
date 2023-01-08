@@ -584,7 +584,7 @@ namespace RadinProjectNotes
                 return;
             }
 
-            if (noteToEdit.IsWithinAllowedIntervalToEdit() && (!ServerConnection.credentials.currentUser.IsAdmin))
+            if (!noteToEdit.IsWithinAllowedIntervalToEdit() && (!ServerConnection.credentials.currentUser.IsAdmin))
             {
                 string prompt = "Comments can only be edited within " + Notes.maxEditHours + " hours of creation!";
                 MessageBox.Show(this, prompt, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -652,7 +652,7 @@ namespace RadinProjectNotes
                 return;
             }
 
-            if (noteToDelete.IsWithinAllowedIntervalToDelete() && (!ServerConnection.credentials.currentUser.IsAdmin))
+            if (!noteToDelete.IsWithinAllowedIntervalToDelete() && (!ServerConnection.credentials.currentUser.IsAdmin))
             {
                 string prompt = "Comments can only be edited within " + Notes.maxDeleteHours / 24 + " days of creation!";
                 MessageBox.Show(this, prompt, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
