@@ -35,11 +35,12 @@ namespace RadinProjectNotes
             {
                 if (attachment.ExistsInDisk()) 
                 {
-                    ListViewItem newItem = new ListViewItem(attachment.FileName);
-                    newItem.Checked = false;
-                    newItem.Tag = attachment.Id;
-
-                    newItem.ToolTipText = attachment.FileName;
+                    ListViewItem newItem = new ListViewItem(attachment.FileName)
+                    {
+                        Checked = false,
+                        Tag = attachment.Id,
+                        ToolTipText = attachment.FileName
+                    };
 
                     attachmentListView.Items.Add(newItem);
                 }
@@ -66,13 +67,11 @@ namespace RadinProjectNotes
                 return;
             }
 
-            // Prepare a dummy string, this would appear in the dialog
-            string dummyFileName = "Save Here";
-
-            SaveFileDialog sf = new SaveFileDialog();
-            // Feed the dummy name to the save dialog
-            sf.FileName = dummyFileName;
-            sf.Filter = "Directory | directory";
+            SaveFileDialog sf = new SaveFileDialog
+            {
+                FileName = "Save Here", //dummy file name
+                Filter = "Directory | directory"
+            };
 
             if (sf.ShowDialog() == DialogResult.OK)
             {

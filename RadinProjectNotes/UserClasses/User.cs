@@ -48,7 +48,7 @@ namespace RadinProjectNotes
 
         public bool Equals(User other)
         {
-            if (ReferenceEquals(other, null)) return false;
+            if (other is null) return false;
             if (ReferenceEquals(other, this)) return true;
             return this.ID == other.ID;
         }
@@ -91,8 +91,36 @@ namespace RadinProjectNotes
                 return localTime.ToString();
             }
         }
+        /// <summary>
+        /// Checks if the user can edit the passed note.
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns></returns>
+        public bool CanEditNote(Notes.ProjectNote note)
+        {
+            if (!HasAuthorizationToEditOrDeleteNote(note) || !HasEditingPermission())
+            {
+                return false;
+            }
 
-        public bool CanEditOrDeleteNote(Notes.ProjectNote note)
+            return true;
+        }
+        /// <summary>
+        /// Checks if the user can delete the passed note.
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns></returns>
+        public bool CanDeleteNote(Notes.ProjectNote note)
+        {
+            if (!HasAuthorizationToEditOrDeleteNote(note) || !HasDeletingPermission())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool HasAuthorizationToEditOrDeleteNote(Notes.ProjectNote note)
         {
             if ((this == note.userCreated) || (this.IsAdmin))
             {
@@ -100,5 +128,21 @@ namespace RadinProjectNotes
             }
             return false;
         }
+
+        public bool HasAddCommentPermission()
+        {
+            return permissions.HasFlag(Permissions.AddComment);
+        }
+
+        private bool HasEditingPermission()
+        {
+            return permissions.HasFlag(Permissions.Edit);
+        }
+
+        private bool HasDeletingPermission()
+        {
+            return permissions.HasFlag(Permissions.Delete);
+        }
+
     }
 }

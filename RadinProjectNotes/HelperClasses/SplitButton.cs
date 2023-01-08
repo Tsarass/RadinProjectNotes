@@ -614,10 +614,7 @@ namespace SplitButtonDemo
 
             if (!MouseInSplit() && !_AlwaysDropDown)
             {
-                if (ButtonClick != null)
-                {
-                    ButtonClick(this, e);
-                }
+                ButtonClick?.Invoke(this, e);
             }
         }
 

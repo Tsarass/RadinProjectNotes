@@ -18,7 +18,7 @@ namespace RadinProjectNotes.Forms
             InitializeComponent();
         }
 
-        string[] filesToExclude = new string[] { "users.db", "latest.db"};
+        readonly string[] filesToExclude = new string[] { "users.db", "latest.db"};
 
         private List<string> projectList = new List<string>();
 
@@ -120,11 +120,13 @@ namespace RadinProjectNotes.Forms
             filterPanel.Controls.Clear();
             foreach (var filter in filters)
             {
-                CheckBox chk = new CheckBox();
-                chk.Text = filter;
-                chk.Checked = false;
+                CheckBox chk = new CheckBox
+                {
+                    Text = filter,
+                    Checked = false,
+                    Tag = filter
+                };
                 chk.CheckedChanged += FilterCheckedChanged;
-                chk.Tag = filter;
 
                 filterPanel.Controls.Add(chk);
             }
@@ -133,18 +135,7 @@ namespace RadinProjectNotes.Forms
         private void FilterCheckedChanged(object sender, EventArgs e)
         {
             //first get all active filters
-            List<string> activeFilters = new List<string>();
-            foreach (var control in filterPanel.Controls)
-            {
-                if (control is CheckBox)
-                {
-                    CheckBox chk = (CheckBox)control;
-                    if ((chk.Checked) && (!activeFilters.Contains(chk.Text)))
-                    {
-                        activeFilters.Add(chk.Text);
-                    }
-                }
-            }
+            List<string> activeFilters = getActiveFilters();
 
             //if no filters checked, show all projects
             if (activeFilters.Count <= 0)
@@ -159,17 +150,34 @@ namespace RadinProjectNotes.Forms
             foreach (var filter in activeFilters)
             {
                 string filterYear = filter.Substring(11, 2);
-                for (int i = projectFullList.Count - 1; i >= 0 ; i--)
+                for (int i = projectFullList.Count - 1; i >= 0; i--)
                 {
                     if (projectFullList[i].StartsWith(filterYear))
                     {
                         itemsToShow.Add(projectFullList[i]);
                         projectFullList.RemoveAt(i);
                     }
-                } 
+                }
             }
 
-            UpdateList(itemsToShow);            
+            UpdateList(itemsToShow);
+        }
+
+        private List<string> getActiveFilters()
+        {
+            List<string> activeFilters = new List<string>();
+            foreach (var control in filterPanel.Controls)
+            {
+                if (control is CheckBox chk)
+                {
+                    if (chk.Checked && (!activeFilters.Contains(chk.Text)))
+                    {
+                        activeFilters.Add(chk.Text);
+                    }
+                }
+            }
+
+            return activeFilters;
         }
     }
 }

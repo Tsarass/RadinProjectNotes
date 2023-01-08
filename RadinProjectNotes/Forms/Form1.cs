@@ -17,8 +17,6 @@ namespace RadinProjectNotes
     {
         #region Constants
 
-        private const int maxEditHours = 24 * 3;
-        private const int maxDeleteHours = 24 * 20;
         private const int projectCachedListingIntervalMinutes = 60;
 
         #endregion
@@ -370,7 +368,7 @@ namespace RadinProjectNotes
         private void btnAddComment_Click(object sender, EventArgs e)
         {
             //check user permissions
-            if (!ServerConnection.credentials.currentUser.permissions.HasFlag(Permissions.AddComment))
+            if (!ServerConnection.credentials.currentUser.HasAddCommentPermission())
             {
                 MessageBox.Show("Insufficient priviledges to add comment.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -567,36 +565,28 @@ namespace RadinProjectNotes
         #region Comment panel methods
         public void EditComment(Notes.ProjectNote note)
         {
-            //get a match from current project notes list
-            int ind = currentNoteData.noteData.IndexOf(note);
-            if (ind < 0)
+            Notes.ProjectNote noteToEdit;
+            try
             {
-                MessageBox.Show(this, "Error while editing note. Note not found in the database.", "Note not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //get a match from current project notes list
+                noteToEdit = currentNoteData.FindNote(note);
+            }
+            catch (Versioning.SaveStructureV1.NoteNotFoundInDatabase ex)
+            {
+                MessageBox.Show(this, ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 UpdateFullCommentPanel();
                 return;
             }
-            Notes.ProjectNote noteToEdit = currentNoteData.noteData[ind];
 
-            //re-authenticate just in case
-            if (!ServerConnection.credentials.currentUser.CanEditOrDeleteNote(noteToEdit))
+            if (!ServerConnection.credentials.currentUser.CanEditNote(noteToEdit))
             {
-                string prompt = "Comments can only be edited by the original author!";
-                MessageBox.Show(this, prompt, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "User not authorized to edit note.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            //check user permissions
-            if (!ServerConnection.credentials.currentUser.permissions.HasFlag(Permissions.Edit))
+            if (noteToEdit.IsWithinAllowedIntervalToEdit() && (!ServerConnection.credentials.currentUser.IsAdmin))
             {
-                MessageBox.Show("Editing priviledge required.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            //check for time constraint
-            TimeSpan difference = DateTime.Now.Subtract(new DateTime(noteToEdit.dateAdded));
-            if ((difference.TotalHours > maxEditHours) && (!ServerConnection.credentials.currentUser.IsAdmin))
-            {
-                string prompt = "Comments can only be edited within " + maxEditHours + " hours of creation!";
+                string prompt = "Comments can only be edited within " + Notes.maxEditHours + " hours of creation!";
                 MessageBox.Show(this, prompt, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -643,36 +633,28 @@ namespace RadinProjectNotes
 
         public void DeleteComment(Notes.ProjectNote note)
         {
-            //get a match from current project notes list
-            int ind = currentNoteData.noteData.IndexOf(note);
-            if (ind < 0)
+            Notes.ProjectNote noteToDelete;
+            try
             {
-                MessageBox.Show(this, "Error while deleting note. Note not found in the database.", "Note not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //get a match from current project notes list
+                noteToDelete = currentNoteData.FindNote(note);
+            }
+            catch (Versioning.SaveStructureV1.NoteNotFoundInDatabase ex)
+            {
+                MessageBox.Show(this, ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 UpdateFullCommentPanel();
                 return;
             }
-            Notes.ProjectNote noteToDelete = currentNoteData.noteData[ind];
 
-            //re-authenticate just in case
-            if (!ServerConnection.credentials.currentUser.CanEditOrDeleteNote(noteToDelete))
+            if (!ServerConnection.credentials.currentUser.CanDeleteNote(noteToDelete))
             {
-                string prompt = "Comments can only be deleted by the original author!";
-                MessageBox.Show(this, prompt, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "User not authorized to delete note.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            //check user permissions
-            if (!ServerConnection.credentials.currentUser.permissions.HasFlag(Permissions.Delete))
+            if (noteToDelete.IsWithinAllowedIntervalToDelete() && (!ServerConnection.credentials.currentUser.IsAdmin))
             {
-                MessageBox.Show("Deleting priviledge required.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            //check for time constraint
-            TimeSpan difference = DateTime.Now.Subtract(new DateTime(noteToDelete.dateAdded));
-            if ((difference.TotalHours > maxDeleteHours) && (!ServerConnection.credentials.currentUser.IsAdmin))
-            {
-                string prompt = "Comments can only be edited within " + maxDeleteHours / 24 + " days of creation!";
+                string prompt = "Comments can only be edited within " + Notes.maxDeleteHours / 24 + " days of creation!";
                 MessageBox.Show(this, prompt, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -783,7 +765,7 @@ namespace RadinProjectNotes
             pack.Note = note;
 
             //button visuals
-            if (ServerConnection.credentials.currentUser.CanEditOrDeleteNote(note))
+            if (ServerConnection.credentials.currentUser.HasAuthorizationToEditOrDeleteNote(note))
             {
                 pack.Editable = true;
                 pack.Deleteable = true;

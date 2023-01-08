@@ -17,12 +17,12 @@ namespace RadinProjectNotes
             get { return printDoc; }
         }
 
-        private Font projectFont = new Font("Calibri", 15.0f, FontStyle.Underline);
-        private Font titleFont = new Font("Calibri", 10.0f);
-        private Font bodyFont = new Font("Calibri", 10.0f);
-        private Brush projectBrush = Brushes.Black;
-        private Brush titleBrush = Brushes.Red;
-        private Brush bodyBrush = Brushes.Black;
+        private readonly Font projectFont = new Font("Calibri", 15.0f, FontStyle.Underline);
+        private readonly Font titleFont = new Font("Calibri", 10.0f);
+        private readonly Font bodyFont = new Font("Calibri", 10.0f);
+        private readonly Brush projectBrush = Brushes.Black;
+        private readonly Brush titleBrush = Brushes.Red;
+        private readonly Brush bodyBrush = Brushes.Black;
 
         private ServerConnection.ProjectFolder projectFolder;
         private Versioning.SaveStructureV1 noteDatabase;
@@ -99,13 +99,10 @@ namespace RadinProjectNotes
                 this.ContinueFromLastNoteText = false;
                 string commentBody = note.noteText;
 
-                int lineCharacters = 0;
-                int linesPerPage = 0;
-
                 //measure the text's size (width, height)
                 Size printSize = e.MarginBounds.Size;
                 printSize.Height = e.MarginBounds.Bottom - yCur;
-                SizeF size = e.Graphics.MeasureString(commentBody, bodyFont, printSize, StringFormat.GenericTypographic, out lineCharacters, out linesPerPage);
+                SizeF size = e.Graphics.MeasureString(commentBody, bodyFont, printSize, StringFormat.GenericTypographic, out int lineCharacters, out int linesPerPage);
                 SizeF fullRectPrint = e.Graphics.MeasureString(commentBody, bodyFont, e.MarginBounds.Width, StringFormat.GenericTypographic);
                 RectangleF rect = new RectangleF(e.MarginBounds.Left, yCur, printSize.Width, printSize.Height);
                 e.Graphics.DrawString(commentBody, bodyFont, bodyBrush, rect, StringFormat.GenericTypographic);
@@ -145,7 +142,7 @@ namespace RadinProjectNotes
 
         private void printDoc_PrintComplete(object sender, PrintEventArgs e)
         {
-            string printFileName = "";
+            string printFileName;
             try
             {
                 printFileName = printDoc.PrinterSettings.PrintFileName;

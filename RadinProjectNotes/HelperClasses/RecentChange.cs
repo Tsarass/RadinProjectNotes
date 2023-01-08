@@ -39,7 +39,7 @@ namespace RadinProjectNotes.HelperClasses
 
         public bool Equals(RecentChange other)
         {
-            if (ReferenceEquals(other, null)) return false;
+            if (other is null) return false;
             if (ReferenceEquals(other, this)) return true;
             return this.projectTitle == other.projectTitle;
         }

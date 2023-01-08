@@ -10,6 +10,9 @@ namespace RadinProjectNotes
     {
         #region Static methods/variables
         public static readonly long maxAttachmentByteSize = 30 * 1024 * 1024;
+        public static readonly int maxEditHours = 24 * 3;
+        public static readonly int maxDeleteHours = 24 * 20;
+
         public static int maxAttachmentMB
         {
             get

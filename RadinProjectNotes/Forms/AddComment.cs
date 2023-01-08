@@ -282,10 +282,7 @@ namespace RadinProjectNotes
             if (dlg == DialogResult.OK)
             {
                 string filePath = GetImageTempFilename(frm.FileNameToSave);
-                Attachment attachment = new Attachment(filePath);
-
                 image.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
-
                 HandleAttachmentInput(new string[] { filePath });
             }
            

@@ -19,7 +19,7 @@ namespace RadinProjectNotes
         public readonly static string serverFolder = @"\\nas-radin-lp\DATEN\notes";
         public static Credentials credentials;
 
-        private static string[] possibleServerPaths = new string[] {  @"\\nas-radin-gr\Projekte",
+        private static readonly string[] possibleServerPaths = new string[] {  @"\\nas-radin-gr\Projekte",
                                                                @"\\nas-radin-lp\Projekte"};
 
         public static List<ProjectFolder> folderCache = new List<ProjectFolder>();
@@ -74,8 +74,9 @@ namespace RadinProjectNotes
                 {
                     string folderName = new DirectoryInfo(subDir).Name;
                     string number = folderName.Substring(9, 4);
-                    int year = -1;
-                    Int32.TryParse(number, out year);
+                    bool couldParse = Int32.TryParse(number, out int year);
+                    if (!couldParse)
+                        continue;
                     if (year >= 2016)
                     {
                         searchFolders.Add(subDir);
@@ -122,10 +123,11 @@ namespace RadinProjectNotes
                     string[] subFolders = Directory.GetDirectories(searchFolder);
                     foreach (string subFolder in subFolders)
                     {
-                        ProjectFolder newFolder = new ProjectFolder { };
-                        newFolder.fullPath = subFolder;
-                        newFolder.projectPath = new DirectoryInfo(subFolder).Name;
-                        newFolder.projectPath.Replace('_', ' ');
+                        ProjectFolder newFolder = new ProjectFolder
+                        {
+                            fullPath = subFolder,
+                            projectPath = new DirectoryInfo(subFolder).Name.Replace('_', ' ')
+                        };
 
                         folderCache.Add(newFolder);
                     }

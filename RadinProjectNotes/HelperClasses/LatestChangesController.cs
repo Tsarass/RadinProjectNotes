@@ -131,8 +131,7 @@ namespace RadinProjectNotes
         public static bool IsUpdateRequired()
         {
             string lastSizeSavedInRegistry = RegistryFunctions.GetRegistryKeyValue(RegistryEntry.LatestPostsDatabaseLastSize);
-            long parsedSize = -1;
-            long.TryParse(lastSizeSavedInRegistry, out parsedSize);
+            long.TryParse(lastSizeSavedInRegistry, out long parsedSize);
 
             //if filesize is exactly equal, skip the check
             //if filesize is greater, latest posts were added

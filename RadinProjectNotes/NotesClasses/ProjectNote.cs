@@ -1,6 +1,7 @@
 ﻿using ProtoBuf;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace RadinProjectNotes
 {
@@ -56,15 +57,16 @@ namespace RadinProjectNotes
 
             public object Clone()
             {
-                ProjectNote newNote = new ProjectNote();
-
-                newNote.noteText = this.noteText;
-                newNote.userCreated = this.userCreated;
-                newNote.dateAdded = this.dateAdded;
-                newNote.pcName = this.pcName;
-                newNote.dateLastEdited = this.dateLastEdited;
-                newNote.noteStatus = this.noteStatus;
-                newNote.userFullfilled = this.userFullfilled;
+                ProjectNote newNote = new ProjectNote
+                {
+                    noteText = this.noteText,
+                    userCreated = this.userCreated,
+                    dateAdded = this.dateAdded,
+                    pcName = this.pcName,
+                    dateLastEdited = this.dateLastEdited,
+                    noteStatus = this.noteStatus,
+                    userFullfilled = this.userFullfilled
+                };
                 newNote.attachmentLibrary.attachments = new List<Attachment>(this.attachmentLibrary.attachments);   //deep copy
 
                 return newNote;
@@ -114,9 +116,25 @@ namespace RadinProjectNotes
                 }
             }
 
+            public bool IsWithinAllowedIntervalToEdit()
+            {
+                return AllowedIntervalHasNotElapsed(maxEditHours);
+            }
+
+            public bool IsWithinAllowedIntervalToDelete()
+            {
+                return AllowedIntervalHasNotElapsed(maxDeleteHours);
+            }
+
+            private bool AllowedIntervalHasNotElapsed(int allowedInterval)
+            {
+                TimeSpan difference = DateTime.Now.Subtract(new DateTime(dateAdded));
+                return difference.TotalHours <= allowedInterval;
+            }
+
             public bool Equals(ProjectNote other)
             {
-                if (ReferenceEquals(other, null)) return false;
+                if (other is null) return false;
                 if (ReferenceEquals(other, this)) return true;
                 return (this.dateAdded == other.dateAdded) && (this.userCreated == other.userCreated);
             }

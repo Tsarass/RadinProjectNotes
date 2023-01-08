@@ -13,7 +13,7 @@ namespace RadinProjectNotes
     /// </summary>
     public class Credentials
     {
-        private string databaseFile = Path.Combine(ServerConnection.serverFolder, "users.db");
+        private readonly string databaseFile = Path.Combine(ServerConnection.serverFolder, "users.db");
 
         public UserDatabase userDatabase;
         public User currentUser;

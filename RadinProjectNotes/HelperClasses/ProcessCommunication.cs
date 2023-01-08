@@ -12,7 +12,7 @@ namespace RadinProjectNotes
     public class ProcessCommunication
     {
         public const string ThreadIDFileName = @"RadinProjektNotes";
-        static uint message = (uint)0xab1;
+        static readonly uint message = (uint)0xab1;
 
         static MemoryMappedFile mmf;
 

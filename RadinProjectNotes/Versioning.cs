@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RadinProjectNotes
 {
@@ -40,10 +41,33 @@ namespace RadinProjectNotes
                 this.lastSavedTime = -1;
             }
 
+            /// <summary>
+            /// Finds the note passed in the database and returns it.
+            /// </summary>
+            /// <param name="noteToFind"></param>
+            /// <returns></returns>
+            /// <exception cref="NoteNotFoundInDatabase"></exception>
+            public Notes.ProjectNote FindNote(Notes.ProjectNote noteToFind)
+            {
+                int ind = noteData.IndexOf(noteToFind);
+
+                if (ind < 0)
+                {
+                    throw new NoteNotFoundInDatabase();
+                }
+
+                return noteData[ind];
+            }
+
             public void DeleteNote(Notes.ProjectNote noteToDelete)
             {
                 noteToDelete.attachmentLibrary.DeleteAttachmentsFromDisk();
                 noteData.Remove(noteToDelete);
+            }
+
+            public class NoteNotFoundInDatabase : Exception 
+            {
+                public NoteNotFoundInDatabase() : base("Note not found in database.") { }
             }
         }
 

@@ -105,8 +105,10 @@ namespace RadinProjectNotes
             if (user.password == Security.ResetPassword)
             {
                 //show reset password form
-                ResetPassword frm = new ResetPassword();
-                frm.Username = user.username;
+                ResetPassword frm = new ResetPassword
+                {
+                    Username = user.username
+                };
                 frm.ShowDialog(this);
 
                 if (frm.DialogResult == DialogResult.OK)
