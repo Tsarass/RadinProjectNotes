@@ -60,8 +60,8 @@
     <Compile Include="AssemblyVersionChecker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UpdateAutoUpdater.cs" />
-    <Compile Include="UpdateFiles.cs" />
+    <Compile Include="AutoUpdaterUpdater.cs" />
+    <Compile Include="FilesUpdater.cs" />
     <Compile Include="UpdateMainExecutable.cs" />
   </ItemGroup>
   <ItemGroup>
