@@ -30,9 +30,7 @@ namespace RadinProjectNotes
 
         public static Form1 mainForm;
         public static ServerConnection.ProjectFolder currentProject = null;
-
-        public Versioning.SaveStructureV1 currentNoteData = new Versioning.SaveStructureV1();
-        public Notes.ProjectNote currentNote;
+        
         public bool minimizeOnLoad = false;
 
         public Form1(string[] args)
@@ -87,7 +85,7 @@ namespace RadinProjectNotes
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            if (ShowLogin(false) == false)
+            if (ShowLoginDialog(false) == false)
             {
                 //if login fails, return here
                 return;
@@ -144,9 +142,8 @@ namespace RadinProjectNotes
         /// </summary>
         /// <param name="resetCredentials"></param>
         /// <returns>true if login was successfull</returns>
-        private bool ShowLogin(bool resetCredentials)
+        private bool ShowLoginDialog(bool resetCredentials)
         {
-            //load first time use setup
             UserLogin frm = new UserLogin();
             //login form will start hidden and only show later if the automatic authentication fails
             frm.Visible = false;
@@ -154,13 +151,12 @@ namespace RadinProjectNotes
 
             if (frm.DialogResult == DialogResult.Cancel)
             {
-                forceProgramExit = true;
-                this.Close();   //close application
+                ExitApp(forceProgramExit : true);   //close application
                 return false;   //returns false if unsuccessfull login
             }
             else
             {
-                //check for admin
+                //if admin, show admin menu
                 administratorToolStripMenuItem.Visible = Credentials.Instance.currentUser.IsAdmin ? true : false;
 
                 //update full comment panel with new user permissions
@@ -191,7 +187,7 @@ namespace RadinProjectNotes
             this.Update();
 
             //clear note data from previous project
-            currentNoteData = null;
+            Notes.currentNoteData = null;
 
             //match the project folder with the full path from cache list
             ServerConnection.ProjectFolder projectFolder = ServerConnection.GetProjectFolderFromProjectPath(projectTitle);
@@ -207,35 +203,7 @@ namespace RadinProjectNotes
             btnOpenFolder.Enabled = true;
 
             //open notes database
-            var maxRetryAttempts = 20;
-            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
-            RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () => {
-                LoadNotesDatabaseAndUpdatePanel(projectFolder);
-            });
-        }
-
-        #region Note save/load functions
-
-        private void SaveNewNoteToProjectNoteDatabase(Notes.ProjectNote newNote)
-        {
-            //first open the file from server
-            //required to have simultaneous multi-user access to same project notes
-            TryLoadNotesDatabaseInMemory(currentProject);
-
-            currentNoteData.noteData.Add(newNote);
-
-            TrySaveNotesDatabase();
-        }
-
-        private void TrySaveNotesDatabase()
-        {
-            var maxRetryAttempts = 30;
-            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
-            RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () =>
-            {
-                Notes.SaveNotesDatabase(this.currentNoteData, currentProject.projectPath);
-            });
-            
+            LoadNotesDatabaseAndUpdatePanel(projectFolder);
         }
 
         /// <summary>
@@ -245,9 +213,9 @@ namespace RadinProjectNotes
         /// <param name="onlyInMemory">true only if trying to internally load the current notes database into memory</param>
         private void LoadNotesDatabaseAndUpdatePanel(ServerConnection.ProjectFolder projectFolder)
         {
-            LoadNotesDatabaseInMemory(projectFolder);
+            Notes.TryLoadNotesDatabaseInMemory(projectFolder);
 
-            if ((currentNoteData is null) || (currentNoteData.IsEmpty) )
+            if ((Notes.currentNoteData is null) || (Notes.currentNoteData.IsEmpty) )
             {
                 EmptyCommentPanel();
                 ShowNoNotesLabel();
@@ -260,25 +228,6 @@ namespace RadinProjectNotes
             lblProject.Text = currentProject.projectPath;
         }
 
-        /// <summary>
-        /// Load the notes database and store in member variable.
-        /// </summary>
-        /// <param name="projectFolder"></param>
-        private void LoadNotesDatabaseInMemory(ServerConnection.ProjectFolder projectFolder)
-        {
-            try
-            {
-                currentNoteData = Notes.LoadDatabaseFile(projectFolder);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Error while loading database file.", e);
-                throw;
-            }
-        }
-
-        #endregion
-
         #region Control event handlers
 
         #region Menu functions
@@ -287,7 +236,7 @@ namespace RadinProjectNotes
         {
             Credentials.Instance.SuccessfullyLoaded = false;
             UserLogin.ResetLoginCredentials();
-            ShowLogin(true);
+            ShowLoginDialog(true);
             if (Credentials.Instance.currentUser != null)
             {
                 UpdateWindowDescription();
@@ -382,7 +331,7 @@ namespace RadinProjectNotes
                 string commentText = frm.currentNote.noteText.Trim();
 
                 Notes.ProjectNote newNote = new Notes.ProjectNote(commentText, frm.currentNote.attachmentLibrary.GetAttachments());
-                SaveNewNoteToProjectNoteDatabase(newNote);
+                Notes.SaveNewNoteToProjectNoteDatabase(currentProject, newNote);
 
                 UpdateFullCommentPanel();
 
@@ -416,9 +365,9 @@ namespace RadinProjectNotes
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            if (currentNoteData.noteData.Count <= 0) return;
+            if (Notes.currentNoteData.noteData.Count <= 0) return;
 
-            Printer printer = new Printer(currentProject, currentNoteData);
+            Printer printer = new Printer(currentProject, Notes.currentNoteData);
 
             PrintDialog PrintDialog1 = new PrintDialog();
             PrintDialog1.Document = printer.PrintDoc;
@@ -567,7 +516,7 @@ namespace RadinProjectNotes
             try
             {
                 //get a match from current project notes list
-                noteToEdit = currentNoteData.FindNote(note);
+                noteToEdit = Notes.currentNoteData.FindNote(note);
             }
             catch (Versioning.SaveStructureV1.NoteNotFoundInDatabase ex)
             {
@@ -604,7 +553,7 @@ namespace RadinProjectNotes
 
                 //then open the file from server
                 //required to have simultaneous multi-user access to same project notes
-                TryLoadNotesDatabaseInMemory(currentProject);
+                Notes.TryLoadNotesDatabaseInMemory(currentProject);
 
                 //lastly find the old note in the new note list
                 noteToEdit = matchOldNoteInNewNoteList(noteCopy);
@@ -615,18 +564,8 @@ namespace RadinProjectNotes
 
                 UpdateCommentPanelNote(noteToEdit);
 
-                TrySaveNotesDatabase();
+                Notes.TrySaveNotesDatabase(currentProject);
             }
-        }
-
-        private void TryLoadNotesDatabaseInMemory(ServerConnection.ProjectFolder projectFolder)
-        {
-            var maxRetryAttempts = 20;
-            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
-            RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () =>
-            {
-                LoadNotesDatabaseInMemory(projectFolder);
-            });
         }
 
         public void DeleteComment(Notes.ProjectNote note)
@@ -635,7 +574,7 @@ namespace RadinProjectNotes
             try
             {
                 //get a match from current project notes list
-                noteToDelete = currentNoteData.FindNote(note);
+                noteToDelete = Notes.currentNoteData.FindNote(note);
             }
             catch (Versioning.SaveStructureV1.NoteNotFoundInDatabase ex)
             {
@@ -679,16 +618,16 @@ namespace RadinProjectNotes
                 }
 
                 //delete comment
-                currentNoteData.DeleteNote(noteToDelete);
-                this.currentNote = null;
-                TrySaveNotesDatabase();
+                Notes.currentNoteData.DeleteNote(noteToDelete);
+                Notes.currentNote = null;
+                Notes.TrySaveNotesDatabase(currentProject);
                 DeleteCommentPanelNote(noteToDelete);
             }
         }
 
         private Notes.ProjectNote matchOldNoteInNewNoteList(Notes.ProjectNote noteCopy)
         {
-            foreach (Notes.ProjectNote note in currentNoteData.noteData)
+            foreach (Notes.ProjectNote note in Notes.currentNoteData.noteData)
             {
                 if (note == noteCopy)
                 {
@@ -710,10 +649,10 @@ namespace RadinProjectNotes
             EmptyCommentPanel();
 
             //if there are no data, return
-            if (currentNoteData == null) { return; }
+            if (Notes.currentNoteData == null) { return; }
 
             this.flowPanel.SuspendLayout();
-            foreach (Notes.ProjectNote note in this.currentNoteData.noteData)
+            foreach (Notes.ProjectNote note in Notes.currentNoteData.noteData)
             {
                 CommentPackage pack = AddCommentPackage(note);
             }
@@ -862,7 +801,7 @@ namespace RadinProjectNotes
         {
             //check if a project is open
             if (currentProject is null) { return; }
-            if (currentNoteData is null) { return; }
+            if (Notes.currentNoteData is null) { return; }
 
             Versioning.SaveStructureV1 loadedNoteData = null;
 
@@ -876,11 +815,11 @@ namespace RadinProjectNotes
 
             if (loadedNoteData != null)
             {
-                if (loadedNoteData.lastSavedTime > currentNoteData.lastSavedTime) //newer database detected
+                if (loadedNoteData.lastSavedTime > Notes.currentNoteData.lastSavedTime) //newer database detected
                 {
                     //first make a deep copy of the current note database to use as a stack
                     //remove any already processed notes from this stack and if anything is left, treat is as deleted notes
-                    List<Notes.ProjectNote> currentNoteTempStack = new List<Notes.ProjectNote>(currentNoteData.noteData);
+                    List<Notes.ProjectNote> currentNoteTempStack = new List<Notes.ProjectNote>(Notes.currentNoteData.noteData);
 
                     currentNoteTempStack = AddNewOrUpdateExistingNotes(loadedNoteData, currentNoteTempStack);
 
@@ -888,7 +827,7 @@ namespace RadinProjectNotes
                     DeleteLeftoverNotes(currentNoteTempStack);
 
                     //in the end swap the current database with the newer one
-                    currentNoteData = loadedNoteData;
+                    Notes.currentNoteData = loadedNoteData;
                     Debug.WriteLine("Found change in the database @ " + DateTime.Now.ToString());
                 }
             }

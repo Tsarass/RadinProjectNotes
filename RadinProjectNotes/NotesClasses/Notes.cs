@@ -13,6 +13,9 @@ namespace RadinProjectNotes
         public static readonly int maxEditHours = 24 * 3;
         public static readonly int maxDeleteHours = 24 * 20;
 
+        public static Versioning.SaveStructureV1 currentNoteData = new Versioning.SaveStructureV1();
+        public static ProjectNote currentNote;
+
         public static int maxAttachmentMB
         {
             get
@@ -28,7 +31,56 @@ namespace RadinProjectNotes
             return attachmentsFolder;
         }
 
-        public static void SaveNotesDatabase(Versioning.SaveStructureV1 noteDataToSave, string projectPath)
+        public static void TryLoadNotesDatabaseInMemory(ServerConnection.ProjectFolder projectFolder)
+        {
+            var maxRetryAttempts = 20;
+            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
+            RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () =>
+            {
+                LoadNotesDatabaseInMemory(projectFolder);
+            });
+        }
+
+        /// <summary>
+        /// Load the notes database and store in member variable.
+        /// </summary>
+        /// <param name="projectFolder"></param>
+        private static void LoadNotesDatabaseInMemory(ServerConnection.ProjectFolder projectFolder)
+        {
+            try
+            {
+                currentNoteData = LoadDatabaseFile(projectFolder);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error while loading database file.", e);
+                throw;
+            }
+        }
+
+        public static void SaveNewNoteToProjectNoteDatabase(ServerConnection.ProjectFolder currentProject, ProjectNote newNote)
+        {
+            //first open the file from server
+            //required to have simultaneous multi-user access to same project notes
+            TryLoadNotesDatabaseInMemory(currentProject);
+
+            Notes.currentNoteData.noteData.Add(newNote);
+
+            TrySaveNotesDatabase(currentProject);
+        }
+
+        public static void TrySaveNotesDatabase(ServerConnection.ProjectFolder currentProject)
+        {
+            var maxRetryAttempts = 30;
+            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
+            RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () =>
+            {
+                Notes.SaveNotesDatabase(currentNoteData, currentProject.projectPath);
+            });
+
+        }
+
+        private static void SaveNotesDatabase(Versioning.SaveStructureV1 noteDataToSave, string projectPath)
         {
             //create save structure 
             Versioning.SaveStructureV1 save = new Versioning.SaveStructureV1(1, noteDataToSave.noteData);

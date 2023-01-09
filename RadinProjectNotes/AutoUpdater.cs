@@ -92,7 +92,6 @@ namespace RadinProjectNotes
             //get the current directory
             string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-            FileInfo fi = new FileInfo(strExeFilePath);
             string updaterFileName = Path.Combine(strWorkPath, updaterExecutable);
 
             var process = new Process
