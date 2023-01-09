@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RadinProjectNotes
 {
-    class Security
+    public class Security
     {
         public static readonly string ResetPassword = "000111222333444555666777888999AAABBBCCC0";   //password used when an administator resets a user's password
 

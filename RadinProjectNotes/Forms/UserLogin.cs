@@ -91,7 +91,7 @@ namespace RadinProjectNotes
             User user;
             try
             {
-                user = Credentials.Instance.CheckUsernameAndPassword(txtUsername.Text, txtPassword.Text);
+                user = Credentials.Instance.LogInUser(txtUsername.Text, txtPassword.Text);
             }
             catch (UserDatabase.InvalidUsernamePassword ex)
             {
@@ -99,21 +99,12 @@ namespace RadinProjectNotes
                 MessageBox.Show(this, ex.Message.ToString(), "Invalid login", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            //check if user has reset password
-            if (user.password == Security.ResetPassword)
+            catch (UserDatabase.UserHasResetPassword)
             {
-                //show reset password form
-                ResetPassword frm = new ResetPassword
+                if (ChangePasswordThroughResetDialog(txtUsername.Text))
                 {
-                    Username = user.username
-                };
-                frm.ShowDialog(this);
-
-                if (frm.DialogResult == DialogResult.OK)
-                {
-                    txtPassword.Text = frm.Password;
-                    btnLogin_Click(sender, e); //recall Sign in with new password
+                    //recall Sign in with new password
+                    btnLogin_Click(sender, e);
                 }
                 else
                 {
@@ -123,11 +114,6 @@ namespace RadinProjectNotes
                 }
             }
 
-            //update last login time
-            user.lastLogin = DateTime.UtcNow.Ticks;
-            //update version
-            user.appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Credentials.Instance.currentUser = user;
             //save the last login time info
             Credentials.Instance.TrySaveUserDatabase();
 
@@ -145,11 +131,32 @@ namespace RadinProjectNotes
             
         }
 
+        public bool ChangePasswordThroughResetDialog(string username)
+        {
+            //show reset password form
+            ResetPassword frm = new ResetPassword
+            {
+                Username = username
+            };
+            frm.ShowDialog(this);
+
+            if (frm.DialogResult == DialogResult.OK)
+            {
+                txtPassword.Text = frm.Password;
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public void SaveLoginCredentials()
         {
             RegistryFunctions.SetRegistryKeyValue(RegistryEntry.AutoLogin, "1");
             RegistryFunctions.SetRegistryKeyValue(RegistryEntry.Username, Credentials.Instance.currentUser.username);
-            RegistryFunctions.SetRegistryKeyValue(RegistryEntry.Password, Credentials.Instance.currentUser.password);
+            RegistryFunctions.SetRegistryKeyValue(RegistryEntry.Password, Credentials.Instance.currentUser.Password);
         }
 
         public static void ResetLoginCredentials()

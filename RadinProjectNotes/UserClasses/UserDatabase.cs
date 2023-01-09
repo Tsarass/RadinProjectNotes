@@ -56,22 +56,28 @@ namespace RadinProjectNotes
             throw new UserNotFound(id);
         }
 
+        /// <summary>
+        /// Attempts to match username and password in the user database.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns>The matching user if found</returns>
+        /// <exception cref="UserHasResetPassword"></exception>
+        /// <exception cref="InvalidUsernamePassword"></exception>
         public User MatchUsernameAndPassword(string username, string password)
         {
-            //password may be hashed already or not, so check for both
             foreach(User user in this.userData)
             {
                 if (user.username.ToLower() == username.ToLower())
                 {
-                    //if password was reset, send back the user here
-                    if (user.password == Security.ResetPassword)
+                    if (user.HasResetPassword())
                     {
-                        return user;
+                        throw new UserHasResetPassword();
                     }
 
-                    //check passwords as well
+                    //password may be hashed already or not, so check for both
                     string hashedPassword = Security.HashSHA1(password + user.ID.ToString());
-                    if ((hashedPassword == user.password) || (password == user.password))
+                    if ((hashedPassword == user.Password) || (password == user.Password))
                     {
                         return user;
                     }
@@ -101,7 +107,7 @@ namespace RadinProjectNotes
                 if (user.username.ToLower() == username.ToLower())
                 {
                     string hashedPassword = User.HashPassword(newPassword, user.ID);
-                    user.password = hashedPassword;
+                    user.SetPassword(hashedPassword);
                     return true;
                 }
             }
@@ -140,6 +146,11 @@ namespace RadinProjectNotes
         public class InvalidUsernamePassword : Exception
         {
             public InvalidUsernamePassword() : base("Invalid username and password provided.") { }
+        }
+
+        public class UserHasResetPassword : Exception
+        {
+            
         }
     }
 }

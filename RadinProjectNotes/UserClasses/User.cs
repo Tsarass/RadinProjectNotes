@@ -12,7 +12,7 @@ namespace RadinProjectNotes
         [ProtoMember(2)]
         public string username;
         [ProtoMember(3)]
-        public string password;
+        private string password;
         [ProtoMember(4)]
         public Permissions permissions;
         [ProtoMember(5)]
@@ -21,6 +21,11 @@ namespace RadinProjectNotes
         public long lastLogin;  //in unix ticks
         [ProtoMember(7)]
         public string appVersion;
+
+        public string Password
+        {
+            get { return password; }
+        }
 
         public User()
         {
@@ -127,6 +132,21 @@ namespace RadinProjectNotes
                 return true;
             }
             return false;
+        }
+
+        public void ResetPassword()
+        {
+            this.password = Security.ResetPassword;
+        }
+
+        public void SetPassword(string newPassword)
+        {
+            this.password = newPassword;
+        }
+
+        public bool HasResetPassword()
+        {
+            return this.password == Security.ResetPassword;
         }
 
         public bool HasAddCommentPermission()

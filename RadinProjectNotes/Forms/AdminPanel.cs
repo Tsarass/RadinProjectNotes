@@ -38,7 +38,7 @@ namespace RadinProjectNotes
             {
                 var item = listView1.Items.Add(user.ID.ToString());
                 item.SubItems.Add(user.username);
-                item.SubItems.Add(user.password);
+                item.SubItems.Add(user.Password);
                 string adminText = user.IsAdmin ? "Yes" : "No";
                 item.SubItems.Add(adminText);
                 item.SubItems.Add(user.LocalLastLoginDate);
@@ -117,7 +117,7 @@ namespace RadinProjectNotes
             User newUser = Credentials.Instance.userDatabase.AddUser(textBox1.Text,textBox2.Text,toSet);
             var item = listView1.Items.Add(newUser.ID.ToString());
             item.SubItems.Add(newUser.username);
-            item.SubItems.Add(newUser.password);
+            item.SubItems.Add(newUser.Password);
             string adminText = newUser.IsAdmin ? "Yes" : "No";
             item.SubItems.Add(adminText);
             item.SubItems.Add(newUser.LocalLastLoginDate);
@@ -271,8 +271,8 @@ namespace RadinProjectNotes
             }
 
             string password = textBox4.Text;
-            user.password = User.HashPassword(password, guid);
-            listView1.SelectedItems[0].SubItems[2].Text = user.password;
+            Credentials.Instance.userDatabase.ChangePassword(user.username, password);
+            listView1.SelectedItems[0].SubItems[2].Text = user.Password;
 
             SetSaveStatus(saved: false);
 
@@ -321,8 +321,8 @@ namespace RadinProjectNotes
                     return;
                 }
 
-                user.password = Security.ResetPassword;
-                listView1.SelectedItems[0].SubItems[2].Text = user.password;
+                user.ResetPassword();
+                listView1.SelectedItems[0].SubItems[2].Text = user.Password;
 
                 SetSaveStatus(saved: false);
 

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 
@@ -79,11 +80,6 @@ namespace RadinProjectNotes
             return newUser;
         }
 
-        public User CheckUsernameAndPassword(string username, string password)
-        {
-            return userDatabase.MatchUsernameAndPassword(username, password);
-        }
-
         public User FindUserById(Guid id)
         {
             return userDatabase.FindUserById(id);
@@ -97,6 +93,23 @@ namespace RadinProjectNotes
         public bool UsernameExists(string username)
         {
             return userDatabase.UsernameExists(username);
+        }
+
+        /// <summary>
+        /// Checks the credentials and updates user info when a user tries to logs in.
+        /// </summary>
+        /// <param name="user"></param>
+        public User LogInUser(string username, string password)
+        {
+            User user = userDatabase.MatchUsernameAndPassword(username, password);
+                        
+            //update last login info
+            user.lastLogin = DateTime.UtcNow.Ticks;
+            user.appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            Instance.currentUser = user;
+
+            return user;
         }
 
         /// <summary>
@@ -167,7 +180,7 @@ namespace RadinProjectNotes
                     userDatabase = (UserDatabase)formatter.Deserialize(cryptoStream);
                 }
                     SuccessfullyLoaded = true;
-                    SetCorrectCurrentUser();
+                    RefreshCurrentUser();
                 }
                 catch (IOException e)
                 {
@@ -186,7 +199,7 @@ namespace RadinProjectNotes
         /// <summary>
         /// Updates the currentUser variable with a correct reference after a LoadUserDatabase has occured.
         /// </summary>
-        private void SetCorrectCurrentUser()
+        private void RefreshCurrentUser()
         {
             if (currentUser != null)
             {
