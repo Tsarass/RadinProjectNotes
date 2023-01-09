@@ -37,7 +37,7 @@ namespace AutoUpdate
             string updaterFileName = new FileInfo(currentUpdaterPath).Name;
             string candidateUpdaterPath = Path.Combine(updateFromPath, updaterFileName);
 
-            if (AssemblyVersionChecker.Check(currentUpdaterPath, candidateUpdaterPath))
+            if (AssemblyVersionChecker.CheckIfNewerVersion(currentUpdaterPath, candidateUpdaterPath))
             {
                 //delete backup file if it exists
                 string backupFileName = updaterFileName + ".bak";

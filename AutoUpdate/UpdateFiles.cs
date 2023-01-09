@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +61,19 @@ namespace AutoUpdate
         /// <returns>true if the file needs to be updated</returns>
         private bool FileNeedsUpdate(string filePathBase, string filePathTarget)
         {
+            //if the file is an assembly, check the versions
+            if (IsAssembly(filePathTarget))
+            {
+                if (AssemblyVersionChecker.CheckIfNewerVersion(filePathTarget, filePathBase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
             string hashBaseFile = FileSHA1(filePathBase);
             string hashTargetFile = FileSHA1(filePathTarget);
 
@@ -126,9 +141,10 @@ namespace AutoUpdate
         /// <returns>true if update was successfull</returns>
         public static bool UpdateFile(string fromPath, string toPath)
         {
+            string fileOrAssemblyText = IsAssembly(toPath) ? "assembly" : "file";
             if (File.Exists(fromPath))
             {
-                Console.WriteLine($"Updating file: {toPath}");
+                Console.WriteLine($"Updating {fileOrAssemblyText}: {toPath}");
                 FileInfo sourcefile = new FileInfo(fromPath);
                 try
                 {
@@ -139,12 +155,12 @@ namespace AutoUpdate
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
-                    Console.WriteLine($"Could not update file: {toPath}");
+                    Console.WriteLine($"Could not update {fileOrAssemblyText}: {toPath}");
                 }
             }
             else
             {
-                Console.WriteLine($"Could not locate file: {fromPath}");
+                Console.WriteLine($"Could not locate {fileOrAssemblyText}: {fromPath}");
             }
 
             return false;
@@ -183,6 +199,20 @@ namespace AutoUpdate
             {
                 Directory.CreateDirectory(directoryPath);
             }
+        }
+
+        private static bool IsAssembly(string filePath)
+        {
+            try
+            {
+                AssemblyName.GetAssemblyName(filePath);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

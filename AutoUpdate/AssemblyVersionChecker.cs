@@ -16,7 +16,7 @@ namespace AutoUpdate
         /// <param name="original"></param>
         /// <param name="candidate"></param>
         /// <returns>true if the candidate assembly has a newer version</returns>
-        public static bool Check(string original, string candidate)
+        public static bool CheckIfNewerVersion(string original, string candidate)
         {
             //get the version of the orinial executable's assembly
             FileVersionInfo fv;

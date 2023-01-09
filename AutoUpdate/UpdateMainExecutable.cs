@@ -20,7 +20,7 @@ namespace AutoUpdate
 
         private void Update()
         {
-            if (AssemblyVersionChecker.Check(executableToPath, executableFromPath))
+            if (AssemblyVersionChecker.CheckIfNewerVersion(executableToPath, executableFromPath))
             {
                 FilesUpdater.UpdateFile(executableFromPath, executableToPath);
             }
