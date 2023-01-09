@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 
@@ -19,7 +20,19 @@ namespace RadinProjectNotes
         public User currentUser;
         public bool SuccessfullyLoaded { get; set; }
 
-        public Credentials()
+        public static Credentials _instance;    //singleton
+
+        public static Credentials Instance
+        {
+            get
+            {
+                if (_instance != null) { return _instance; }
+                _instance = new Credentials();
+                return _instance;
+            }
+        }
+
+        private Credentials()
         {
             SuccessfullyLoaded = false;
             userDatabase = new UserDatabase();

@@ -17,17 +17,10 @@ namespace RadinProjectNotes
         }
 
         public readonly static string serverFolder = @"\\nas-radin-lp\DATEN\notes";
-        public static Credentials credentials;
-
-        private static readonly string[] possibleServerPaths = new string[] {  @"\\nas-radin-gr\Projekte",
-                                                               @"\\nas-radin-lp\Projekte"};
-
+        private readonly static string[] possibleServerPaths = new string[] {  @"\\nas-radin-gr\Projekte",
+                                                                               @"\\nas-radin-lp\Projekte"};
         public static List<ProjectFolder> folderCache = new List<ProjectFolder>();
 
-        public static void InitializeCredentialsObject()
-        {
-            credentials = new Credentials();
-        }
 
         public static bool Check()
         {

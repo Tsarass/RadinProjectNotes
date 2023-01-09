@@ -87,8 +87,6 @@ namespace RadinProjectNotes
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            //Initialize credentials object
-            ServerConnection.InitializeCredentialsObject();
             if (ShowLogin(false) == false)
             {
                 //if login fails, return here
@@ -110,7 +108,7 @@ namespace RadinProjectNotes
             //load project data from folders
             LoadProjectData();
 
-            if (ServerConnection.credentials.currentUser != null)
+            if (Credentials.Instance.currentUser != null)
             {
                 UpdateWindowDescription();
             }
@@ -122,8 +120,8 @@ namespace RadinProjectNotes
 
         private void UpdateWindowDescription()
         {
-            string userName = ServerConnection.credentials.currentUser.displayName;
-            this.Text = ServerConnection.credentials.currentUser.IsAdmin ? "Project Notes || " + userName + " || Administrator" : "Project Notes || " + userName;
+            string userName = Credentials.Instance.currentUser.displayName;
+            this.Text = Credentials.Instance.currentUser.IsAdmin ? "Project Notes || " + userName + " || Administrator" : "Project Notes || " + userName;
         }
 
         private void CheckRunOnStartup()
@@ -163,7 +161,7 @@ namespace RadinProjectNotes
             else
             {
                 //check for admin
-                administratorToolStripMenuItem.Visible = ServerConnection.credentials.currentUser.IsAdmin ? true : false;
+                administratorToolStripMenuItem.Visible = Credentials.Instance.currentUser.IsAdmin ? true : false;
 
                 //update full comment panel with new user permissions
                 UpdateFullCommentPanel();
@@ -287,10 +285,10 @@ namespace RadinProjectNotes
 
         private void logoutToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            ServerConnection.credentials.SuccessfullyLoaded = false;
+            Credentials.Instance.SuccessfullyLoaded = false;
             UserLogin.ResetLoginCredentials();
             ShowLogin(true);
-            if (ServerConnection.credentials.currentUser != null)
+            if (Credentials.Instance.currentUser != null)
             {
                 UpdateWindowDescription();
             }
@@ -368,7 +366,7 @@ namespace RadinProjectNotes
         private void btnAddComment_Click(object sender, EventArgs e)
         {
             //check user permissions
-            if (!ServerConnection.credentials.currentUser.HasAddCommentPermission())
+            if (!Credentials.Instance.currentUser.HasAddCommentPermission())
             {
                 MessageBox.Show("Insufficient priviledges to add comment.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -390,7 +388,7 @@ namespace RadinProjectNotes
 
                 //Post to latest changes
 #if RELEASE
-                RecentChange latestChange = new RecentChange(currentProject.projectPath, ServerConnection.credentials.currentUser.username, DateTime.UtcNow);
+                RecentChange latestChange = new RecentChange(currentProject.projectPath, Credentials.Instance.currentUser.username, DateTime.UtcNow);
                 LatestChangesController.PostRecentChange(latestChange);
 #endif
             }
@@ -578,13 +576,13 @@ namespace RadinProjectNotes
                 return;
             }
 
-            if (!ServerConnection.credentials.currentUser.CanEditNote(noteToEdit))
+            if (!Credentials.Instance.currentUser.CanEditNote(noteToEdit))
             {
                 MessageBox.Show(this, "User not authorized to edit note.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (!noteToEdit.IsWithinAllowedIntervalToEdit() && (!ServerConnection.credentials.currentUser.IsAdmin))
+            if (!noteToEdit.IsWithinAllowedIntervalToEdit() && (!Credentials.Instance.currentUser.IsAdmin))
             {
                 string prompt = "Comments can only be edited within " + Notes.maxEditHours + " hours of creation!";
                 MessageBox.Show(this, prompt, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -646,13 +644,13 @@ namespace RadinProjectNotes
                 return;
             }
 
-            if (!ServerConnection.credentials.currentUser.CanDeleteNote(noteToDelete))
+            if (!Credentials.Instance.currentUser.CanDeleteNote(noteToDelete))
             {
                 MessageBox.Show(this, "User not authorized to delete note.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (!noteToDelete.IsWithinAllowedIntervalToDelete() && (!ServerConnection.credentials.currentUser.IsAdmin))
+            if (!noteToDelete.IsWithinAllowedIntervalToDelete() && (!Credentials.Instance.currentUser.IsAdmin))
             {
                 string prompt = "Comments can only be edited within " + Notes.maxDeleteHours / 24 + " days of creation!";
                 MessageBox.Show(this, prompt, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -765,7 +763,7 @@ namespace RadinProjectNotes
             pack.Note = note;
 
             //button visuals
-            if (ServerConnection.credentials.currentUser.HasAuthorizationToEditOrDeleteNote(note))
+            if (Credentials.Instance.currentUser.HasAuthorizationToEditOrDeleteNote(note))
             {
                 pack.Editable = true;
                 pack.Deleteable = true;

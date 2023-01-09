@@ -49,7 +49,7 @@ namespace RadinProjectNotes
                 chkMinimize.Checked = false;
             }
 
-            txtDisplayName.Text = ServerConnection.credentials.currentUser.displayName;
+            txtDisplayName.Text = Credentials.Instance.currentUser.displayName;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -104,13 +104,13 @@ namespace RadinProjectNotes
             }
 
             //reload user database
-            ServerConnection.credentials.TryLoadUserDatabase();
+            Credentials.Instance.TryLoadUserDatabase();
 
-            ServerConnection.credentials.currentUser.displayName = txtDisplayName.Text;
+            Credentials.Instance.currentUser.displayName = txtDisplayName.Text;
             MessageBox.Show("Your display name has been updated to " + txtDisplayName.Text + ".", "Display name", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             //save the last login time info
-            ServerConnection.credentials.TrySaveUserDatabase();
+            Credentials.Instance.TrySaveUserDatabase();
         }
     }
 }

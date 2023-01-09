@@ -32,8 +32,8 @@ namespace RadinProjectNotes
             }
 
             //check if username exists
-            ServerConnection.credentials.TryLoadUserDatabase(); //reload database first
-            if (ServerConnection.credentials.UsernameExists(txtUsername.Text))
+            Credentials.Instance.TryLoadUserDatabase(); //reload database first
+            if (Credentials.Instance.UsernameExists(txtUsername.Text))
             {
                 string prompt = "Username " + txtUsername.Text + " already exists. Please enter a different one.";
                 MessageBox.Show(this, prompt, "Username exists", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -41,8 +41,8 @@ namespace RadinProjectNotes
             }
 
             //save user
-            User newUSer = ServerConnection.credentials.AddUserSafelyAndSaveDatabase(txtUsername.Text, txtPassword.Text, Permissions.Normal);
-            ServerConnection.credentials.currentUser = newUSer;
+            User newUSer = Credentials.Instance.AddUserSafelyAndSaveDatabase(txtUsername.Text, txtPassword.Text, Permissions.Normal);
+            Credentials.Instance.currentUser = newUSer;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

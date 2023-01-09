@@ -9,8 +9,7 @@ namespace RadinProjectNotesUnitTests
         [SetUp]
         public void Setup()
         {
-            ServerConnection.credentials = new Credentials();
-            ServerConnection.credentials.TryLoadUserDatabase();
+            Credentials.Instance.TryLoadUserDatabase();
         }
 
         [Test]

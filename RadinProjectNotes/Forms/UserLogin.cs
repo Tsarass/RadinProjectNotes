@@ -75,13 +75,12 @@ namespace RadinProjectNotes
         private void btnLogin_Click(object sender, EventArgs e)
         {
             //check if credentials was successfully loaded
-            if (!ServerConnection.credentials.SuccessfullyLoaded)
+            if (!Credentials.Instance.SuccessfullyLoaded)
             {
                 //try to load it
-                ServerConnection.credentials = new Credentials();
-                ServerConnection.credentials.TryLoadUserDatabase();
+                Credentials.Instance.TryLoadUserDatabase();
 
-                if (!ServerConnection.credentials.SuccessfullyLoaded)
+                if (!Credentials.Instance.SuccessfullyLoaded)
                 {
                     MessageBox.Show("Could not retrieve user database. Check connection and try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -92,7 +91,7 @@ namespace RadinProjectNotes
             User user;
             try
             {
-                user = ServerConnection.credentials.CheckUsernameAndPassword(txtUsername.Text, txtPassword.Text);
+                user = Credentials.Instance.CheckUsernameAndPassword(txtUsername.Text, txtPassword.Text);
             }
             catch (UserDatabase.InvalidUsernamePassword ex)
             {
@@ -128,9 +127,9 @@ namespace RadinProjectNotes
             user.lastLogin = DateTime.UtcNow.Ticks;
             //update version
             user.appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            ServerConnection.credentials.currentUser = user;
+            Credentials.Instance.currentUser = user;
             //save the last login time info
-            ServerConnection.credentials.TrySaveUserDatabase();
+            Credentials.Instance.TrySaveUserDatabase();
 
             if (chkRemember.Checked)
             {
@@ -149,14 +148,14 @@ namespace RadinProjectNotes
         public void SaveLoginCredentials()
         {
             RegistryFunctions.SetRegistryKeyValue(RegistryEntry.AutoLogin, "1");
-            RegistryFunctions.SetRegistryKeyValue(RegistryEntry.Username, ServerConnection.credentials.currentUser.username);
-            RegistryFunctions.SetRegistryKeyValue(RegistryEntry.Password, ServerConnection.credentials.currentUser.password);
+            RegistryFunctions.SetRegistryKeyValue(RegistryEntry.Username, Credentials.Instance.currentUser.username);
+            RegistryFunctions.SetRegistryKeyValue(RegistryEntry.Password, Credentials.Instance.currentUser.password);
         }
 
         public static void ResetLoginCredentials()
         {
             RegistryFunctions.SetRegistryKeyValue(RegistryEntry.AutoLogin, "0");
-            RegistryFunctions.SetRegistryKeyValue(RegistryEntry.Username, ServerConnection.credentials.currentUser.username);
+            RegistryFunctions.SetRegistryKeyValue(RegistryEntry.Username, Credentials.Instance.currentUser.username);
             RegistryFunctions.DeleteRegistryKeyValue(RegistryEntry.Password);
         }
 

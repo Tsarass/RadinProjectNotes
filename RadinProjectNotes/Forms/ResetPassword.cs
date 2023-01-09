@@ -28,7 +28,7 @@ namespace RadinProjectNotes
             }
 
             //change the user's password safely
-            bool success = ServerConnection.credentials.ChangeUserPasswordSafelyAndSaveDatabase(Username, txtPassword.Text);
+            bool success = Credentials.Instance.ChangeUserPasswordSafelyAndSaveDatabase(Username, txtPassword.Text);
 
             if (!success)
             {

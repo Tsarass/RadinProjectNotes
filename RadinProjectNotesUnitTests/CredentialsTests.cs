@@ -10,31 +10,25 @@ namespace RadinProjectNotesUnitTests
         private const string mockPassword = "mock password";
         private User mockUser;
 
-        [SetUp]
-        public void Setup()
-        {
-            ServerConnection.credentials = new Credentials();
-        }
-
         private void addMockUser()
         {
-            mockUser = ServerConnection.credentials.userDatabase.AddUser(mockUsername, mockPassword, Permissions.Low);
+            mockUser = Credentials.Instance.userDatabase.AddUser(mockUsername, mockPassword, Permissions.Low);
         }
 
         private bool couldDeleteMockUser()
         {
-            return ServerConnection.credentials.DeleteUser(mockUser.ID);
+            return Credentials.Instance.DeleteUser(mockUser.ID);
         }
 
         [Test]
         public void testAddAndDeleteUser()
         {
             addMockUser();
-            Assert.AreEqual(ServerConnection.credentials.userDatabase.NumUsers, 1);
-            Assert.IsTrue(ServerConnection.credentials.UsernameExists(mockUsername));
+            Assert.AreEqual(Credentials.Instance.userDatabase.NumUsers, 1);
+            Assert.IsTrue(Credentials.Instance.UsernameExists(mockUsername));
             Assert.IsTrue(couldDeleteMockUser());
-            Assert.IsFalse(ServerConnection.credentials.UsernameExists(mockUsername));
-            Assert.AreEqual(ServerConnection.credentials.userDatabase.NumUsers, 0);
+            Assert.IsFalse(Credentials.Instance.UsernameExists(mockUsername));
+            Assert.AreEqual(Credentials.Instance.userDatabase.NumUsers, 0);
         }
 
         [Test]
@@ -42,9 +36,9 @@ namespace RadinProjectNotesUnitTests
         {
             string newPassword = "new mock password";
             addMockUser();
-            Assert.DoesNotThrow(() => ServerConnection.credentials.CheckUsernameAndPassword(mockUsername, mockPassword));
-            ServerConnection.credentials.userDatabase.ChangePassword(mockUsername, newPassword);
-            Assert.DoesNotThrow(() => ServerConnection.credentials.CheckUsernameAndPassword(mockUsername, newPassword));
+            Assert.DoesNotThrow(() => Credentials.Instance.CheckUsernameAndPassword(mockUsername, mockPassword));
+            Credentials.Instance.userDatabase.ChangePassword(mockUsername, newPassword);
+            Assert.DoesNotThrow(() => Credentials.Instance.CheckUsernameAndPassword(mockUsername, newPassword));
         }
     }
 }

@@ -26,15 +26,15 @@ namespace RadinProjectNotes
         private void LoadDatabase()
         {
 
-            ServerConnection.credentials.TryLoadUserDatabase();
+            Credentials.Instance.TryLoadUserDatabase();
 
-            if (!ServerConnection.credentials.SuccessfullyLoaded)
+            if (!Credentials.Instance.SuccessfullyLoaded)
             {
                 return;
             }
 
             listView1.Items.Clear();
-            foreach (User user in ServerConnection.credentials.userDatabase)
+            foreach (User user in Credentials.Instance.userDatabase)
             {
                 var item = listView1.Items.Add(user.ID.ToString());
                 item.SubItems.Add(user.username);
@@ -57,7 +57,7 @@ namespace RadinProjectNotes
 
             Guid guid = new Guid(listView1.SelectedItems[0].Text);
 
-            if (guid == ServerConnection.credentials.currentUser.ID)
+            if (guid == Credentials.Instance.currentUser.ID)
             {
                 MessageBox.Show(this, "Can't delete current user!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -69,7 +69,7 @@ namespace RadinProjectNotes
             if (result == DialogResult.Yes)
             {
                 
-                bool deleted = ServerConnection.credentials.DeleteUser(guid);
+                bool deleted = Credentials.Instance.DeleteUser(guid);
                 if (deleted)
                 {
                     listView1.SelectedItems[0].Remove();
@@ -114,7 +114,7 @@ namespace RadinProjectNotes
                 }
             }
 
-            User newUser = ServerConnection.credentials.userDatabase.AddUser(textBox1.Text,textBox2.Text,toSet);
+            User newUser = Credentials.Instance.userDatabase.AddUser(textBox1.Text,textBox2.Text,toSet);
             var item = listView1.Items.Add(newUser.ID.ToString());
             item.SubItems.Add(newUser.username);
             item.SubItems.Add(newUser.password);
@@ -144,7 +144,7 @@ namespace RadinProjectNotes
 
             //if selected user is the current user (admin),
             //reset to admin
-            if (ServerConnection.credentials.currentUser.ID == guidOfSelectedUser)
+            if (Credentials.Instance.currentUser.ID == guidOfSelectedUser)
             {
                 toSet = Permissions.All;
             }
@@ -167,7 +167,7 @@ namespace RadinProjectNotes
             User userFromSelectedGuid;
             try
             {
-                userFromSelectedGuid = ServerConnection.credentials.userDatabase.SetUserPermissions(guidOfSelectedUser, toSet);
+                userFromSelectedGuid = Credentials.Instance.userDatabase.SetUserPermissions(guidOfSelectedUser, toSet);
             }
             catch (UserDatabase.UserNotFound ex)
             {
@@ -186,7 +186,7 @@ namespace RadinProjectNotes
             DialogResult result = MessageBox.Show("Are you sure you want to save changes to the database?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (result == DialogResult.Yes)
             {
-                ServerConnection.credentials.TrySaveUserDatabase();
+                Credentials.Instance.TrySaveUserDatabase();
                 this.Close();
             }
         }
@@ -196,7 +196,7 @@ namespace RadinProjectNotes
             DialogResult result = MessageBox.Show("Discard changes and close?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                ServerConnection.credentials.TryLoadUserDatabase();
+                Credentials.Instance.TryLoadUserDatabase();
             }
         }
 
@@ -218,7 +218,7 @@ namespace RadinProjectNotes
             User user;
             try
             {
-                user = ServerConnection.credentials.FindUserById(guid);
+                user = Credentials.Instance.FindUserById(guid);
             }
             catch (UserDatabase.UserNotFound ex)
             {
@@ -262,7 +262,7 @@ namespace RadinProjectNotes
             User user;
             try
             {
-                user = ServerConnection.credentials.FindUserById(guid);
+                user = Credentials.Instance.FindUserById(guid);
             }
             catch (UserDatabase.UserNotFound ex)
             {
@@ -313,7 +313,7 @@ namespace RadinProjectNotes
                 User user;
                 try
                 {
-                    user = ServerConnection.credentials.FindUserById(guid);
+                    user = Credentials.Instance.FindUserById(guid);
                 }
                 catch (UserDatabase.UserNotFound ex)
                 {

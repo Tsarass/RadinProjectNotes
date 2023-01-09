@@ -43,7 +43,7 @@ namespace RadinProjectNotes
                 string pcName = Environment.UserName;
 
                 this.noteText = text;
-                this.userCreated = ServerConnection.credentials.currentUser;
+                this.userCreated = Credentials.Instance.currentUser;
                 this.dateAdded = DateTime.UtcNow.Ticks;
                 this.pcName = pcName;
                 this.dateLastEdited = -1;
@@ -106,7 +106,7 @@ namespace RadinProjectNotes
                     Guid id = this.userCreated.ID;
                     try
                     {
-                        User user = ServerConnection.credentials.FindUserById(id);
+                        User user = Credentials.Instance.FindUserById(id);
                         return user.displayName;
                     }
                     catch (UserDatabase.UserNotFound)
