@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using ProtoBuf;
+using System.Windows.Forms.VisualStyles;
 using RadinProjectNotes.Forms;
 using RadinProjectNotes.HelperClasses;
 
@@ -37,6 +36,9 @@ namespace RadinProjectNotes
         {
             InitializeComponent();
             HandleConsoleArgs(args);
+
+            // Set back color to the new custom radin color.
+            this.BackColor = Color.FromArgb(202, 158, 103);            
         }
 
         private void HandleConsoleArgs(string[] args)
@@ -201,6 +203,7 @@ namespace RadinProjectNotes
             //enable buttons
             btnAddComment.Enabled = true;
             btnOpenFolder.Enabled = true;
+            btnProjectInfo.Enabled = true;
 
             //open notes database
             LoadNotesDatabaseAndUpdatePanel(projectFolder);
@@ -928,5 +931,30 @@ namespace RadinProjectNotes
         }
 
         #endregion
+
+        /// <summary>
+        /// Open the project contact info spreadsheet.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnProjectInfo_Click(object sender, EventArgs e)
+        {
+            if (currentProject is null) return;
+
+            ProjectInfosSpreadsheetController spreadsheetController = new ProjectInfosSpreadsheetController(currentProject);
+            try
+            {
+                spreadsheetController.openSpreadsheet();
+            }
+            catch (ProjectInfosSpreadsheetController.TemplateNotFound)
+            {
+                MessageBox.Show("Project infos spreadsheet is missing from the current project. " +
+                    "Could not find template spreadsheet in the server to copy.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("Could not open project infos spreadsheet.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }

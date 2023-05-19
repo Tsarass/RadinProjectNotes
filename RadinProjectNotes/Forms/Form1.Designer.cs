@@ -35,6 +35,7 @@
             this.btnAddComment = new System.Windows.Forms.Button();
             this.btnOpenFolder = new System.Windows.Forms.Button();
             this.btnListActiveProjects = new System.Windows.Forms.Button();
+            this.btnProjectInfo = new System.Windows.Forms.Button();
             this.versionLabel = new System.Windows.Forms.Label();
             this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
@@ -46,7 +47,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.administratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.eventsTimer = new System.Windows.Forms.Timer(this.components);
             this.noNotesLbl = new System.Windows.Forms.Label();
             this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -55,7 +56,6 @@
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.lblProject = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.latestPostsView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -64,11 +64,12 @@
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.latestPostsImageList = new System.Windows.Forms.ImageList(this.components);
             this.label2 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.projNrBox = new AutoCompleteTextBoxSample.AutoCompleteTextbox();
             this.mainMenu.SuspendLayout();
             this.trayMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.latestNotesMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnPrint
@@ -92,8 +93,8 @@
             // 
             // btnOpenFolder
             // 
-            resources.ApplyResources(this.btnOpenFolder, "btnOpenFolder");
             this.btnOpenFolder.BackgroundImage = global::RadinProjectNotes.Properties.Resources.folder;
+            resources.ApplyResources(this.btnOpenFolder, "btnOpenFolder");
             this.btnOpenFolder.Name = "btnOpenFolder";
             this.toolTips.SetToolTip(this.btnOpenFolder, resources.GetString("btnOpenFolder.ToolTip"));
             this.btnOpenFolder.UseVisualStyleBackColor = true;
@@ -107,6 +108,15 @@
             this.toolTips.SetToolTip(this.btnListActiveProjects, resources.GetString("btnListActiveProjects.ToolTip"));
             this.btnListActiveProjects.UseVisualStyleBackColor = true;
             this.btnListActiveProjects.Click += new System.EventHandler(this.btnListActiveProjects_Click);
+            // 
+            // btnProjectInfo
+            // 
+            this.btnProjectInfo.BackgroundImage = global::RadinProjectNotes.Properties.Resources.info;
+            resources.ApplyResources(this.btnProjectInfo, "btnProjectInfo");
+            this.btnProjectInfo.Name = "btnProjectInfo";
+            this.toolTips.SetToolTip(this.btnProjectInfo, resources.GetString("btnProjectInfo.ToolTip"));
+            this.btnProjectInfo.UseVisualStyleBackColor = true;
+            this.btnProjectInfo.Click += new System.EventHandler(this.btnProjectInfo_Click);
             // 
             // versionLabel
             // 
@@ -183,11 +193,11 @@
             resources.ApplyResources(this.userDatabaseToolStripMenuItem, "userDatabaseToolStripMenuItem");
             this.userDatabaseToolStripMenuItem.Click += new System.EventHandler(this.userDatabaseToolStripMenuItem_Click);
             // 
-            // timer1
+            // eventsTimer
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 8000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.eventsTimer.Enabled = true;
+            this.eventsTimer.Interval = 8000;
+            this.eventsTimer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // noNotesLbl
             // 
@@ -235,13 +245,6 @@
             // 
             resources.ApplyResources(this.lblProject, "lblProject");
             this.lblProject.Name = "lblProject";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = global::RadinProjectNotes.Properties.Resources.search;
-            resources.ApplyResources(this.pictureBox1, "pictureBox1");
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.TabStop = false;
             // 
             // latestPostsView
             // 
@@ -296,6 +299,13 @@
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::RadinProjectNotes.Properties.Resources.search;
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.TabStop = false;
+            // 
             // projNrBox
             // 
             this.projNrBox.AutoCompleteList = ((System.Collections.Generic.List<string>)(resources.GetObject("projNrBox.AutoCompleteList")));
@@ -311,7 +321,7 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Controls.Add(this.label2);
             this.Controls.Add(this.latestPostsView);
             this.Controls.Add(this.lblProject);
@@ -324,6 +334,7 @@
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.btnAddComment);
+            this.Controls.Add(this.btnProjectInfo);
             this.Controls.Add(this.btnListActiveProjects);
             this.Controls.Add(this.btnOpenFolder);
             this.Name = "Form1";
@@ -334,8 +345,8 @@
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.trayMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.latestNotesMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -349,7 +360,7 @@
         private System.Windows.Forms.ToolTip toolTips;
         private System.Windows.Forms.Label versionLabel;
         private System.Windows.Forms.FlowLayoutPanel flowPanel;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer eventsTimer;
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
@@ -377,6 +388,7 @@
         private System.Windows.Forms.ContextMenuStrip latestNotesMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem openProjectToolStripMenuItem;
         private System.Windows.Forms.ImageList latestPostsImageList;
+        private System.Windows.Forms.Button btnProjectInfo;
     }
 }
 

@@ -132,10 +132,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnPrint.Location" type="System.Drawing.Point, System.Drawing">
-    <value>749, 31</value>
+    <value>787, 140</value>
   </data>
   <data name="btnPrint.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 32</value>
+    <value>48, 48</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnPrint.TabIndex" type="System.Int32, mscorlib">
@@ -192,9 +192,6 @@
   <data name="&gt;&gt;btnAddComment.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="btnOpenFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
   <data name="btnOpenFolder.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Stretch</value>
   </data>
@@ -205,7 +202,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnOpenFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>711, 31</value>
+    <value>562, 27</value>
   </data>
   <data name="btnOpenFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>32, 32</value>
@@ -226,7 +223,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnOpenFolder.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="btnListActiveProjects.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Stretch</value>
@@ -235,7 +232,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnListActiveProjects.Location" type="System.Drawing.Point, System.Drawing">
-    <value>486, 27</value>
+    <value>600, 27</value>
   </data>
   <data name="btnListActiveProjects.Size" type="System.Drawing.Size, System.Drawing">
     <value>32, 32</value>
@@ -256,6 +253,39 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnListActiveProjects.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="btnProjectInfo.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Stretch</value>
+  </data>
+  <data name="btnProjectInfo.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="btnProjectInfo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnProjectInfo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>524, 27</value>
+  </data>
+  <data name="btnProjectInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 32</value>
+  </data>
+  <data name="btnProjectInfo.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
+  <data name="btnProjectInfo.ToolTip" xml:space="preserve">
+    <value>Project contact information.</value>
+  </data>
+  <data name="&gt;&gt;btnProjectInfo.Name" xml:space="preserve">
+    <value>btnProjectInfo</value>
+  </data>
+  <data name="&gt;&gt;btnProjectInfo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnProjectInfo.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnProjectInfo.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
   <data name="versionLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -402,7 +432,7 @@
   <data name="&gt;&gt;mainMenu.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="eventsTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>94, 17</value>
   </metadata>
   <data name="noNotesLbl.AutoSize" type="System.Boolean, mscorlib">
@@ -3426,33 +3456,6 @@
   <data name="&gt;&gt;lblProject.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="pictureBox1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Stretch</value>
-  </data>
-  <data name="pictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pictureBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 31</value>
-  </data>
-  <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>26, 26</value>
-  </data>
-  <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>49</value>
-  </data>
-  <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
-    <value>pictureBox1</value>
-  </data>
-  <data name="&gt;&gt;pictureBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pictureBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="latestPostsView.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -3503,7 +3506,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAAW
-        CAAAAk1TRnQBSQFMAwEBAAEYAQABGAEAASABAAEgAQAE/wEJAQAI/wFCAU0BNgEEBgABNgEEAgABKAMA
+        CAAAAk1TRnQBSQFMAwEBAAGwAQABsAEAASABAAEgAQAE/wEJAQAI/wFCAU0BNgEEBgABNgEEAgABKAMA
         AYADAAEgAwABAQEAAQgGAAEQGAABgAIAAYADAAKAAQABgAMAAYABAAGAAQACgAIAA8ABAAHAAdwBwAEA
         AfABygGmAQABMwUAATMBAAEzAQABMwEAAjMCAAMWAQADHAEAAyIBAAMpAQADVQEAA00BAANCAQADOQEA
         AYABfAH/AQACUAH/AQABkwEAAdYBAAH/AewBzAEAAcYB1gHvAQAB1gLnAQABkAGpAa0CAAH/ATMDAAFm
@@ -3577,7 +3580,7 @@
     <value>13, 694</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 16</value>
+    <value>82, 16</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
@@ -3597,6 +3600,33 @@
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="pictureBox1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Stretch</value>
+  </data>
+  <data name="pictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pictureBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 31</value>
+  </data>
+  <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 26</value>
+  </data>
+  <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>49</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
+    <value>pictureBox1</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
   <data name="projNrBox.AutoCompleteList" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAJoBbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1u
@@ -3613,7 +3643,7 @@
     <value>44, 31</value>
   </data>
   <data name="projNrBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>436, 26</value>
+    <value>474, 26</value>
   </data>
   <data name="projNrBox.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
@@ -3622,7 +3652,7 @@
     <value>projNrBox</value>
   </data>
   <data name="&gt;&gt;projNrBox.Type" xml:space="preserve">
-    <value>AutoCompleteTextBoxSample.AutoCompleteTextbox, RadinProjectNotes, Version=1.1.18.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>AutoCompleteTextBoxSample.AutoCompleteTextbox, RadinProjectNotes, Version=1.1.21.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;projNrBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -6588,10 +6618,10 @@
   <data name="&gt;&gt;userDatabaseToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;timer1.Name" xml:space="preserve">
-    <value>timer1</value>
+  <data name="&gt;&gt;eventsTimer.Name" xml:space="preserve">
+    <value>eventsTimer</value>
   </data>
-  <data name="&gt;&gt;timer1.Type" xml:space="preserve">
+  <data name="&gt;&gt;eventsTimer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;trayIcon.Name" xml:space="preserve">

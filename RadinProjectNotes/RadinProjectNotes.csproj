@@ -180,6 +180,7 @@
     <Compile Include="HelperClasses\ExtractIcon.cs" />
     <Compile Include="HelperClasses\LatestChangesController.cs" />
     <Compile Include="HelperClasses\ProcessCommunication.cs" />
+    <Compile Include="HelperClasses\ProjectInfosSpreadsheetController.cs" />
     <Compile Include="HelperClasses\RecentChange.cs" />
     <Compile Include="HelperClasses\Registry.cs" />
     <Compile Include="HelperClasses\RetryHelper.cs" />
@@ -316,6 +317,7 @@
     <None Include="icons\list.png" />
     <None Include="icons\search.png" />
     <None Include="icons\filter.png" />
+    <None Include="icons\info.png" />
     <Content Include="icons\unknown-file.png" />
     <EmbeddedResource Include="icons\unknown-file.ico" />
     <Content Include="notes.ico" />

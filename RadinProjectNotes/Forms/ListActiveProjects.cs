@@ -66,7 +66,6 @@ namespace RadinProjectNotes.Forms
                 if (ProjectExistsInFolderCache(projectName))
                 {
                     projects.Add(projectName);
-                    
                 }
             }
 
@@ -76,20 +75,23 @@ namespace RadinProjectNotes.Forms
 
         private bool ProjectExistsInFolderCache(string projectPath)
         {
-            foreach (var folder in ServerConnection.folderCache)
+            var projectFolder = ServerConnection.GetProjectFolderFromProjectPath(projectPath);
+            if (projectFolder is null)
             {
-                if (folder.projectPath == projectPath)
-                {
-                    return true;
-                }
+                return false;                
             }
 
-            return false;
+            return true;
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            ProjectToOpen = listProjects.SelectedItems[0].Text;
+            if (listProjects.SelectedItems.Count > 0)
+            {
+                ProjectToOpen = listProjects.SelectedItems[0].Text;
+                this.DialogResult= DialogResult.OK;
+                this.Close();
+            }
         }
 
         private void ListActiveProjects_Shown(object sender, EventArgs e)
@@ -134,6 +136,9 @@ namespace RadinProjectNotes.Forms
 
         private void FilterCheckedChanged(object sender, EventArgs e)
         {
+            //when a filter changes, selection is always reset
+            setOpenButtonEnabled(false);
+
             //first get all active filters
             List<string> activeFilters = getActiveFilters();
 
@@ -178,6 +183,16 @@ namespace RadinProjectNotes.Forms
             }
 
             return activeFilters;
+        }
+
+        private void listProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setOpenButtonEnabled(listProjects.SelectedItems.Count > 0);
+        }
+
+        private void setOpenButtonEnabled(bool enabled)
+        {
+            btnOpen.Enabled = enabled;
         }
     }
 }

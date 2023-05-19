@@ -49,7 +49,8 @@ namespace RadinProjectNotes.Forms
             // 
             // listProjects
             // 
-            this.listProjects.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.listProjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listProjects.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
@@ -64,11 +65,12 @@ namespace RadinProjectNotes.Forms
             this.listProjects.TabIndex = 1;
             this.listProjects.UseCompatibleStateImageBehavior = false;
             this.listProjects.View = System.Windows.Forms.View.Details;
+            this.listProjects.SelectedIndexChanged += new System.EventHandler(this.listProjects_SelectedIndexChanged);
             // 
             // btnOpen
             // 
             this.btnOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpen.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOpen.Enabled = false;
             this.btnOpen.Location = new System.Drawing.Point(329, 327);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 33);
@@ -90,7 +92,8 @@ namespace RadinProjectNotes.Forms
             // 
             // filterPanel
             // 
-            this.filterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.filterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.filterPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.filterPanel.Location = new System.Drawing.Point(410, 27);
             this.filterPanel.Name = "filterPanel";
@@ -99,7 +102,6 @@ namespace RadinProjectNotes.Forms
             // 
             // ListActiveProjects
             // 
-            this.AcceptButton = this.btnOpen;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
