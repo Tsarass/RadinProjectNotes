@@ -1,6 +1,6 @@
 ﻿namespace RadinProjectNotes
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.btnPrint = new System.Windows.Forms.Button();
             this.btnAddComment = new System.Windows.Forms.Button();

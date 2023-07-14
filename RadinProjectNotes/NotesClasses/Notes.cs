@@ -26,7 +26,7 @@ namespace RadinProjectNotes
 
         public static string GetCurrentProjectAttachmentsFolder()
         {
-            string projectName = Form1.currentProject.projectPath;
+            string projectName = MainForm.currentProject.projectPath;
             string attachmentsFolder = Path.Combine(ServerConnection.serverFolder, projectName);
             return attachmentsFolder;
         }

@@ -56,7 +56,7 @@ namespace RadinProjectNotes
             {
                 if ((uint)m.Msg == message)
                 {
-                    Form1.mainForm.RestoreAppFromTray();
+                    MainForm.mainForm.RestoreAppFromTray();
                     return true;
                 }
 

@@ -16,9 +16,12 @@ namespace RadinProjectNotes
             public ProjectFolder() { }
         }
 
-        public readonly static string serverFolder = @"\\nas-radin-lp\DATEN\notes";
-        private readonly static string[] possibleServerPaths = new string[] {  @"\\nas-radin-gr\Projekte",
-                                                                               @"\\nas-radin-lp\Projekte"};
+        //public readonly static string serverFolder = @"\\nas-radin-lp\DATEN\notes";
+        public readonly static string serverFolder = @"C:\Users\Tsaras\Desktop\test_notes_server";
+        
+        private readonly static string[] possibleServerPaths = new string[] {  @"C:\Users\Tsaras\Desktop\test_notes_projects",
+                                                                               @"\\nas-radin-gr\Projekte",
+                                                                               @"\\nas-radin-lp\Projekte",};
         public static List<ProjectFolder> folderCache = new List<ProjectFolder>();
 
 

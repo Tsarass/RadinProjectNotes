@@ -12,7 +12,7 @@ using RadinProjectNotes.HelperClasses;
 
 namespace RadinProjectNotes
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         #region Constants
 
@@ -27,12 +27,12 @@ namespace RadinProjectNotes
 
         #endregion
 
-        public static Form1 mainForm;
+        public static MainForm mainForm;
         public static ServerConnection.ProjectFolder currentProject = null;
         
         public bool minimizeOnLoad = false;
 
-        public Form1(string[] args)
+        public MainForm(string[] args)
         {
             InitializeComponent();
             HandleConsoleArgs(args);
@@ -949,7 +949,9 @@ namespace RadinProjectNotes
             catch (ProjectInfosSpreadsheetController.TemplateNotFound)
             {
                 MessageBox.Show("Project infos spreadsheet is missing from the current project. " +
-                    "Could not find template spreadsheet in the server to copy.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    "Attempting to copy template speadsheet failed: \n" +
+                    "Could not find template spreadsheet in the server.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (FileNotFoundException)
             {

@@ -41,7 +41,7 @@ namespace RadinProjectNotes
             }
 
             //save user
-            User newUSer = Credentials.Instance.AddUserSafelyAndSaveDatabase(txtUsername.Text, txtPassword.Text, Permissions.Normal);
+            User newUSer = Credentials.Instance.AddUserSafelyAndSaveDatabase(txtUsername.Text, txtPassword.Text, Credentials.getNormalPermissions());
             Credentials.Instance.currentUser = newUSer;
             this.DialogResult = DialogResult.OK;
             this.Close();

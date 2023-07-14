@@ -38,7 +38,7 @@ namespace RadinProjectNotes
 
 #endif
 
-            Application.Run(new Form1(args));
+            Application.Run(new MainForm(args));
         }
 
     }

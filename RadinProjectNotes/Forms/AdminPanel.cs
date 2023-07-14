@@ -19,8 +19,20 @@ namespace RadinProjectNotes
 
         private void AdminPanel_Load(object sender, EventArgs e)
         {
+            lstPermissions.Columns[0].Width = -1;
+            PopulatePermissionsListView();
+
             lblUnsaved.Text = "";
             LoadDatabase();
+        }
+
+        private void PopulatePermissionsListView()
+        {
+            var permissions = Enum.GetValues(typeof(Permissions));
+            foreach (var permission in permissions) 
+            {
+                lstPermissions.Items.Add(permission.ToString());
+            }
         }
 
         private void LoadDatabase()
@@ -33,10 +45,10 @@ namespace RadinProjectNotes
                 return;
             }
 
-            listView1.Items.Clear();
+            lstUsers.Items.Clear();
             foreach (User user in Credentials.Instance.userDatabase)
             {
-                var item = listView1.Items.Add(user.ID.ToString());
+                var item = lstUsers.Items.Add(user.ID.ToString());
                 item.SubItems.Add(user.username);
                 item.SubItems.Add(user.Password);
                 string adminText = user.IsAdmin ? "Yes" : "No";
@@ -50,12 +62,12 @@ namespace RadinProjectNotes
 
         private void btnDeleteUser_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count <= 0)
+            if (lstUsers.SelectedItems.Count <= 0)
             {
                 return;
             }
 
-            Guid guid = new Guid(listView1.SelectedItems[0].Text);
+            Guid guid = new Guid(lstUsers.SelectedItems[0].Text);
 
             if (guid == Credentials.Instance.currentUser.ID)
             {
@@ -63,7 +75,7 @@ namespace RadinProjectNotes
                 return;
             }
 
-            string username = listView1.SelectedItems[0].SubItems[1].Text;
+            string username = lstUsers.SelectedItems[0].SubItems[1].Text;
 
             DialogResult result = MessageBox.Show(this, "Are you sure you want to delete user " + username + "?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (result == DialogResult.Yes)
@@ -72,7 +84,7 @@ namespace RadinProjectNotes
                 bool deleted = Credentials.Instance.DeleteUser(guid);
                 if (deleted)
                 {
-                    listView1.SelectedItems[0].Remove();
+                    lstUsers.SelectedItems[0].Remove();
                 }
 
                 SetSaveStatus(saved: false);
@@ -82,13 +94,13 @@ namespace RadinProjectNotes
         private void addUserBtn_Click(object sender, EventArgs e)
         {
 
-            if (textBox2.Text.Length < 6)
+            if (txtPassword.Text.Length < 6)
             {
                 MessageBox.Show("Minimum 6 characters for password.", "Password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (textBox1.Text.Length < 5)
+            if (txtUsername.Text.Length < 5)
             {
                 MessageBox.Show("Minimum 5 characters for username.", "Username", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -96,26 +108,19 @@ namespace RadinProjectNotes
 
             //permissions
             //default permissions
-            Permissions toSet = Permissions.Normal;
+            Permissions newUserPermissions = 0;
 
-            if (comboBox1.SelectedIndex >= 0)
+            foreach (ListViewItem lstItem in lstPermissions.Items)
             {
-                switch (comboBox1.SelectedIndex)
+                if (lstItem.Checked)
                 {
-                    case (0):
-                        toSet = Permissions.Low;
-                        break;
-                    case (1):
-                        toSet = Permissions.Normal;
-                        break;
-                    case (2):
-                        toSet = Permissions.All;
-                        break;
+                    var enumValue = Enum.TryParse(lstItem.Text, out Permissions parsedEnum);
+                    newUserPermissions |= parsedEnum;
                 }
             }
 
-            User newUser = Credentials.Instance.userDatabase.AddUser(textBox1.Text,textBox2.Text,toSet);
-            var item = listView1.Items.Add(newUser.ID.ToString());
+            User newUser = Credentials.Instance.userDatabase.AddUser(txtUsername.Text,txtPassword.Text,newUserPermissions);
+            var item = lstUsers.Items.Add(newUser.ID.ToString());
             item.SubItems.Add(newUser.username);
             item.SubItems.Add(newUser.Password);
             string adminText = newUser.IsAdmin ? "Yes" : "No";
@@ -127,47 +132,38 @@ namespace RadinProjectNotes
 
         private void btnChangePermissions_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count <= 0)
+            if (lstUsers.SelectedItems.Count <= 0)
             {
                 return;
             }
 
             //get selected user's Guid
-            Guid guidOfSelectedUser = new Guid(listView1.SelectedItems[0].Text);
+            Guid guidOfSelectedUser = new Guid(lstUsers.SelectedItems[0].Text);
 
-            if (comboBox1.SelectedIndex < 0)
-            {
-                return;
-            }
-
-            Permissions toSet = Permissions.Normal;
+            Permissions newPermissions = 0;
 
             //if selected user is the current user (admin),
             //reset to admin
             if (Credentials.Instance.currentUser.ID == guidOfSelectedUser)
             {
-                toSet = Permissions.All;
+                newPermissions = Credentials.getAdminPermissions();
             }
             else
             {
-                switch (comboBox1.SelectedIndex)
+                foreach (ListViewItem lstItem in lstPermissions.Items)
                 {
-                    case (0):
-                        toSet = Permissions.Low;
-                        break;
-                    case (1):
-                        toSet = Permissions.Normal;
-                        break;
-                    case (2):
-                        toSet = Permissions.All;
-                        break;
+                    if (lstItem.Checked)
+                    {
+                        var enumValue = Enum.TryParse(lstItem.Text, out Permissions parsedEnum);
+                        newPermissions |= parsedEnum;
+                    }
                 }
             }
 
             User userFromSelectedGuid;
             try
             {
-                userFromSelectedGuid = Credentials.Instance.userDatabase.SetUserPermissions(guidOfSelectedUser, toSet);
+                userFromSelectedGuid = Credentials.Instance.userDatabase.SetUserPermissions(guidOfSelectedUser, newPermissions);
             }
             catch (UserDatabase.UserNotFound ex)
             {
@@ -176,7 +172,7 @@ namespace RadinProjectNotes
             }
 
             string adminText = userFromSelectedGuid.IsAdmin ? "Yes" : "No";
-            listView1.SelectedItems[0].SubItems[3].Text = adminText;
+            lstUsers.SelectedItems[0].SubItems[3].Text = adminText;
 
             SetSaveStatus(saved: false);
         }
@@ -202,35 +198,48 @@ namespace RadinProjectNotes
 
         private void btnChangeUsername_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count <= 0)
+            if (lstUsers.SelectedItems.Count <= 0)
             {
                 return;
             }
 
-            if (textBox3.Text.Length < 5)
+            if (txtChangeUsername.Text.Length < 5)
             {
                 MessageBox.Show("Minimum 5 characters for username.", "Username", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            //get selected user's Guid
-            Guid guid = new Guid(listView1.SelectedItems[0].Text);
-            User user;
+            User user = getSelectedUser();
+            if (user is null) return;
+
+            user.username = txtChangeUsername.Text;
+            lstUsers.SelectedItems[0].SubItems[1].Text = txtChangeUsername.Text;
+
+            SetSaveStatus(saved: false);
+        }
+
+        /// <summary>
+        /// Find the user selected in the list view in the database.
+        /// </summary>
+        /// <returns></returns>
+        private User getSelectedUser()
+        {
+            if (lstUsers.SelectedItems.Count <= 0)
+            {
+                return null;
+            }
+
+            Guid guid = new Guid(lstUsers.SelectedItems[0].Text);
+ 
             try
             {
-                user = Credentials.Instance.FindUserById(guid);
+                return Credentials.Instance.FindUserById(guid);
             }
             catch (UserDatabase.UserNotFound ex)
             {
                 MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return null;
             }
-
-            user.username = textBox3.Text;
-            listView1.SelectedItems[0].SubItems[1].Text = textBox3.Text;
-
-            SetSaveStatus(saved: false);
-
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -246,40 +255,25 @@ namespace RadinProjectNotes
 
         private void btnChangePassword_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count <= 0)
+            if (lstUsers.SelectedItems.Count <= 0)
             {
                 return;
             }
 
-            if (textBox4.Text.Length < 6)
+            if (txtChangePassword.Text.Length < 6)
             {
                 MessageBox.Show("Minimum 6 characters for password.", "Password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            //get selected user's Guid
-            Guid guid = new Guid(listView1.SelectedItems[0].Text);
-            User user;
-            try
-            {
-                user = Credentials.Instance.FindUserById(guid);
-            }
-            catch (UserDatabase.UserNotFound ex)
-            {
-                MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            User user = getSelectedUser();
+            if (user is null) return;
 
-            string password = textBox4.Text;
+            string password = txtChangePassword.Text;
             Credentials.Instance.userDatabase.ChangePassword(user.username, password);
-            listView1.SelectedItems[0].SubItems[2].Text = user.Password;
+            lstUsers.SelectedItems[0].SubItems[2].Text = user.Password;
 
             SetSaveStatus(saved: false);
-
-        }
-
-        private void AdminPanel_FormClosing(object sender, FormClosingEventArgs e)
-        {
 
         }
 
@@ -299,7 +293,7 @@ namespace RadinProjectNotes
 
         private void resetPasswordBtn_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count <= 0)
+            if (lstUsers.SelectedItems.Count <= 0)
             {
                 return;
             }
@@ -308,24 +302,57 @@ namespace RadinProjectNotes
 
             if (result == DialogResult.Yes)
             {
-                //get selected user's Guid
-                Guid guid = new Guid(listView1.SelectedItems[0].Text);
-                User user;
-                try
-                {
-                    user = Credentials.Instance.FindUserById(guid);
-                }
-                catch (UserDatabase.UserNotFound ex)
-                {
-                    MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                User user = getSelectedUser();
+                if (user is null) return;
 
                 user.ResetPassword();
-                listView1.SelectedItems[0].SubItems[2].Text = user.Password;
+                lstUsers.SelectedItems[0].SubItems[2].Text = user.Password;
 
                 SetSaveStatus(saved: false);
 
+            }
+        }
+
+        private void lstUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstUsers.SelectedItems.Count <= 0)
+            {
+                return;
+            }
+
+            User user = getSelectedUser();
+            if (user is null) return;
+
+            txtChangeUsername.Text = user.username;
+
+            // Set the permissions checkboxes according to user permissions.
+            ResetPermissionsItems();
+            var permissions = Enum.GetValues(typeof(Permissions));
+            foreach (Permissions permission in permissions)
+            {
+                if (user.permissions.HasFlag(permission))
+                {
+                    foreach (ListViewItem item in lstPermissions.Items)
+                    {
+                        if (item.Text == permission.ToString())
+                        {
+                            item.Checked = true;
+                        }
+                    }
+                }
+            }
+
+
+        }
+
+        /// <summary>
+        /// Set all permissions checkboxes in the list view to false.
+        /// </summary>
+        private void ResetPermissionsItems()
+        {
+            foreach (ListViewItem item in lstPermissions.Items)
+            {
+                item.Checked = false;
             }
         }
     }

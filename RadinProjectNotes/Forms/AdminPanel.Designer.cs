@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.lstUsers = new System.Windows.Forms.ListView();
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,15 +43,14 @@
             this.lblUnsaved = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.label6 = new System.Windows.Forms.Label();
-            this.permissionsBox = new System.Windows.Forms.ComboBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtUsername = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.addUserBtn = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.lstPermissions = new System.Windows.Forms.ListView();
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnChangePermissions = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.resetPasswordBtn = new System.Windows.Forms.Button();
@@ -59,8 +58,8 @@
             this.btnChangeUsername = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.txtChangePassword = new System.Windows.Forms.TextBox();
+            this.txtChangeUsername = new System.Windows.Forms.TextBox();
             this.btnDeleteUser = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -77,9 +76,9 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Registered users:";
             // 
-            // listView1
+            // lstUsers
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lstUsers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader3,
             this.columnHeader1,
             this.columnHeader2,
@@ -87,16 +86,18 @@
             this.columnHeader5,
             this.columnHeader6,
             this.columnHeader7});
-            this.listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listView1.FullRowSelect = true;
-            this.listView1.GridLines = true;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(15, 25);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(593, 476);
-            this.listView1.TabIndex = 1;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.lstUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstUsers.FullRowSelect = true;
+            this.lstUsers.GridLines = true;
+            this.lstUsers.HideSelection = false;
+            this.lstUsers.Location = new System.Drawing.Point(15, 25);
+            this.lstUsers.MultiSelect = false;
+            this.lstUsers.Name = "lstUsers";
+            this.lstUsers.Size = new System.Drawing.Size(593, 476);
+            this.lstUsers.TabIndex = 1;
+            this.lstUsers.UseCompatibleStateImageBehavior = false;
+            this.lstUsers.View = System.Windows.Forms.View.Details;
+            this.lstUsers.SelectedIndexChanged += new System.EventHandler(this.lstUsers_SelectedIndexChanged);
             // 
             // columnHeader3
             // 
@@ -191,11 +192,9 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.permissionsBox);
-            this.tabPage1.Controls.Add(this.textBox2);
+            this.tabPage1.Controls.Add(this.txtPassword);
             this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Controls.Add(this.txtUsername);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.addUserBtn);
             this.tabPage1.Location = new System.Drawing.Point(4, 40);
@@ -206,35 +205,13 @@
             this.tabPage1.Text = "Add user";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // label6
+            // txtPassword
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 99);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(62, 13);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Permissions";
-            // 
-            // permissionsBox
-            // 
-            this.permissionsBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.permissionsBox.FormattingEnabled = true;
-            this.permissionsBox.Items.AddRange(new object[] {
-            "Low",
-            "Default",
-            "Admin"});
-            this.permissionsBox.Location = new System.Drawing.Point(9, 120);
-            this.permissionsBox.Name = "permissionsBox";
-            this.permissionsBox.Size = new System.Drawing.Size(116, 21);
-            this.permissionsBox.TabIndex = 10;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(9, 68);
-            this.textBox2.MaxLength = 16;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(130, 20);
-            this.textBox2.TabIndex = 6;
+            this.txtPassword.Location = new System.Drawing.Point(9, 68);
+            this.txtPassword.MaxLength = 16;
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(130, 20);
+            this.txtPassword.TabIndex = 6;
             // 
             // label3
             // 
@@ -245,12 +222,12 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Password";
             // 
-            // textBox1
+            // txtUsername
             // 
-            this.textBox1.Location = new System.Drawing.Point(9, 27);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(130, 20);
-            this.textBox1.TabIndex = 5;
+            this.txtUsername.Location = new System.Drawing.Point(9, 27);
+            this.txtUsername.Name = "txtUsername";
+            this.txtUsername.Size = new System.Drawing.Size(130, 20);
+            this.txtUsername.TabIndex = 5;
             // 
             // label2
             // 
@@ -263,7 +240,7 @@
             // 
             // addUserBtn
             // 
-            this.addUserBtn.Location = new System.Drawing.Point(9, 150);
+            this.addUserBtn.Location = new System.Drawing.Point(9, 94);
             this.addUserBtn.Name = "addUserBtn";
             this.addUserBtn.Size = new System.Drawing.Size(63, 28);
             this.addUserBtn.TabIndex = 9;
@@ -273,7 +250,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.comboBox1);
+            this.tabPage2.Controls.Add(this.lstPermissions);
             this.tabPage2.Controls.Add(this.btnChangePermissions);
             this.tabPage2.Location = new System.Drawing.Point(4, 40);
             this.tabPage2.Name = "tabPage2";
@@ -283,22 +260,29 @@
             this.tabPage2.Text = "Permissions";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // lstPermissions
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Low",
-            "Default",
-            "Admin"});
-            this.comboBox1.Location = new System.Drawing.Point(6, 6);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(116, 21);
-            this.comboBox1.TabIndex = 7;
+            this.lstPermissions.CheckBoxes = true;
+            this.lstPermissions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader8});
+            this.lstPermissions.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.lstPermissions.HideSelection = false;
+            this.lstPermissions.Location = new System.Drawing.Point(7, 6);
+            this.lstPermissions.MultiSelect = false;
+            this.lstPermissions.Name = "lstPermissions";
+            this.lstPermissions.Size = new System.Drawing.Size(121, 145);
+            this.lstPermissions.TabIndex = 9;
+            this.lstPermissions.UseCompatibleStateImageBehavior = false;
+            this.lstPermissions.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Permissions";
+            this.columnHeader8.Width = 25;
             // 
             // btnChangePermissions
             // 
-            this.btnChangePermissions.Location = new System.Drawing.Point(6, 33);
+            this.btnChangePermissions.Location = new System.Drawing.Point(7, 157);
             this.btnChangePermissions.Name = "btnChangePermissions";
             this.btnChangePermissions.Size = new System.Drawing.Size(63, 28);
             this.btnChangePermissions.TabIndex = 8;
@@ -313,8 +297,8 @@
             this.tabPage3.Controls.Add(this.btnChangeUsername);
             this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Controls.Add(this.label4);
-            this.tabPage3.Controls.Add(this.textBox4);
-            this.tabPage3.Controls.Add(this.textBox3);
+            this.tabPage3.Controls.Add(this.txtChangePassword);
+            this.tabPage3.Controls.Add(this.txtChangeUsername);
             this.tabPage3.Controls.Add(this.btnDeleteUser);
             this.tabPage3.Location = new System.Drawing.Point(4, 40);
             this.tabPage3.Name = "tabPage3";
@@ -371,20 +355,20 @@
             this.label4.TabIndex = 17;
             this.label4.Text = "Change username";
             // 
-            // textBox4
+            // txtChangePassword
             // 
-            this.textBox4.Location = new System.Drawing.Point(6, 104);
-            this.textBox4.MaxLength = 16;
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(113, 20);
-            this.textBox4.TabIndex = 14;
+            this.txtChangePassword.Location = new System.Drawing.Point(6, 104);
+            this.txtChangePassword.MaxLength = 16;
+            this.txtChangePassword.Name = "txtChangePassword";
+            this.txtChangePassword.Size = new System.Drawing.Size(113, 20);
+            this.txtChangePassword.TabIndex = 14;
             // 
-            // textBox3
+            // txtChangeUsername
             // 
-            this.textBox3.Location = new System.Drawing.Point(6, 27);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(113, 20);
-            this.textBox3.TabIndex = 15;
+            this.txtChangeUsername.Location = new System.Drawing.Point(6, 27);
+            this.txtChangeUsername.Name = "txtChangeUsername";
+            this.txtChangeUsername.Size = new System.Drawing.Size(113, 20);
+            this.txtChangeUsername.TabIndex = 15;
             // 
             // btnDeleteUser
             // 
@@ -405,7 +389,7 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.lblUnsaved);
             this.Controls.Add(this.btnRefresh);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.lstUsers);
             this.Controls.Add(this.btnDiscard);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.label1);
@@ -413,7 +397,6 @@
             this.Name = "AdminPanel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Administrator Panel";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AdminPanel_FormClosing);
             this.Load += new System.EventHandler(this.AdminPanel_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -429,7 +412,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView lstUsers;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
@@ -443,24 +426,23 @@
         private System.Windows.Forms.TextBox lblUnsaved;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox permissionsBox;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button addUserBtn;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button btnChangePermissions;
         private System.Windows.Forms.Button btnChangePassword;
         private System.Windows.Forms.Button btnChangeUsername;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox txtChangePassword;
+        private System.Windows.Forms.TextBox txtChangeUsername;
         private System.Windows.Forms.Button btnDeleteUser;
         private System.Windows.Forms.Button resetPasswordBtn;
+        private System.Windows.Forms.ListView lstPermissions;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
     }
 }

@@ -17,9 +17,9 @@ namespace RadinProjectNotes
         private readonly string updateFilesDirectory;
 
         private bool silent = false;
-        private Form1 mainForm;
+        private MainForm mainForm;
 
-        public AutoUpdater(bool silent, Form1 mainForm)
+        public AutoUpdater(bool silent, MainForm mainForm)
         {
             updateFilesDirectory = Path.Combine(ServerConnection.serverFolder, updateFilesFolder);
             this.silent = silent;

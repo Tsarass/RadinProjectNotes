@@ -11,9 +11,6 @@ namespace RadinProjectNotes
         Edit = 1 << 2,
         Delete = 1 << 3,
         AddComment = 1 << 4,
-        
-        Low = Read,
-        Normal = AddComment | Read | Edit | Delete,
-        All = Normal | Admin
+        EditProjectAssignments = 1 << 5
     }
 }

@@ -33,6 +33,30 @@ namespace RadinProjectNotes
             }
         }
 
+        /// <summary>
+        /// Get low user permissions.
+        /// </summary>
+        public static Permissions getLowPermissions()
+        {
+            return Permissions.Read;
+        }
+
+        /// <summary>
+        /// Get normal user permissions.
+        /// </summary>
+        public static Permissions getNormalPermissions()
+        {
+            return Permissions.Read | Permissions.Edit | Permissions.Delete | Permissions.AddComment;
+        }
+
+        /// <summary>
+        /// Get admin user permissions.
+        /// </summary>
+        public static Permissions getAdminPermissions()
+        {
+            return getNormalPermissions() | Permissions.Admin;
+        }
+
         private Credentials()
         {
             SuccessfullyLoaded = false;
@@ -136,6 +160,7 @@ namespace RadinProjectNotes
             // Encryption
             try
             {
+                File.Delete(databaseFile);
                 using (var fs = new FileStream(databaseFile, FileMode.Create, FileAccess.Write))
                 using (var cryptoStream = new CryptoStream(fs, des.CreateEncryptor(Security.desKey, Security.desIV), CryptoStreamMode.Write))
                 {
@@ -145,12 +170,13 @@ namespace RadinProjectNotes
                     formatter.Serialize(cryptoStream, this.userDatabase);
                 }
 
-            //hide file
-            File.SetAttributes(databaseFile, FileAttributes.Hidden);
+                //hide file
+                File.SetAttributes(databaseFile, FileAttributes.Hidden);
             }
             catch (UnauthorizedAccessException e)
             {
                 Debug.WriteLine(e.Message.ToString());
+                throw;
             }
         }
 
