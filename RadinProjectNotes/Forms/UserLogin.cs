@@ -114,7 +114,7 @@ namespace RadinProjectNotes
                 }
             }
 
-            //save the last login time info
+            //save the last login time and app version info 
             Credentials.Instance.TrySaveUserDatabase();
 
             if (chkRemember.Checked)
