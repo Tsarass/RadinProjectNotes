@@ -83,8 +83,15 @@ namespace RadinProjectNotes
         {
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
 
+            string backupFile = _filepath + ".bak";
             try
             {
+                if (File.Exists(_filepath))
+                {
+                    // Back up file.
+                    File.Copy(_filepath, backupFile, overwrite: true);
+                    File.Delete(_filepath);
+                }
                 File.Delete(_filepath);
                 using (var fs = new FileStream(_filepath, FileMode.Create, FileAccess.Write))
                 using (var cryptoStream = new CryptoStream(fs, des.CreateEncryptor(Security.desKey, Security.desIV), CryptoStreamMode.Write))
@@ -100,9 +107,18 @@ namespace RadinProjectNotes
             }
             catch (Exception e)
             {
+                if (File.Exists(backupFile))
+                {
+                    // Restore backup file.
+                    File.Copy(backupFile, _filepath, overwrite: true);
+                    File.Delete(backupFile);
+                }
+
                 Debug.WriteLine(e.Message.ToString());
                 throw;
             }
+
+            File.Delete(backupFile);
         }
 
         /// <summary>

@@ -88,10 +88,18 @@ namespace RadinProjectNotes
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
 
             string dbFilePath = Path.Combine(ServerConnection.serverFolder, projectPath + ".db");
+            string backupFile = dbFilePath + ".bak";
 
             // Encryption
             try
             {
+                if (File.Exists(dbFilePath))
+                {
+                    // Back up file.
+                    File.Copy(dbFilePath, backupFile, overwrite: true);
+                    File.Delete(dbFilePath);
+                }
+                
                 using (var fs = new FileStream(dbFilePath, FileMode.Create, FileAccess.Write))
                 using (var cryptoStream = new CryptoStream(fs, des.CreateEncryptor(Security.desKey, Security.desIV), CryptoStreamMode.Write))
                 {
@@ -105,10 +113,20 @@ namespace RadinProjectNotes
             }
             catch (Exception e)
             {
+                if (File.Exists(backupFile))
+                {
+                    // Restore backup file.
+                    File.Copy(backupFile, dbFilePath, overwrite: true);
+                    File.Delete(backupFile);
+                }
+
                 //MessageBox.Show(this, e.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Debug.WriteLine($"Exception caught while accessing file to SaveNotesDatabase", e);
                 throw;
             }
+
+            //Delete backup file.
+            File.Delete(backupFile);
         }
 
         public static Versioning.SaveStructureV1 LoadDatabaseFile(ServerConnection.ProjectFolder projectFolder)
