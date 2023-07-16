@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using RadinProjectNotes.Forms;
 using RadinProjectNotes.HelperClasses;
+using RadinProjectNotes.ProjectServices;
 
 namespace RadinProjectNotes
 {
@@ -38,7 +39,7 @@ namespace RadinProjectNotes
             HandleConsoleArgs(args);
 
             // Set back color to the new custom radin color.
-            this.BackColor = Color.FromArgb(202, 158, 103);            
+            this.BackColor = Color.FromArgb(202, 158, 103);
         }
 
         private void HandleConsoleArgs(string[] args)
@@ -113,9 +114,21 @@ namespace RadinProjectNotes
                 UpdateWindowDescription();
             }
 
-            //show latest posts
-            UpdateLatestPostsList(force:true);
+            // Show latest posts
+            UpdateLatestPostsList(force: true);
 
+            // Update panels.
+            InitializeServiceHostPanel();
+        }
+
+        private void InitializeServiceHostPanel()
+        {
+            // Size services host panel to be the same size and location as the flow panel for notes.
+            servicesHostPanel.Location = flowPanel.Location;
+            servicesHostPanel.Height = flowPanel.Height;
+            servicesHostPanel.Width = flowPanel.Width;
+            servicesHostPanel.Anchor = flowPanel.Anchor;
+            servicesHostPanel.Visible = false;
         }
 
         private void UpdateWindowDescription()
@@ -172,20 +185,10 @@ namespace RadinProjectNotes
         /// </summary>
         private void UpdateControlsBasedOnUserPermissions()
         {
-            administratorToolStripMenuItem.Visible = false;
-
             // If the user is admin, make the admin menu visible and return.
             if (Credentials.Instance.currentUser.IsAdmin)
             {
                 administratorToolStripMenuItem.Visible = true;
-                return;
-            }
-
-            // If the user can edit project services without being an admin, hide the user database menu.
-            if (Credentials.Instance.currentUser.CanEditProjectServices())
-            {
-                administratorToolStripMenuItem.Visible = true;
-                userDatabaseToolStripMenuItem.Visible = false;
             }
         }
 
@@ -988,6 +991,74 @@ namespace RadinProjectNotes
         {
             ProjectServicesDialog dialog = new ProjectServicesDialog();
             dialog.ShowDialog();
+        }
+
+        private void tabPanelSwitch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabPanelSwitch.SelectedIndex == 1)
+            {
+                UpdateServicesPanel();
+
+                flowPanel.Visible = false;
+                servicesHostPanel.Visible = true;
+            }
+            else
+            {
+                flowPanel.Visible = true;
+                servicesHostPanel.Visible = false;
+            }
+        }
+
+        private void UpdateServicesPanel()
+        {
+            // Clear panel.
+            ClearServicesPanel();
+
+            Font headingFont = new Font("Microsoft Sans Serif", 9.5f, FontStyle.Bold);
+            Font serviceFont = new Font("Microsoft Sans Serif", 9f, FontStyle.Regular);
+
+            RadinProjectServices services = ProjectServicesController.TryLoadProjectServices();
+            servicePanel.ColumnCount = services.getCategoriesCount();
+            servicePanel.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 25f);
+            for (int i = 1; i < servicePanel.ColumnCount; i++)
+            {
+                servicePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25f));
+            }
+
+            int columnId = 0;
+            int maxRows = 0;
+            foreach (var categoryTitle in services.getCategoryTitles())
+            {
+                int rowsInCategory = services.getServicesCount(categoryTitle);
+                if (rowsInCategory > maxRows)
+                {
+                    maxRows = rowsInCategory;
+                }
+
+                // Add label as a heading to each.
+                servicePanel.Controls.Add(new Label() { Font = headingFont, Text = categoryTitle, AutoSize = true }, columnId, 0);
+
+                // Start from the second row (first is the heading)
+                int rowId = 1;
+                foreach (var service in services.getServicesForCategory(categoryTitle))
+                {
+                    CheckBox newCheckbox = new CheckBox { Font = serviceFont, Text = service, AutoSize = true };
+                    newCheckbox.AutoCheck = Credentials.Instance.currentUser.CanEditProjectServices();
+                    servicePanel.Controls.Add(newCheckbox, columnId, rowId);
+
+                    rowId++;
+                }
+
+                columnId++;
+            }
+        }
+
+        private void ClearServicesPanel()
+        {
+            while (servicePanel.Controls.Count > 0)
+            {
+                servicePanel.Controls[0].Dispose();
+            }
         }
     }
 }

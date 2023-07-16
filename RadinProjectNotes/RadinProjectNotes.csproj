@@ -120,12 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoUpdater.cs" />
-    <Compile Include="Beauftragung.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Beauftragung.Designer.cs">
-      <DependentUpon>Beauftragung.cs</DependentUpon>
-    </Compile>
     <Compile Include="HelperClasses\EncryptedDatabaseSerializer.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
@@ -242,9 +236,6 @@
     <Compile Include="UserClasses\UserDatabase.cs" />
     <Compile Include="UserClasses\Permissions.cs" />
     <Compile Include="Versioning.cs" />
-    <EmbeddedResource Include="Beauftragung.resx">
-      <DependentUpon>Beauftragung.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>

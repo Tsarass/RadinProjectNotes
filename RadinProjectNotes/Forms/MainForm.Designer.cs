@@ -66,11 +66,18 @@
             this.latestPostsImageList = new System.Windows.Forms.ImageList(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tabPanelSwitch = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.servicesHostPanel = new System.Windows.Forms.Panel();
+            this.servicePanel = new System.Windows.Forms.TableLayoutPanel();
             this.projNrBox = new AutoCompleteTextBoxSample.AutoCompleteTextbox();
             this.mainMenu.SuspendLayout();
             this.trayMenu.SuspendLayout();
             this.latestNotesMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tabPanelSwitch.SuspendLayout();
+            this.servicesHostPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnPrint
@@ -314,6 +321,41 @@
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
+            // tabPanelSwitch
+            // 
+            resources.ApplyResources(this.tabPanelSwitch, "tabPanelSwitch");
+            this.tabPanelSwitch.Controls.Add(this.tabPage1);
+            this.tabPanelSwitch.Controls.Add(this.tabPage2);
+            this.tabPanelSwitch.Multiline = true;
+            this.tabPanelSwitch.Name = "tabPanelSwitch";
+            this.tabPanelSwitch.SelectedIndex = 0;
+            this.tabPanelSwitch.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabPanelSwitch.SelectedIndexChanged += new System.EventHandler(this.tabPanelSwitch_SelectedIndexChanged);
+            // 
+            // tabPage1
+            // 
+            resources.ApplyResources(this.tabPage1, "tabPage1");
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            resources.ApplyResources(this.tabPage2, "tabPage2");
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // servicesHostPanel
+            // 
+            this.servicesHostPanel.BackColor = System.Drawing.Color.White;
+            this.servicesHostPanel.Controls.Add(this.servicePanel);
+            resources.ApplyResources(this.servicesHostPanel, "servicesHostPanel");
+            this.servicesHostPanel.Name = "servicesHostPanel";
+            // 
+            // servicePanel
+            // 
+            resources.ApplyResources(this.servicePanel, "servicePanel");
+            this.servicePanel.Name = "servicePanel";
+            // 
             // projNrBox
             // 
             this.projNrBox.AutoCompleteList = ((System.Collections.Generic.List<string>)(resources.GetObject("projNrBox.AutoCompleteList")));
@@ -330,6 +372,8 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.Controls.Add(this.servicesHostPanel);
+            this.Controls.Add(this.tabPanelSwitch);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.latestPostsView);
             this.Controls.Add(this.lblProject);
@@ -355,6 +399,8 @@
             this.trayMenu.ResumeLayout(false);
             this.latestNotesMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tabPanelSwitch.ResumeLayout(false);
+            this.servicesHostPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -398,6 +444,11 @@
         private System.Windows.Forms.ImageList latestPostsImageList;
         private System.Windows.Forms.Button btnProjectInfo;
         private System.Windows.Forms.ToolStripMenuItem projectServicesToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabPanelSwitch;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Panel servicesHostPanel;
+        private System.Windows.Forms.TableLayoutPanel servicePanel;
     }
 }
 
