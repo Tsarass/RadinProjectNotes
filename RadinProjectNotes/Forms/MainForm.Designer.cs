@@ -47,6 +47,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.administratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectServicesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eventsTimer = new System.Windows.Forms.Timer(this.components);
             this.noNotesLbl = new System.Windows.Forms.Label();
             this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
@@ -183,7 +184,8 @@
             // administratorToolStripMenuItem
             // 
             this.administratorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.userDatabaseToolStripMenuItem});
+            this.userDatabaseToolStripMenuItem,
+            this.projectServicesToolStripMenuItem});
             this.administratorToolStripMenuItem.Name = "administratorToolStripMenuItem";
             resources.ApplyResources(this.administratorToolStripMenuItem, "administratorToolStripMenuItem");
             // 
@@ -192,6 +194,12 @@
             this.userDatabaseToolStripMenuItem.Name = "userDatabaseToolStripMenuItem";
             resources.ApplyResources(this.userDatabaseToolStripMenuItem, "userDatabaseToolStripMenuItem");
             this.userDatabaseToolStripMenuItem.Click += new System.EventHandler(this.userDatabaseToolStripMenuItem_Click);
+            // 
+            // projectServicesToolStripMenuItem
+            // 
+            this.projectServicesToolStripMenuItem.Name = "projectServicesToolStripMenuItem";
+            resources.ApplyResources(this.projectServicesToolStripMenuItem, "projectServicesToolStripMenuItem");
+            this.projectServicesToolStripMenuItem.Click += new System.EventHandler(this.projectServicesToolStripMenuItem_Click);
             // 
             // eventsTimer
             // 
@@ -317,7 +325,7 @@
             this.projNrBox.AutocompleteListItemSelected += new System.EventHandler(this.projNrBox_ItemSelected);
             this.projNrBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.projNrBox_KeyUp);
             // 
-            // Form1
+            // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -337,10 +345,10 @@
             this.Controls.Add(this.btnProjectInfo);
             this.Controls.Add(this.btnListActiveProjects);
             this.Controls.Add(this.btnOpenFolder);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.Shown += new System.EventHandler(this.Form1_Shown);
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
@@ -389,6 +397,7 @@
         private System.Windows.Forms.ToolStripMenuItem openProjectToolStripMenuItem;
         private System.Windows.Forms.ImageList latestPostsImageList;
         private System.Windows.Forms.Button btnProjectInfo;
+        private System.Windows.Forms.ToolStripMenuItem projectServicesToolStripMenuItem;
     }
 }
 

@@ -8,15 +8,16 @@ using System.Windows.Forms;
 
 namespace RadinProjectNotes
 {
-    class RetryHelper
+    public class RetryHelper<T>
     {
         /// <summary>Takes a function as an argument and loops it with
         /// the selected <paramref name="delay"/> until no exception occurs.
         /// </summary>
+        /// <returns></returns>
         /// <param name="times">maximum attempts</param>
         /// <param name="delay">delay between attempts</param>
         /// <param name="operation">function to be executed</param>
-        public static bool RetryOnException(int times, TimeSpan delay, Action operation)
+        public static T RetryOnException(int times, TimeSpan delay, Func<T> operation)
         {
             var attempts = 0;
             do
@@ -25,8 +26,7 @@ namespace RadinProjectNotes
                 {
                     attempts++;
                     Debug.WriteLine($"Executing operation: attempt {attempts}");
-                    operation();
-                    break;
+                    return operation();
                 }
                 catch (Exception ex)
                 {
@@ -34,7 +34,7 @@ namespace RadinProjectNotes
                     {
                         Debug.WriteLine("Max attempts reached!", ex.Message.ToString());
                         //MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return false;
+                        return default(T);
                     }
 
                     Debug.WriteLine($"Exception caught on attempt {attempts} - will retry after delay {delay}", ex.Message.ToString());
@@ -42,8 +42,6 @@ namespace RadinProjectNotes
                     Task.Delay(delay).Wait();
                 }
             } while (true);
-
-            return true;
         }
 
     }

@@ -97,7 +97,7 @@ namespace RadinProjectNotes
             }
         }
         /// <summary>
-        /// Checks if the user can edit the passed note.
+        /// Checks if the user can edit the supplied note.
         /// </summary>
         /// <param name="note"></param>
         /// <returns></returns>
@@ -125,6 +125,11 @@ namespace RadinProjectNotes
             return true;
         }
 
+        /// <summary>
+        /// Checks if the user can edit or delete the supplied note.
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns></returns>
         public bool HasAuthorizationToEditOrDeleteNote(Notes.ProjectNote note)
         {
             if ((this == note.userCreated) || (this.IsAdmin))
@@ -132,6 +137,15 @@ namespace RadinProjectNotes
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Checks if the user can edit project services.
+        /// </summary>
+        /// <returns></returns>
+        public bool CanEditProjectServices()
+        {
+            return IsAdmin || permissions.HasFlag(Permissions.EditProjectServices);
         }
 
         public void ResetPassword()

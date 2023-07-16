@@ -43,11 +43,12 @@ namespace RadinProjectNotes.Forms
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(215, 70);
             this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "Company: Baustatik Radin\r\nAuthor: Christos Tsaridis\r\nE-mail: c.tsaridis@radin-tra" +
+            this.textBox1.Text = "Company: Radin Tragwerke\r\nAuthor: Christos Tsaridis\r\nE-mail: c.tsaridis@radin-tra" +
     "gwerke.de\r\n             mail@radin-tragwerke.de";
             // 
             // button1
             // 
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button1.Location = new System.Drawing.Point(64, 78);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(92, 24);

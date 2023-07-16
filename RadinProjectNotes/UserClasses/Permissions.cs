@@ -11,6 +11,6 @@ namespace RadinProjectNotes
         Edit = 1 << 2,
         Delete = 1 << 3,
         AddComment = 1 << 4,
-        EditProjectAssignments = 1 << 5
+        EditProjectServices = 1 << 5
     }
 }

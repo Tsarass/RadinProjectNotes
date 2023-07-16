@@ -67,7 +67,7 @@ namespace RadinProjectNotes
 
         #region Program startup and form load
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             mainForm = this;
 
@@ -85,9 +85,9 @@ namespace RadinProjectNotes
             CheckRunOnStartup();
         }
 
-        private void Form1_Shown(object sender, EventArgs e)
+        private void MainForm_Shown(object sender, EventArgs e)
         {
-            if (ShowLoginDialog(false) == false)
+            if (ShowLoginDialog(resetCredentials: false) == false)
             {
                 //if login fails, return here
                 return;
@@ -158,13 +158,34 @@ namespace RadinProjectNotes
             }
             else
             {
-                //if admin, show admin menu
-                administratorToolStripMenuItem.Visible = Credentials.Instance.currentUser.IsAdmin ? true : false;
+                UpdateControlsBasedOnUserPermissions();
 
                 //update full comment panel with new user permissions
                 UpdateFullCommentPanel();
 
                 return true;    //returns true if successfull login
+            }
+        }
+
+        /// <summary>
+        /// Update form controls based on user permissions.
+        /// </summary>
+        private void UpdateControlsBasedOnUserPermissions()
+        {
+            administratorToolStripMenuItem.Visible = false;
+
+            // If the user is admin, make the admin menu visible and return.
+            if (Credentials.Instance.currentUser.IsAdmin)
+            {
+                administratorToolStripMenuItem.Visible = true;
+                return;
+            }
+
+            // If the user can edit project services without being an admin, hide the user database menu.
+            if (Credentials.Instance.currentUser.CanEditProjectServices())
+            {
+                administratorToolStripMenuItem.Visible = true;
+                userDatabaseToolStripMenuItem.Visible = false;
             }
         }
 
@@ -202,6 +223,7 @@ namespace RadinProjectNotes
 
             //enable buttons
             btnAddComment.Enabled = true;
+            btnPrint.Enabled = true;
             btnOpenFolder.Enabled = true;
             btnProjectInfo.Enabled = true;
 
@@ -239,7 +261,7 @@ namespace RadinProjectNotes
         {
             Credentials.Instance.SuccessfullyLoaded = false;
             UserLogin.ResetLoginCredentials();
-            ShowLoginDialog(true);
+            ShowLoginDialog(resetCredentials: true);
             if (Credentials.Instance.currentUser != null)
             {
                 UpdateWindowDescription();
@@ -312,6 +334,9 @@ namespace RadinProjectNotes
 
         private void projNrBox_ItemSelected(object sender, EventArgs e)
         {
+            // Only process if the textbox actually has at least 9 characters for the project code.
+            if (projNrBox.Text.Length < 9) return;
+
             LoadProjectNotes(projNrBox.Text.ToString());
         }
 
@@ -876,7 +901,7 @@ namespace RadinProjectNotes
 
         private void UpdateLatestPostsList(bool force = false)
         {
-            if ((!LatestChangesController.IsUpdateRequired()) && !force)
+            if ((!LatestPostsController.IsUpdateRequired()) && !force)
             {
                 Debug.WriteLine("Skipping latest post list update...");
                 return;
@@ -905,7 +930,7 @@ namespace RadinProjectNotes
 
         private List<RecentChange> GetUniqueProjectLatestPosts()
         {
-            var latestPosts = LatestChangesController.GetLatestPosts();
+            var latestPosts = LatestPostsController.GetLatestPosts();
             List<RecentChange> uniqueProjects = new List<RecentChange>();
 
             foreach (var post in latestPosts)
@@ -957,6 +982,12 @@ namespace RadinProjectNotes
             {
                 MessageBox.Show("Could not open project infos spreadsheet.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void projectServicesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProjectServicesDialog dialog = new ProjectServicesDialog();
+            dialog.ShowDialog();
         }
     }
 }
