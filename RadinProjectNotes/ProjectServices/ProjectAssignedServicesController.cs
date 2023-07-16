@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using static RadinProjectNotes.EncryptedDatabaseSerializer<RadinProjectNotes.ProjectServices.RadinProjectServices>;
+using static RadinProjectNotes.EncryptedDatabaseSerializer<RadinProjectNotes.ProjectServices.ProjectAssignedServices>;
 
 namespace RadinProjectNotes.ProjectServices
 {
@@ -25,10 +25,6 @@ namespace RadinProjectNotes.ProjectServices
         {
             // If the assigned services file does not exist, create an empty database.
             string filePath = ServerConnection.GetDatabaseFilepathForProject(projectFolder, projectAssignedServicesFileNameExtension);
-            if (string.IsNullOrEmpty(filePath))
-            {
-                return ProjectAssignedServices.CreateEmpty();
-            }
 
             EncryptedDatabaseSerializer<ProjectAssignedServices>  encryptedDbSerializer = 
                 new EncryptedDatabaseSerializer<ProjectAssignedServices>(filePath);

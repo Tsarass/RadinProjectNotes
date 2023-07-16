@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using RadinProjectNotes.Forms;
 using RadinProjectNotes.HelperClasses;
-using RadinProjectNotes.ProjectServices;
 
 namespace RadinProjectNotes
 {
@@ -18,6 +15,8 @@ namespace RadinProjectNotes
         #region Constants
 
         private const int projectCachedListingIntervalMinutes = 60;
+        private readonly Color radinColor = Color.FromArgb(202, 158, 103);
+        private readonly Color darkerRadinColor = Color.FromArgb(152, 108, 53);
 
         #endregion
 
@@ -39,7 +38,7 @@ namespace RadinProjectNotes
             HandleConsoleArgs(args);
 
             // Set back color to the new custom radin color.
-            this.BackColor = Color.FromArgb(202, 158, 103);
+            this.BackColor = radinColor;
         }
 
         private void HandleConsoleArgs(string[] args)
@@ -1007,6 +1006,8 @@ namespace RadinProjectNotes
                 servicesHostPanel.UpdateServicesPanel();
 
                 flowPanel.Visible = false;
+                btnAddComment.Visible = false;
+                btnPrint.Visible = false;
                 servicesHostPanel.Visible = true;
             }
             else
@@ -1014,6 +1015,8 @@ namespace RadinProjectNotes
                 servicesHostPanel.ServicesPanelClosing();
 
                 flowPanel.Visible = true;
+                btnAddComment.Visible = true;
+                btnPrint.Visible = true;
                 servicesHostPanel.Visible = false;
             }
         }
