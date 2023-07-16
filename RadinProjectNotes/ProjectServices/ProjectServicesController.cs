@@ -18,33 +18,21 @@ namespace RadinProjectNotes.ProjectServices
             return Path.Combine(ServerConnection.serverFolder, projectServicesFile);
         }
 
-        public static ProjectServicesController _instance;    //singleton
-
-        public static ProjectServicesController Instance
-        {
-            get
-            {
-                if (_instance != null) { return _instance; }
-                _instance = new ProjectServicesController();
-                return _instance;
-            }
-        }
-
-        private EncryptedDatabaseSerializer<RadinProjectServices> _encryptedDbSerializer;
-
         private ProjectServicesController()
-        {
-            _encryptedDbSerializer = new EncryptedDatabaseSerializer<RadinProjectServices>(getServicesFileFilepath());
-        }
+        { }
+
 
         /// <summary>
         /// Try to load the project services.
         /// </summary>
-        public RadinProjectServices TryLoadProjectServices()
+        public static RadinProjectServices TryLoadProjectServices()
         {
+            EncryptedDatabaseSerializer<RadinProjectServices>  encryptedDbSerializer = 
+                new EncryptedDatabaseSerializer<RadinProjectServices>(getServicesFileFilepath());
+
             try
             {
-                RadinProjectServices loadedServices = _encryptedDbSerializer.TryLoadDatabase();
+                RadinProjectServices loadedServices = encryptedDbSerializer.TryLoadDatabase();
                 return loadedServices;
             }
             catch (CouldNotLoadDatabase)
@@ -57,11 +45,14 @@ namespace RadinProjectNotes.ProjectServices
         /// Try to save the project services.
         /// </summary>
         /// <returns>True if the services could be saved.</returns>
-        public bool TrySaveProjectServices(RadinProjectServices services)
+        public static bool TrySaveProjectServices(RadinProjectServices services)
         {
+            EncryptedDatabaseSerializer<RadinProjectServices> encryptedDbSerializer =
+                new EncryptedDatabaseSerializer<RadinProjectServices>(getServicesFileFilepath());
+
             try
             {   
-                _encryptedDbSerializer.TrySaveDatabase(services);
+                encryptedDbSerializer.TrySaveDatabase(services);
                 return true;
             }
             catch (CouldNotSaveDatabase)

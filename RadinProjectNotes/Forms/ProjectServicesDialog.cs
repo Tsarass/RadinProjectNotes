@@ -26,7 +26,7 @@ namespace RadinProjectNotes
 
         private void InitialiseProjectServices()
         {
-            _cachedServiceCategories = ProjectServicesController.Instance.TryLoadProjectServices();
+            _cachedServiceCategories = ProjectServicesController.TryLoadProjectServices();
 
             _serviceCategories = GetDeepCopyOfServiceCategories(_cachedServiceCategories);
             UpdateCategoriesList(_serviceCategories);
@@ -297,7 +297,7 @@ namespace RadinProjectNotes
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            ProjectServicesController.Instance.TrySaveProjectServices(_serviceCategories);
+            ProjectServicesController.TrySaveProjectServices(_serviceCategories);
 
             this.Close();
         }
