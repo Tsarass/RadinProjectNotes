@@ -6,16 +6,8 @@ using System.Windows.Forms;
 
 namespace RadinProjectNotes
 {
-    public class ServerConnection
+    public partial class ServerConnection
     {
-        public class ProjectFolder
-        {
-            public string fullPath;    //e.g P:\projekte 2019\19-009-01-Project Name
-            public string projectPath; //e.g 19-009-01-Project Name
-
-            public ProjectFolder() { }
-        }
-
         //public readonly static string serverFolder = @"\\nas-radin-lp\DATEN\notes";
         public readonly static string serverFolder = @"C:\Users\Tsaras\Desktop\test_notes_server";
         
@@ -151,6 +143,49 @@ namespace RadinProjectNotes
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Get the database file for a project with the specified extension.
+        /// </summary>
+        /// <remarks>Tries to find the note database file for the project in question by looking
+        /// only at the project code number.</remarks>
+        /// <param name="projectFolder"></param>
+        /// <param name="databaseFileFilter">Filter to apply to files in directory.</param>
+        /// <returns></returns>
+        public static string GetDatabaseFilepathForProject(ProjectFolder projectFolder, string fileExtension = "db")
+        {
+            string projectCode = projectFolder.projectPath.Substring(0, 9);
+
+            string[] filePaths = Directory.GetFiles(serverFolder, $"*.{fileExtension}",
+                                         SearchOption.TopDirectoryOnly);
+            foreach (var filePath in filePaths)
+            {
+                string fileName = Path.GetFileName(filePath);
+                if (fileName.Length < 9)
+                {
+                    continue;
+                }
+
+                string pathProjectCode = fileName.Substring(0, 9);
+                if (pathProjectCode == projectCode)
+                {
+                    return Path.Combine(serverFolder, filePath);
+                }
+            }
+
+            return GetDefaultProjectDatabaseFilePath(projectFolder, fileExtension);
+        }
+
+        /// <summary>
+        /// Get the default project database file path.
+        /// </summary>
+        /// <param name="projectFolder"></param>
+        /// <param name="fileExtension"></param>
+        /// <returns></returns>
+        public static string GetDefaultProjectDatabaseFilePath(ProjectFolder projectFolder, string fileExtension = "db") 
+        {
+            return Path.Combine(serverFolder, projectFolder.projectPath + ".db");
         }
 
     }

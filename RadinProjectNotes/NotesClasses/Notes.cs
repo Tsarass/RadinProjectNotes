@@ -8,7 +8,6 @@ namespace RadinProjectNotes
 {
     public partial class Notes
     {
-        #region Static methods/variables
         public static readonly long maxAttachmentByteSize = 30 * 1024 * 1024;
         public static readonly int maxEditHours = 24 * 3;
         public static readonly int maxDeleteHours = 24 * 20;
@@ -31,7 +30,7 @@ namespace RadinProjectNotes
             return attachmentsFolder;
         }
 
-        public static void TryLoadNotesDatabaseInMemory(ServerConnection.ProjectFolder projectFolder)
+        public static void TryLoadNotesDatabaseInMemory(ProjectFolder projectFolder)
         {
             var maxRetryAttempts = 20;
             var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
@@ -45,7 +44,7 @@ namespace RadinProjectNotes
         /// Load the notes database and store in member variable.
         /// </summary>
         /// <param name="projectFolder"></param>
-        private static void LoadNotesDatabaseInMemory(ServerConnection.ProjectFolder projectFolder)
+        private static void LoadNotesDatabaseInMemory(ProjectFolder projectFolder)
         {
             try
             {
@@ -58,7 +57,7 @@ namespace RadinProjectNotes
             }
         }
 
-        public static void SaveNewNoteToProjectNoteDatabase(ServerConnection.ProjectFolder currentProject, ProjectNote newNote)
+        public static void SaveNewNoteToProjectNoteDatabase(ProjectFolder currentProject, ProjectNote newNote)
         {
             //first open the file from server
             //required to have simultaneous multi-user access to same project notes
@@ -69,25 +68,25 @@ namespace RadinProjectNotes
             TrySaveNotesDatabase(currentProject);
         }
 
-        public static void TrySaveNotesDatabase(ServerConnection.ProjectFolder currentProject)
+        public static void TrySaveNotesDatabase(ProjectFolder currentProject)
         {
             var maxRetryAttempts = 30;
             var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
             RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () =>
             {
-                Notes.SaveNotesDatabase(currentNoteData, currentProject.projectPath);
+                Notes.SaveNotesDatabase(currentNoteData, currentProject);
             });
 
         }
 
-        private static void SaveNotesDatabase(Versioning.SaveStructureV1 noteDataToSave, string projectPath)
+        private static void SaveNotesDatabase(Versioning.SaveStructureV1 noteDataToSave, ProjectFolder projectFolder)
         {
             //create save structure 
             Versioning.SaveStructureV1 save = new Versioning.SaveStructureV1(1, noteDataToSave.noteData);
 
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
 
-            string dbFilePath = Path.Combine(ServerConnection.serverFolder, projectPath + ".db");
+            string dbFilePath = ServerConnection.GetDatabaseFilepathForProject(projectFolder);
             string backupFile = dbFilePath + ".bak";
 
             // Encryption
@@ -129,18 +128,13 @@ namespace RadinProjectNotes
             File.Delete(backupFile);
         }
 
-        public static Versioning.SaveStructureV1 LoadDatabaseFile(ServerConnection.ProjectFolder projectFolder)
+        public static Versioning.SaveStructureV1 LoadDatabaseFile(ProjectFolder projectFolder)
         {
             Versioning.SaveStructureV1 data = new Versioning.SaveStructureV1();
 
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
 
-            //check to see if database exists
-            string dbFilePath = TryFindDatabaseFilepathForProject(projectFolder);
-            if (dbFilePath == string.Empty)
-            {
-                dbFilePath = Path.Combine(ServerConnection.serverFolder, projectFolder.projectPath + ".db");
-            }
+            string dbFilePath = ServerConnection.GetDatabaseFilepathForProject(projectFolder);
 
             if (File.Exists(dbFilePath))
             {
@@ -172,41 +166,6 @@ namespace RadinProjectNotes
 
             Debug.WriteLine($"Returning loaded database file with {data.noteData.Count} notes.");
             return data;
-        }
-
-        /// <summary>
-        /// Tries to find the note database file for the project in question by looking
-        /// only at the project code number.
-        /// </summary>
-        /// <param name="projectFolder"></param>
-        /// <returns></returns>
-        private static string TryFindDatabaseFilepathForProject(ServerConnection.ProjectFolder projectFolder)
-        {
-            string projectCode = projectFolder.projectPath.Substring(0, 9);
-            string dbStoragePath = ServerConnection.serverFolder;
-
-            string[] filePaths = Directory.GetFiles(dbStoragePath, "*.db",
-                                         SearchOption.TopDirectoryOnly);
-            foreach (var filePath in filePaths)
-            {
-                string fileName = Path.GetFileName(filePath);
-                if (fileName.Length < 9)
-                {
-                    continue;
-                }
-
-                string pathProjectCode = fileName.Substring(0, 9);
-                if (pathProjectCode == projectCode)
-                {
-                    return Path.Combine(dbStoragePath, filePath);
-                }
-            }
-
-            return String.Empty;
-        }
-
-        #endregion
-
-        
+        }        
     }
 }

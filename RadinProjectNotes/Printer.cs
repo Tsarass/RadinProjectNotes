@@ -24,7 +24,7 @@ namespace RadinProjectNotes
         private readonly Brush titleBrush = Brushes.Red;
         private readonly Brush bodyBrush = Brushes.Black;
 
-        private ServerConnection.ProjectFolder projectFolder;
+        private ProjectFolder projectFolder;
         private Versioning.SaveStructureV1 noteDatabase;
 
         public int CurrentNoteIndex
@@ -45,7 +45,7 @@ namespace RadinProjectNotes
             set;
         }
 
-        public Printer(ServerConnection.ProjectFolder projectFolder, Versioning.SaveStructureV1 noteDatabase)
+        public Printer(ProjectFolder projectFolder, Versioning.SaveStructureV1 noteDatabase)
         {
             this.projectFolder = projectFolder;
             this.noteDatabase = noteDatabase;

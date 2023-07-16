@@ -69,15 +69,13 @@
             this.tabPanelSwitch = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.servicesHostPanel = new System.Windows.Forms.Panel();
-            this.servicePanel = new System.Windows.Forms.TableLayoutPanel();
             this.projNrBox = new AutoCompleteTextBoxSample.AutoCompleteTextbox();
+            this.servicesHostPanel = new RadinProjectNotes.Controls.AssignedServicesPanel();
             this.mainMenu.SuspendLayout();
             this.trayMenu.SuspendLayout();
             this.latestNotesMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPanelSwitch.SuspendLayout();
-            this.servicesHostPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnPrint
@@ -344,18 +342,6 @@
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // servicesHostPanel
-            // 
-            this.servicesHostPanel.BackColor = System.Drawing.Color.White;
-            this.servicesHostPanel.Controls.Add(this.servicePanel);
-            resources.ApplyResources(this.servicesHostPanel, "servicesHostPanel");
-            this.servicesHostPanel.Name = "servicesHostPanel";
-            // 
-            // servicePanel
-            // 
-            resources.ApplyResources(this.servicePanel, "servicePanel");
-            this.servicePanel.Name = "servicePanel";
-            // 
             // projNrBox
             // 
             this.projNrBox.AutoCompleteList = ((System.Collections.Generic.List<string>)(resources.GetObject("projNrBox.AutoCompleteList")));
@@ -366,6 +352,12 @@
             this.projNrBox.SelectedIndex = -1;
             this.projNrBox.AutocompleteListItemSelected += new System.EventHandler(this.projNrBox_ItemSelected);
             this.projNrBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.projNrBox_KeyUp);
+            // 
+            // servicesHostPanel
+            // 
+            this.servicesHostPanel.BackColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.servicesHostPanel, "servicesHostPanel");
+            this.servicesHostPanel.Name = "servicesHostPanel";
             // 
             // MainForm
             // 
@@ -390,7 +382,8 @@
             this.Controls.Add(this.btnListActiveProjects);
             this.Controls.Add(this.btnOpenFolder);
             this.Name = "MainForm";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
@@ -400,7 +393,6 @@
             this.latestNotesMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPanelSwitch.ResumeLayout(false);
-            this.servicesHostPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -447,8 +439,7 @@
         private System.Windows.Forms.TabControl tabPanelSwitch;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Panel servicesHostPanel;
-        private System.Windows.Forms.TableLayoutPanel servicePanel;
+        private Controls.AssignedServicesPanel servicesHostPanel;
     }
 }
 

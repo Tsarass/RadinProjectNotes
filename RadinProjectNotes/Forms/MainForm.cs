@@ -29,7 +29,7 @@ namespace RadinProjectNotes
         #endregion
 
         public static MainForm mainForm;
-        public static ServerConnection.ProjectFolder currentProject = null;
+        public static ProjectFolder currentProject = null;
         
         public bool minimizeOnLoad = false;
 
@@ -84,6 +84,9 @@ namespace RadinProjectNotes
 
             //check for run on startup settings
             CheckRunOnStartup();
+
+            // Update panels.
+            InitializeServiceHostPanel();
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -116,9 +119,6 @@ namespace RadinProjectNotes
 
             // Show latest posts
             UpdateLatestPostsList(force: true);
-
-            // Update panels.
-            InitializeServiceHostPanel();
         }
 
         private void InitializeServiceHostPanel()
@@ -173,11 +173,21 @@ namespace RadinProjectNotes
             {
                 UpdateControlsBasedOnUserPermissions();
 
-                //update full comment panel with new user permissions
+                // Update full comment panel with new user permissions.
                 UpdateFullCommentPanel();
+
+                ResetTabInMainPanel();
 
                 return true;    //returns true if successfull login
             }
+        }
+
+        /// <summary>
+        /// Reset to the notes tab in the main tab panel.
+        /// </summary>
+        private void ResetTabInMainPanel()
+        {
+            tabPanelSwitch.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -185,11 +195,7 @@ namespace RadinProjectNotes
         /// </summary>
         private void UpdateControlsBasedOnUserPermissions()
         {
-            // If the user is admin, make the admin menu visible and return.
-            if (Credentials.Instance.currentUser.IsAdmin)
-            {
-                administratorToolStripMenuItem.Visible = true;
-            }
+            administratorToolStripMenuItem.Visible = Credentials.Instance.currentUser.IsAdmin;
         }
 
         public void LoadProjectData()
@@ -216,7 +222,7 @@ namespace RadinProjectNotes
             Notes.currentNoteData = null;
 
             //match the project folder with the full path from cache list
-            ServerConnection.ProjectFolder projectFolder = ServerConnection.GetProjectFolderFromProjectPath(projectTitle);
+            ProjectFolder projectFolder = ServerConnection.GetProjectFolderFromProjectPath(projectTitle);
             currentProject = projectFolder;
             if (projectFolder == null)
             {
@@ -239,7 +245,7 @@ namespace RadinProjectNotes
         /// </summary>
         /// <param name="projectFolder"></param>
         /// <param name="onlyInMemory">true only if trying to internally load the current notes database into memory</param>
-        private void LoadNotesDatabaseAndUpdatePanel(ServerConnection.ProjectFolder projectFolder)
+        private void LoadNotesDatabaseAndUpdatePanel(ProjectFolder projectFolder)
         {
             Notes.TryLoadNotesDatabaseInMemory(projectFolder);
 
@@ -339,6 +345,8 @@ namespace RadinProjectNotes
         {
             // Only process if the textbox actually has at least 9 characters for the project code.
             if (projNrBox.Text.Length < 9) return;
+
+            ResetTabInMainPanel();
 
             LoadProjectNotes(projNrBox.Text.ToString());
         }
@@ -485,7 +493,7 @@ namespace RadinProjectNotes
             LoadProjectNotes(projectTitle);
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //if flag is true, exit without confirmation
             if (forceProgramExit)
@@ -520,7 +528,6 @@ namespace RadinProjectNotes
                 this.WindowState = FormWindowState.Minimized;
                 CheckForMinimizeToTray();
             }
-
         }
 
         private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -997,68 +1004,24 @@ namespace RadinProjectNotes
         {
             if (tabPanelSwitch.SelectedIndex == 1)
             {
-                UpdateServicesPanel();
+                servicesHostPanel.UpdateServicesPanel();
 
                 flowPanel.Visible = false;
                 servicesHostPanel.Visible = true;
             }
             else
             {
+                servicesHostPanel.ServicesPanelClosing();
+
                 flowPanel.Visible = true;
                 servicesHostPanel.Visible = false;
             }
         }
 
-        private void UpdateServicesPanel()
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Clear panel.
-            ClearServicesPanel();
-
-            Font headingFont = new Font("Microsoft Sans Serif", 9.5f, FontStyle.Bold);
-            Font serviceFont = new Font("Microsoft Sans Serif", 9f, FontStyle.Regular);
-
-            RadinProjectServices services = ProjectServicesController.TryLoadProjectServices();
-            servicePanel.ColumnCount = services.getCategoriesCount();
-            servicePanel.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 25f);
-            for (int i = 1; i < servicePanel.ColumnCount; i++)
-            {
-                servicePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25f));
-            }
-
-            int columnId = 0;
-            int maxRows = 0;
-            foreach (var categoryTitle in services.getCategoryTitles())
-            {
-                int rowsInCategory = services.getServicesCount(categoryTitle);
-                if (rowsInCategory > maxRows)
-                {
-                    maxRows = rowsInCategory;
-                }
-
-                // Add label as a heading to each.
-                servicePanel.Controls.Add(new Label() { Font = headingFont, Text = categoryTitle, AutoSize = true }, columnId, 0);
-
-                // Start from the second row (first is the heading)
-                int rowId = 1;
-                foreach (var service in services.getServicesForCategory(categoryTitle))
-                {
-                    CheckBox newCheckbox = new CheckBox { Font = serviceFont, Text = service, AutoSize = true };
-                    newCheckbox.AutoCheck = Credentials.Instance.currentUser.CanEditProjectServices();
-                    servicePanel.Controls.Add(newCheckbox, columnId, rowId);
-
-                    rowId++;
-                }
-
-                columnId++;
-            }
-        }
-
-        private void ClearServicesPanel()
-        {
-            while (servicePanel.Controls.Count > 0)
-            {
-                servicePanel.Controls[0].Dispose();
-            }
+            // If the main form has closed, reset the tab in the main panel to try and save changes.
+            ResetTabInMainPanel();
         }
     }
 }

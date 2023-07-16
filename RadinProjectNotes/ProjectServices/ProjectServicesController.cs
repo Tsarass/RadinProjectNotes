@@ -4,8 +4,7 @@ using static RadinProjectNotes.EncryptedDatabaseSerializer<RadinProjectNotes.Pro
 
 namespace RadinProjectNotes.ProjectServices
 {
-    [Serializable]
-    public class ProjectServicesController
+    public static class ProjectServicesController
     {
         private const string projectServicesFile = @"project_services.db";
 
@@ -17,10 +16,6 @@ namespace RadinProjectNotes.ProjectServices
         {
             return Path.Combine(ServerConnection.serverFolder, projectServicesFile);
         }
-
-        private ProjectServicesController()
-        { }
-
 
         /// <summary>
         /// Try to load the project services.

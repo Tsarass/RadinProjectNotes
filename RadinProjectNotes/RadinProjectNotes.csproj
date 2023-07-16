@@ -108,6 +108,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -120,6 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoUpdater.cs" />
+    <Compile Include="Controls\AssignedServicesPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\AssignedServicesPanel.Designer.cs">
+      <DependentUpon>AssignedServicesPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="HelperClasses\EncryptedDatabaseSerializer.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
@@ -175,18 +182,19 @@
     <Compile Include="Forms\ProjectServicesDialog.Designer.cs">
       <DependentUpon>ProjectServicesDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="HelperClasses\AutoCompleteTextbox.cs">
+    <Compile Include="Controls\AutoCompleteTextbox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="HelperClasses\CommentPackage.cs">
+    <Compile Include="Controls\CommentPackage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="HelperClasses\CommentPackage.Designer.cs">
+    <Compile Include="Controls\CommentPackage.Designer.cs">
       <DependentUpon>CommentPackage.cs</DependentUpon>
     </Compile>
     <Compile Include="HelperClasses\ExtractIcon.cs" />
     <Compile Include="HelperClasses\LatestPostsController.cs" />
     <Compile Include="HelperClasses\ProcessCommunication.cs" />
+    <Compile Include="HelperClasses\ProjectFolder.cs" />
     <Compile Include="HelperClasses\ProjectInfosSpreadsheetController.cs" />
     <Compile Include="HelperClasses\RecentChange.cs" />
     <Compile Include="HelperClasses\Registry.cs" />
@@ -211,7 +219,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="HelperClasses\ServerConnection.cs" />
-    <Compile Include="HelperClasses\SplitButton.cs">
+    <Compile Include="Controls\SplitButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="HelperClasses\SplitButton.designer.cs" />
@@ -221,6 +229,8 @@
     <Compile Include="NotesClasses\Notes.cs" />
     <Compile Include="Printer.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ProjectServices\ProjectAssignedServices.cs" />
+    <Compile Include="ProjectServices\ProjectAssignedServicesController.cs" />
     <Compile Include="ProjectServices\RadinProjectServices.cs" />
     <Compile Include="ProjectServices\ProjectServicesController.cs" />
     <Compile Include="ProjectServices\ServiceCategory.cs" />
@@ -236,6 +246,9 @@
     <Compile Include="UserClasses\UserDatabase.cs" />
     <Compile Include="UserClasses\Permissions.cs" />
     <Compile Include="Versioning.cs" />
+    <EmbeddedResource Include="Controls\AssignedServicesPanel.resx">
+      <DependentUpon>AssignedServicesPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -272,7 +285,7 @@
     <EmbeddedResource Include="Forms\ResetPassword.resx">
       <DependentUpon>ResetPassword.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HelperClasses\CommentPackage.resx">
+    <EmbeddedResource Include="Controls\CommentPackage.resx">
       <DependentUpon>CommentPackage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UserSignup.resx">
