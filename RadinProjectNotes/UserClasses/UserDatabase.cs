@@ -7,6 +7,12 @@ namespace RadinProjectNotes
     [Serializable]
     public class UserDatabase : IEnumerable<User>
     {
+        public static UserDatabase CreateEmpty()
+        {
+            return new UserDatabase();
+        }
+
+
         public long dateSaved;  //in ticks since unix era (DateTime.UtcNow.Ticks)
         public List<User> userData;
 

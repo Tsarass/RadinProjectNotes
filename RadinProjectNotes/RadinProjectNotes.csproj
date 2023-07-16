@@ -126,6 +126,7 @@
     <Compile Include="Beauftragung.Designer.cs">
       <DependentUpon>Beauftragung.cs</DependentUpon>
     </Compile>
+    <Compile Include="HelperClasses\EncryptedDatabaseSerializer.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,7 +227,7 @@
     <Compile Include="NotesClasses\Notes.cs" />
     <Compile Include="Printer.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ProjectServices\ServiceCategories.cs" />
+    <Compile Include="ProjectServices\RadinProjectServices.cs" />
     <Compile Include="ProjectServices\ProjectServicesController.cs" />
     <Compile Include="ProjectServices\ServiceCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RadinProjectNotes.ProjectServices
 {
@@ -10,14 +8,23 @@ namespace RadinProjectNotes.ProjectServices
     /// Services provided by the company as a list of categories with their subitems.
     /// </summary>
     [Serializable]
-    public class ServiceCategories
+    public class RadinProjectServices
     {
+        /// <summary>
+        /// Create an empty instance of service categories.
+        /// </summary>
+        /// <returns></returns>
+        public static RadinProjectServices CreateEmpty()
+        {
+            return new RadinProjectServices(new List<ServiceCategory>());
+        }
+
         /// <summary>
         /// Available project services.
         /// </summary>
         private List<ServiceCategory> _serviceCategories;
 
-        public ServiceCategories(List<ServiceCategory> projectServiceCategories)
+        public RadinProjectServices(List<ServiceCategory> projectServiceCategories)
         {
             this._serviceCategories = projectServiceCategories;
         }

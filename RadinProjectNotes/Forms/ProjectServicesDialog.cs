@@ -8,7 +8,8 @@ namespace RadinProjectNotes
 {
     public partial class ProjectServicesDialog : Form
     {
-        private ServiceCategories _serviceCategories;
+        private RadinProjectServices _cachedServiceCategories;
+        private RadinProjectServices _serviceCategories;
         private string _selectedCategoryTitle;
 
         public ProjectServicesDialog()
@@ -25,9 +26,9 @@ namespace RadinProjectNotes
 
         private void InitialiseProjectServices()
         {
-            ProjectServicesController.Instance.TryLoadProjectServices();
+            _cachedServiceCategories = ProjectServicesController.Instance.TryLoadProjectServices();
 
-            _serviceCategories = GetDeepCopyOfServiceCategories(ProjectServicesController.Instance.ServiceCategories);
+            _serviceCategories = GetDeepCopyOfServiceCategories(_cachedServiceCategories);
             UpdateCategoriesList(_serviceCategories);
 
             // Select the first index if it exists.
@@ -41,7 +42,7 @@ namespace RadinProjectNotes
         /// Update the categories list with the data from the supplied service categories object.
         /// </summary>
         /// <param name="serviceCategories"></param>
-        private void UpdateCategoriesList(ServiceCategories serviceCategories)
+        private void UpdateCategoriesList(RadinProjectServices serviceCategories)
         {
             lstCategories.Items.Clear();
 
@@ -56,7 +57,7 @@ namespace RadinProjectNotes
         /// </summary>
         /// <param name="serviceCategories"></param>
         /// <param name="categoryTitle"></param>
-        private void UpdateServicesList(ServiceCategories serviceCategories, string categoryTitle)
+        private void UpdateServicesList(RadinProjectServices serviceCategories, string categoryTitle)
         {
             foreach (var service in serviceCategories.getServicesForCategory(categoryTitle))
             {
@@ -69,7 +70,7 @@ namespace RadinProjectNotes
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private ServiceCategories GetDeepCopyOfServiceCategories(ServiceCategories input)
+        private RadinProjectServices GetDeepCopyOfServiceCategories(RadinProjectServices input)
         {
             var categoryTitles = input.getCategoryTitles();
 
@@ -78,7 +79,7 @@ namespace RadinProjectNotes
                 return new ServiceCategory(title, input.getServicesForCategory(title).ToList());
             }).ToList();
 
-            return new ServiceCategories(serviceCategories);
+            return new RadinProjectServices(serviceCategories);
         }
 
         private void lstCategories_SelectedIndexChanged(object sender, EventArgs e)
@@ -240,31 +241,29 @@ namespace RadinProjectNotes
         /// <summary>
         /// Check if the services have changed as a result of use of the dialog.
         /// </summary>
-        /// <remarks>Compares the cached services object with the one stored in the database file.</remarks>
+        /// <remarks>Compares the temporary services object of this dialog with the one cached from the database file.</remarks>
         /// <returns></returns>
         private bool ServicesHaveChanged()
         {
-            ServiceCategories databaseCategories = ProjectServicesController.Instance.ServiceCategories;
-
             // Compare number of categories.
-            if (databaseCategories.getCategoriesCount() != _serviceCategories.getCategoriesCount())
+            if (_cachedServiceCategories.getCategoriesCount() != _serviceCategories.getCategoriesCount())
             {
                 return true;
             }
 
             // Deep compare.
-            foreach (var categoryTitle in databaseCategories.getCategoryTitles())
+            foreach (var categoryTitle in _cachedServiceCategories.getCategoryTitles())
             {
                 var cachedCategory = _serviceCategories.getCategoryTitles().FirstOrDefault(a => a == categoryTitle);
                 if (cachedCategory != null)
                 {
                     // Compare services.
-                    if (databaseCategories.getServicesCount(categoryTitle) != _serviceCategories.getServicesCount(categoryTitle))
+                    if (_cachedServiceCategories.getServicesCount(categoryTitle) != _serviceCategories.getServicesCount(categoryTitle))
                     {
                         return true;
                     }
 
-                    foreach (var service in databaseCategories.getServicesForCategory(categoryTitle))
+                    foreach (var service in _cachedServiceCategories.getServicesForCategory(categoryTitle))
                     {
                         if (!_serviceCategories.getServicesForCategory(categoryTitle).Contains(service))
                         {
@@ -298,15 +297,9 @@ namespace RadinProjectNotes
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            ProjectServicesController.Instance.ServiceCategories = _serviceCategories;
-            ProjectServicesController.Instance.TrySaveProjectServices();
+            ProjectServicesController.Instance.TrySaveProjectServices(_serviceCategories);
 
             this.Close();
-        }
-
-        private void ProjectServicesDialog_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

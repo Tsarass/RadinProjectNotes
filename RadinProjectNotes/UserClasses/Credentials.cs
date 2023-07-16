@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using static RadinProjectNotes.EncryptedDatabaseSerializer<RadinProjectNotes.UserDatabase>;
 
 namespace RadinProjectNotes
 {
@@ -18,6 +18,7 @@ namespace RadinProjectNotes
         private readonly string databaseFile = Path.Combine(ServerConnection.serverFolder, "users.db");
 
         public UserDatabase userDatabase;
+        private EncryptedDatabaseSerializer<UserDatabase> _encryptedDbSerializer;
         public User currentUser;
         public bool SuccessfullyLoaded { get; set; }
 
@@ -60,7 +61,8 @@ namespace RadinProjectNotes
         private Credentials()
         {
             SuccessfullyLoaded = false;
-            userDatabase = new UserDatabase();
+            userDatabase = UserDatabase.CreateEmpty();
+            _encryptedDbSerializer = new EncryptedDatabaseSerializer<UserDatabase>(databaseFile);
         }
 
         /// <summary>
@@ -68,23 +70,33 @@ namespace RadinProjectNotes
         /// </summary>
         public void TryLoadUserDatabase()
         {
-            var maxRetryAttempts = 30;
-            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
-            RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () => {
-                LoadUserDatabase();
-            });
+            try
+            {
+                userDatabase = _encryptedDbSerializer.TryLoadDatabase();
+                SuccessfullyLoaded = true;
+            }
+            catch (CouldNotLoadDatabase)
+            {
+                userDatabase = UserDatabase.CreateEmpty();
+                SuccessfullyLoaded = false;
+            }
         }
 
         /// <summary>
         /// Try to save the user database.
         /// </summary>
-        public void TrySaveUserDatabase()
+        /// <returns>True if the user database could be saved.</returns>
+        public bool TrySaveUserDatabase()
         {
-            var maxRetryAttempts = 30;
-            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
-            RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () => {
-                SaveUserDatabase();
-            });
+            try
+            {
+                _encryptedDbSerializer.TrySaveDatabase(userDatabase);
+                return true;
+            }
+            catch (CouldNotSaveDatabase)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -151,75 +163,6 @@ namespace RadinProjectNotes
             TrySaveUserDatabase();
 
             return true;
-        }
-
-        private void SaveUserDatabase()
-        {
-            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
-
-            // Encryption
-            try
-            {
-                File.Delete(databaseFile);
-                using (var fs = new FileStream(databaseFile, FileMode.Create, FileAccess.Write))
-                using (var cryptoStream = new CryptoStream(fs, des.CreateEncryptor(Security.desKey, Security.desIV), CryptoStreamMode.Write))
-                {
-                    BinaryFormatter formatter = new BinaryFormatter();
-
-                    // This is where you serialize the class
-                    formatter.Serialize(cryptoStream, this.userDatabase);
-                }
-
-                //hide file
-                File.SetAttributes(databaseFile, FileAttributes.Hidden);
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                Debug.WriteLine(e.Message.ToString());
-                throw;
-            }
-        }
-
-        private void LoadUserDatabase()
-        {
-
-            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
-
-            if (!ServerConnection.Check())
-            {
-                SuccessfullyLoaded = false;
-                return;
-            }
-
-            //check to see if database exists
-            if (File.Exists(databaseFile))
-            {
-                try
-                {
-                // Decryption
-                using (var fs = new FileStream(databaseFile, FileMode.Open, FileAccess.Read))
-                using (var cryptoStream = new CryptoStream(fs, des.CreateDecryptor(Security.desKey, Security.desIV), CryptoStreamMode.Read))
-                {
-                    BinaryFormatter formatter = new BinaryFormatter();
-
-                    // This is where you deserialize the class
-                    userDatabase = (UserDatabase)formatter.Deserialize(cryptoStream);
-                }
-                    SuccessfullyLoaded = true;
-                    RefreshCurrentUser();
-                }
-                catch (IOException e)
-                {
-                    Debug.WriteLine(e.Message.ToString());
-                }
-
-            }
-            else
-            {
-                //database not found, create empty
-                userDatabase = new UserDatabase();
-                SuccessfullyLoaded = false;
-            }
         }
 
         /// <summary>
