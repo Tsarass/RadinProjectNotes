@@ -376,7 +376,7 @@ namespace RadinProjectNotes
                 //Post to latest changes
 #if RELEASE
                 RecentChange latestChange = new RecentChange(currentProject.projectPath, Credentials.Instance.currentUser.username, DateTime.UtcNow);
-                LatestChangesController.PostRecentChange(latestChange);
+                LatestPostsController.PostRecentChange(latestChange);
 #endif
             }
         }
