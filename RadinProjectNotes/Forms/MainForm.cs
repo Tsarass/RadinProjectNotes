@@ -214,6 +214,8 @@ namespace RadinProjectNotes
                 return;
             }
 
+            ResetTabInMainPanel();
+
             //update UI of form first
             this.Update();
 
@@ -344,8 +346,6 @@ namespace RadinProjectNotes
         {
             // Only process if the textbox actually has at least 9 characters for the project code.
             if (projNrBox.Text.Length < 9) return;
-
-            ResetTabInMainPanel();
 
             LoadProjectNotes(projNrBox.Text.ToString());
         }
@@ -1025,6 +1025,12 @@ namespace RadinProjectNotes
         {
             // If the main form has closed, reset the tab in the main panel to try and save changes.
             ResetTabInMainPanel();
+        }
+
+        private void btnNewDueItem_Click(object sender, EventArgs e)
+        {
+            AddDueItem frm = new AddDueItem();
+            frm.ShowDialog();
         }
     }
 }

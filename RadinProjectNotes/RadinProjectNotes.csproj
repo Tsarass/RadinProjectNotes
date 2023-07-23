@@ -127,6 +127,15 @@
     <Compile Include="Controls\AssignedServicesPanel.Designer.cs">
       <DependentUpon>AssignedServicesPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="DueItems\DueItem.cs" />
+    <Compile Include="DueItems\DueItemsDatabase.cs" />
+    <Compile Include="DueItems\DueItemsDatabaseController.cs" />
+    <Compile Include="Forms\AddDueItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddDueItem.Designer.cs">
+      <DependentUpon>AddDueItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="HelperClasses\EncryptedDatabaseSerializer.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
@@ -251,6 +260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddDueItem.resx">
+      <DependentUpon>AddDueItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddComment.resx">
       <DependentUpon>AddComment.cs</DependentUpon>

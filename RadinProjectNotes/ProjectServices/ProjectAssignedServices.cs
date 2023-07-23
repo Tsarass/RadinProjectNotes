@@ -4,8 +4,6 @@ using System.Runtime.Serialization;
 
 namespace RadinProjectNotes.ProjectServices
 {
-
-
     /// <summary>
     /// Services assigned to a project.
     /// </summary>

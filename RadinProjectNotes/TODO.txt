@@ -6,6 +6,7 @@
 -connection checks without program flow disruption
 -code refactoring
 -reset password utility
+-Services tab only changes if project changes through search box, make it so that any project reload changes the service tab
 
 [Minor improvements]
 -print orientation

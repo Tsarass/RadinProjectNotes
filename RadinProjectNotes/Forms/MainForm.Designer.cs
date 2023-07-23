@@ -36,6 +36,7 @@
             this.btnOpenFolder = new System.Windows.Forms.Button();
             this.btnListActiveProjects = new System.Windows.Forms.Button();
             this.btnProjectInfo = new System.Windows.Forms.Button();
+            this.btnNewDueItem = new System.Windows.Forms.Button();
             this.versionLabel = new System.Windows.Forms.Label();
             this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
@@ -69,8 +70,8 @@
             this.tabPanelSwitch = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.projNrBox = new AutoCompleteTextBoxSample.AutoCompleteTextbox();
             this.servicesHostPanel = new RadinProjectNotes.Controls.AssignedServicesPanel();
+            this.projNrBox = new AutoCompleteTextBoxSample.AutoCompleteTextbox();
             this.mainMenu.SuspendLayout();
             this.trayMenu.SuspendLayout();
             this.latestNotesMenuStrip.SuspendLayout();
@@ -123,6 +124,16 @@
             this.toolTips.SetToolTip(this.btnProjectInfo, resources.GetString("btnProjectInfo.ToolTip"));
             this.btnProjectInfo.UseVisualStyleBackColor = true;
             this.btnProjectInfo.Click += new System.EventHandler(this.btnProjectInfo_Click);
+            // 
+            // btnNewDueItem
+            // 
+            resources.ApplyResources(this.btnNewDueItem, "btnNewDueItem");
+            this.btnNewDueItem.BackColor = System.Drawing.SystemColors.Control;
+            this.btnNewDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.add_note;
+            this.btnNewDueItem.Name = "btnNewDueItem";
+            this.toolTips.SetToolTip(this.btnNewDueItem, resources.GetString("btnNewDueItem.ToolTip"));
+            this.btnNewDueItem.UseVisualStyleBackColor = false;
+            this.btnNewDueItem.Click += new System.EventHandler(this.btnNewDueItem_Click);
             // 
             // versionLabel
             // 
@@ -342,6 +353,12 @@
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // servicesHostPanel
+            // 
+            this.servicesHostPanel.BackColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.servicesHostPanel, "servicesHostPanel");
+            this.servicesHostPanel.Name = "servicesHostPanel";
+            // 
             // projNrBox
             // 
             this.projNrBox.AutoCompleteList = ((System.Collections.Generic.List<string>)(resources.GetObject("projNrBox.AutoCompleteList")));
@@ -352,12 +369,6 @@
             this.projNrBox.SelectedIndex = -1;
             this.projNrBox.AutocompleteListItemSelected += new System.EventHandler(this.projNrBox_ItemSelected);
             this.projNrBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.projNrBox_KeyUp);
-            // 
-            // servicesHostPanel
-            // 
-            this.servicesHostPanel.BackColor = System.Drawing.Color.White;
-            resources.ApplyResources(this.servicesHostPanel, "servicesHostPanel");
-            this.servicesHostPanel.Name = "servicesHostPanel";
             // 
             // MainForm
             // 
@@ -377,6 +388,7 @@
             this.Controls.Add(this.flowPanel);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.btnPrint);
+            this.Controls.Add(this.btnNewDueItem);
             this.Controls.Add(this.btnAddComment);
             this.Controls.Add(this.btnProjectInfo);
             this.Controls.Add(this.btnListActiveProjects);
@@ -440,6 +452,7 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private Controls.AssignedServicesPanel servicesHostPanel;
+        private System.Windows.Forms.Button btnNewDueItem;
     }
 }
 
