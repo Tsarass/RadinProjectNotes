@@ -5,6 +5,8 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using RadinProjectNotes.DatabaseFiles;
+using RadinProjectNotes.DueItems;
 using RadinProjectNotes.Forms;
 using RadinProjectNotes.HelperClasses;
 
@@ -1029,8 +1031,53 @@ namespace RadinProjectNotes
 
         private void btnNewDueItem_Click(object sender, EventArgs e)
         {
-            AddDueItem frm = new AddDueItem();
-            frm.ShowDialog();
+            AddDueItem frm = new AddDueItem(currentProject);
+            var result = frm.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                DueItemsDatabase dueItemsDatabase;
+                try
+                {
+                    dueItemsDatabase = DueItemsDatabaseController.TryLoadDueItems();
+                }
+                catch (CouldNotLoadDatabase)
+                {
+                    MessageBox.Show("Could not access due items database file. Ensure connection is working and try again.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                dueItemsDatabase.Add(frm.SavedDueItem);
+
+                bool couldSave = DueItemsDatabaseController.TrySaveDueItems(dueItemsDatabase);
+                if (!couldSave)
+                {
+                    MessageBox.Show("Could not save to due items database file. Ensure connection is working and try again.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+        }
+
+        private void btnEditDueItem_Click(object sender, EventArgs e)
+        {
+            DueItemsDatabase dueItemsDatabase;
+            try
+            {
+                dueItemsDatabase = DueItemsDatabaseController.TryLoadDueItems();
+            }
+            catch (CouldNotLoadDatabase)
+            {
+                MessageBox.Show("Could not access due items database file. Ensure connection is working and try again.",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (dueItemsDatabase.DueItems.Count > 0)
+            {
+                AddDueItem frm = new AddDueItem(currentProject, dueItemsDatabase.DueItems[dueItemsDatabase.DueItems.Count - 1]);
+                var result = frm.ShowDialog();
+            }
         }
     }
 }

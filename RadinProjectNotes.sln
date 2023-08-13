@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30621.155
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34003.232
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadinProjectNotes", "RadinProjectNotes\RadinProjectNotes.csproj", "{E0545BDC-20EF-49E6-88AD-1A7917661D40}"
 EndProject
@@ -11,7 +11,11 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "RadinProjectNotesInstaller"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotesBackupService", "NotesBackupService\NotesBackupService.csproj", "{C1F0F6FB-888B-4FF9-91B7-15E1B6271C44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadinProjectNotesUnitTests", "RadinProjectNotesUnitTests\RadinProjectNotesUnitTests.csproj", "{65587C44-F9E3-4251-91D6-B2628BB9D275}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadinProjectNotesUnitTests", "RadinProjectNotesUnitTests\RadinProjectNotesUnitTests.csproj", "{65587C44-F9E3-4251-91D6-B2628BB9D275}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectEmailNotificationService", "ProjectEmailNotificationService\ProjectEmailNotificationService.csproj", "{BFF702AB-C904-4B0A-B984-490CFF081843}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptedDatabaseSerializer", "EncryptedDatabaseSerializer\EncryptedDatabaseSerializer.csproj", "{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,22 @@ Global
 		{65587C44-F9E3-4251-91D6-B2628BB9D275}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65587C44-F9E3-4251-91D6-B2628BB9D275}.Release|x86.ActiveCfg = Release|Any CPU
 		{65587C44-F9E3-4251-91D6-B2628BB9D275}.Release|x86.Build.0 = Release|Any CPU
+		{BFF702AB-C904-4B0A-B984-490CFF081843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFF702AB-C904-4B0A-B984-490CFF081843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFF702AB-C904-4B0A-B984-490CFF081843}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BFF702AB-C904-4B0A-B984-490CFF081843}.Debug|x86.Build.0 = Debug|Any CPU
+		{BFF702AB-C904-4B0A-B984-490CFF081843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFF702AB-C904-4B0A-B984-490CFF081843}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFF702AB-C904-4B0A-B984-490CFF081843}.Release|x86.ActiveCfg = Release|Any CPU
+		{BFF702AB-C904-4B0A-B984-490CFF081843}.Release|x86.Build.0 = Release|Any CPU
+		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Debug|x86.Build.0 = Debug|Any CPU
+		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

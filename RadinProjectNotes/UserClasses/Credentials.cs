@@ -1,10 +1,8 @@
-﻿using System;
+﻿using RadinProjectNotes.DatabaseFiles;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
-using static RadinProjectNotes.EncryptedDatabaseSerializer<RadinProjectNotes.UserDatabase>;
 
 namespace RadinProjectNotes
 {
@@ -72,7 +70,7 @@ namespace RadinProjectNotes
         {
             try
             {
-                userDatabase = _encryptedDbSerializer.TryLoadDatabase();
+                userDatabase = _encryptedDbSerializer.LoadDatabase();
                 SuccessfullyLoaded = true;
             }
             catch (CouldNotLoadDatabase)
@@ -90,7 +88,7 @@ namespace RadinProjectNotes
         {
             try
             {
-                _encryptedDbSerializer.TrySaveDatabase(userDatabase);
+                _encryptedDbSerializer.SaveDatabase(userDatabase);
                 return true;
             }
             catch (CouldNotSaveDatabase)

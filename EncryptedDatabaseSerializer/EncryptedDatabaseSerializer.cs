@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EncryptedDatabaseSerializer;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -6,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 
 
-namespace RadinProjectNotes
+namespace RadinProjectNotes.DatabaseFiles
 {
     /// <summary>
     /// Serialize and encrypt any serializable class to a file.<br/>
@@ -31,55 +32,10 @@ namespace RadinProjectNotes
         }
 
         /// <summary>
-        /// Try to load the project services.
-        /// </summary>
-        /// <exception cref="CouldNotLoadDatabase"></exception>
-        public T TryLoadDatabase()
-        {
-            if (!File.Exists(_filepath))
-            {
-                throw new CouldNotLoadDatabase();
-            }
-
-            var maxRetryAttempts = 30;
-            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
-            var loadedDatabase = RetryHelper<T>.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () => {
-                return LoadDatabase();
-            });
-
-            // If the default value was returned, the database could not be loaded.
-            if (EqualityComparer<T>.Default.Equals(loadedDatabase, default(T)))
-            {
-                throw new CouldNotLoadDatabase();
-            }
-
-            return loadedDatabase;
-        }
-
-        /// <summary>
-        /// Try to save the project services.
-        /// </summary>
-        /// <param name="dataStructure">The class instance to save.</param>
-        /// <exception cref="CouldNotSaveDatabase"></exception>
-        public void TrySaveDatabase(T dataStructure)
-        {
-            var maxRetryAttempts = 30;
-            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
-            var couldSave = RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () => {
-                SaveDatabase(dataStructure);
-            });
-
-            if (!couldSave)
-            {
-                throw new CouldNotSaveDatabase();
-            }
-        }
-
-        /// <summary>
         /// Encrypt and serialize a data structure of type T to a file.
         /// </summary>
         /// <param name="dataStructure"></param>
-        private void SaveDatabase(T dataStructure)
+        public void SaveDatabase(T dataStructure)
         {
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
 
@@ -94,7 +50,7 @@ namespace RadinProjectNotes
                 }
                 File.Delete(_filepath);
                 using (var fs = new FileStream(_filepath, FileMode.Create, FileAccess.Write))
-                using (var cryptoStream = new CryptoStream(fs, des.CreateEncryptor(Security.desKey, Security.desIV), CryptoStreamMode.Write))
+                using (var cryptoStream = new CryptoStream(fs, des.CreateEncryptor(EncryptionKeys.DesKey, EncryptionKeys.DesIV), CryptoStreamMode.Write))
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
                     formatter.Serialize(cryptoStream, dataStructure);
@@ -114,8 +70,7 @@ namespace RadinProjectNotes
                     File.Delete(backupFile);
                 }
 
-                Debug.WriteLine(e.Message.ToString());
-                throw;
+                throw new CouldNotSaveDatabase();
             }
 
             File.Delete(backupFile);
@@ -126,44 +81,65 @@ namespace RadinProjectNotes
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private T LoadDatabase()
+        public T LoadDatabase()
         {
+            if (!File.Exists(_filepath))
+            {
+                throw new DatabaseFileNotFound();
+            }
+
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
 
             try
             {
                 // Decryption
                 using (var fs = new FileStream(_filepath, FileMode.Open, FileAccess.Read))
-                using (var cryptoStream = new CryptoStream(fs, des.CreateDecryptor(Security.desKey, Security.desIV), CryptoStreamMode.Read))
+                using (var cryptoStream = new CryptoStream(fs, des.CreateDecryptor(EncryptionKeys.DesKey, EncryptionKeys.DesIV), CryptoStreamMode.Read))
                 {
                     BinaryFormatter formatter = new BinaryFormatter();
                     return (T)formatter.Deserialize(cryptoStream);
                 }
             }
-            catch (Exception e)
+            catch
             {
-                Debug.WriteLine(e.Message.ToString());
+                throw new CouldNotLoadDatabase();
             }
-
-            throw new Exception();
         }
+    }
 
+    /// <summary>
+    /// Throw when a data structure could not be saved to a file.
+    /// </summary>
+    public class CouldNotSaveDatabase : Exception
+    {
         /// <summary>
-        /// Throw when a data structure could not be saved to a file.
+        /// Database structure could not be saved to a file.
         /// </summary>
-        public class CouldNotSaveDatabase : Exception
-        {
-            public CouldNotSaveDatabase() : base("Database could not be saved.")
-            { }
-        }
+        public CouldNotSaveDatabase() : base("Database could not be saved.")
+        { }
+    }
 
+    /// <summary>
+    /// Throw when a data structure could not be loaded from a file.
+    /// </summary>
+    public class CouldNotLoadDatabase : Exception
+    {
         /// <summary>
-        /// Throw when a data structure could not be loaded from a file.
+        /// Database structure could not be loaded from a file.
         /// </summary>
-        public class CouldNotLoadDatabase : Exception
-        {
-            public CouldNotLoadDatabase() : base("Database could not be loaded.")
-            { }
-        }
+        public CouldNotLoadDatabase() : base("Database could not be loaded.")
+        { }
+    }
+
+    /// <summary>
+    /// Throw when a database file could not be found.
+    /// </summary>
+    public class DatabaseFileNotFound : Exception
+    {
+        /// <summary>
+        /// Database file not found.
+        /// </summary>
+        public DatabaseFileNotFound() : base("Database file not found.")
+        { }
     }
 }

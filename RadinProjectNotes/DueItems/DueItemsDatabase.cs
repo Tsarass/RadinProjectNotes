@@ -18,7 +18,7 @@ namespace RadinProjectNotes.DueItems
             return new DueItemsDatabase();
         }
 
-        private List<DueItem> _dueItems;
+        private List<DueItem> _dueItems = new List<DueItem>();
 
         private DueItemsDatabase() { }
         

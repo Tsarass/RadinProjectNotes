@@ -23,3 +23,8 @@
 -logging for administration
 
 [Just an idea]
+
+[Due items]
+ -panel control to show due items for projects in main form
+ -service to monitor due items and send emails
+ -save emails as defaults to use for every new due item

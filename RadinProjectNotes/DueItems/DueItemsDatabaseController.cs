@@ -1,5 +1,5 @@
-﻿using System.IO;
-using static RadinProjectNotes.EncryptedDatabaseSerializer<RadinProjectNotes.DueItems.DueItemsDatabase>;
+﻿using RadinProjectNotes.DatabaseFiles;
+using System.IO;
 
 namespace RadinProjectNotes.DueItems
 {
@@ -19,17 +19,22 @@ namespace RadinProjectNotes.DueItems
         /// <summary>
         /// Try to load the due items database.
         /// </summary>
-        public static DueItemsDatabase TryLoadProjectServices()
+        /// <exception cref="DatabaseFileNotFound"></exception>
+        public static DueItemsDatabase TryLoadDueItems()
         {
             EncryptedDatabaseSerializer<DueItemsDatabase> encryptedDbSerializer =
                 new EncryptedDatabaseSerializer<DueItemsDatabase>(getDueItemsDatabaseFilepath());
 
             try
             {
-                DueItemsDatabase loadedServices = encryptedDbSerializer.TryLoadDatabase();
+                DueItemsDatabase loadedServices = encryptedDbSerializer.LoadDatabase();
                 return loadedServices;
             }
             catch (CouldNotLoadDatabase)
+            {
+                throw;
+            }
+            catch (DatabaseFileNotFound)
             {
                 return DueItemsDatabase.CreateEmpty();
             }
@@ -39,14 +44,14 @@ namespace RadinProjectNotes.DueItems
         /// Try to save the due items database.
         /// </summary>
         /// <returns>True if the due items database could be saved.</returns>
-        public static bool TrySaveProjectServices(DueItemsDatabase dueItemsDatabase)
+        public static bool TrySaveDueItems(DueItemsDatabase dueItemsDatabase)
         {
             EncryptedDatabaseSerializer<DueItemsDatabase> encryptedDbSerializer =
                 new EncryptedDatabaseSerializer<DueItemsDatabase>(getDueItemsDatabaseFilepath());
 
             try
             {
-                encryptedDbSerializer.TrySaveDatabase(dueItemsDatabase);
+                encryptedDbSerializer.SaveDatabase(dueItemsDatabase);
                 return true;
             }
             catch (CouldNotSaveDatabase)

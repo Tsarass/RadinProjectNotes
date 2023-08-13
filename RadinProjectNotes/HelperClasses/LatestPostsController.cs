@@ -92,7 +92,6 @@ namespace RadinProjectNotes
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
 
             //check to see if database exists
-            //string dbFilePath = Path.Combine(projectFolder.fullPath, databaseFilename);
             if (File.Exists(LatestPostsDatabaseFullPath))
             {
                 try

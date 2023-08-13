@@ -1,22 +1,11 @@
-﻿using System;
+﻿using RadinProjectNotes.DatabaseFiles;
 using System.IO;
-using static RadinProjectNotes.EncryptedDatabaseSerializer<RadinProjectNotes.ProjectServices.ProjectAssignedServices>;
 
 namespace RadinProjectNotes.ProjectServices
 {
     public static class ProjectAssignedServicesController
     {
         private const string projectAssignedServicesFileNameExtension = @"bft";
-
-        /// <summary>
-        /// Get the filepath to the assigned services file for a project.
-        /// </summary>
-        /// <returns></returns>
-        public static string getProjectAssignedServicesFileFilepath(ProjectFolder projectFolder)
-        {
-            string projectAssignedServicesDatabaseFilePath = $"{projectFolder.projectPath}.{projectAssignedServicesFileNameExtension}";
-            return Path.Combine(ServerConnection.serverFolder, projectAssignedServicesDatabaseFilePath);
-        }
 
         /// <summary>
         /// Try to load the project assigned services.
@@ -31,7 +20,7 @@ namespace RadinProjectNotes.ProjectServices
 
             try
             {
-                ProjectAssignedServices loadedServices = encryptedDbSerializer.TryLoadDatabase();
+                ProjectAssignedServices loadedServices = encryptedDbSerializer.LoadDatabase();
                 return loadedServices;
             }
             catch (CouldNotLoadDatabase)
@@ -53,7 +42,7 @@ namespace RadinProjectNotes.ProjectServices
 
             try
             {   
-                encryptedDbSerializer.TrySaveDatabase(projectAssignedServices);
+                encryptedDbSerializer.SaveDatabase(projectAssignedServices);
                 return true;
             }
             catch (CouldNotSaveDatabase)

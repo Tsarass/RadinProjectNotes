@@ -32,16 +32,16 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
+            this.btnAddCategory = new System.Windows.Forms.Button();
+            this.btnRemoveCategory = new System.Windows.Forms.Button();
+            this.btnAddService = new System.Windows.Forms.Button();
+            this.btnRemoveService = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lstCategories = new System.Windows.Forms.ListBox();
-            this.btnAddCategory = new System.Windows.Forms.Button();
             this.txtNewCategory = new System.Windows.Forms.TextBox();
-            this.btnRemoveCategory = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.lstServices = new System.Windows.Forms.ListBox();
-            this.btnAddService = new System.Windows.Forms.Button();
             this.txtNewService = new System.Windows.Forms.TextBox();
-            this.btnRemoveService = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -69,6 +69,50 @@
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // btnAddCategory
+            // 
+            this.btnAddCategory.Location = new System.Drawing.Point(154, 149);
+            this.btnAddCategory.Name = "btnAddCategory";
+            this.btnAddCategory.Size = new System.Drawing.Size(25, 23);
+            this.btnAddCategory.TabIndex = 7;
+            this.btnAddCategory.Text = "+";
+            this.toolTips.SetToolTip(this.btnAddCategory, "Add a new service category.");
+            this.btnAddCategory.UseVisualStyleBackColor = true;
+            this.btnAddCategory.Click += new System.EventHandler(this.btnAddCategory_Click);
+            // 
+            // btnRemoveCategory
+            // 
+            this.btnRemoveCategory.Location = new System.Drawing.Point(185, 25);
+            this.btnRemoveCategory.Name = "btnRemoveCategory";
+            this.btnRemoveCategory.Size = new System.Drawing.Size(25, 23);
+            this.btnRemoveCategory.TabIndex = 7;
+            this.btnRemoveCategory.Text = "-";
+            this.toolTips.SetToolTip(this.btnRemoveCategory, "Remove selected service category.");
+            this.btnRemoveCategory.UseVisualStyleBackColor = true;
+            this.btnRemoveCategory.Click += new System.EventHandler(this.btnRemoveCategory_Click);
+            // 
+            // btnAddService
+            // 
+            this.btnAddService.Location = new System.Drawing.Point(373, 175);
+            this.btnAddService.Name = "btnAddService";
+            this.btnAddService.Size = new System.Drawing.Size(25, 23);
+            this.btnAddService.TabIndex = 7;
+            this.btnAddService.Text = "+";
+            this.toolTips.SetToolTip(this.btnAddService, "Add a new service.");
+            this.btnAddService.UseVisualStyleBackColor = true;
+            this.btnAddService.Click += new System.EventHandler(this.btnAddService_Click);
+            // 
+            // btnRemoveService
+            // 
+            this.btnRemoveService.Location = new System.Drawing.Point(404, 25);
+            this.btnRemoveService.Name = "btnRemoveService";
+            this.btnRemoveService.Size = new System.Drawing.Size(25, 23);
+            this.btnRemoveService.TabIndex = 7;
+            this.btnRemoveService.Text = "-";
+            this.toolTips.SetToolTip(this.btnRemoveService, "Remove selected service.");
+            this.btnRemoveService.UseVisualStyleBackColor = true;
+            this.btnRemoveService.Click += new System.EventHandler(this.btnRemoveService_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -87,17 +131,6 @@
             this.lstCategories.TabIndex = 6;
             this.lstCategories.SelectedIndexChanged += new System.EventHandler(this.lstCategories_SelectedIndexChanged);
             // 
-            // btnAddCategory
-            // 
-            this.btnAddCategory.Location = new System.Drawing.Point(154, 149);
-            this.btnAddCategory.Name = "btnAddCategory";
-            this.btnAddCategory.Size = new System.Drawing.Size(25, 23);
-            this.btnAddCategory.TabIndex = 7;
-            this.btnAddCategory.Text = "+";
-            this.toolTips.SetToolTip(this.btnAddCategory, "Add a new service category.");
-            this.btnAddCategory.UseVisualStyleBackColor = true;
-            this.btnAddCategory.Click += new System.EventHandler(this.btnAddCategory_Click);
-            // 
             // txtNewCategory
             // 
             this.txtNewCategory.Location = new System.Drawing.Point(15, 152);
@@ -106,18 +139,6 @@
             this.txtNewCategory.TabIndex = 8;
             this.txtNewCategory.TextChanged += new System.EventHandler(this.txtNewCategory_TextChanged);
             this.txtNewCategory.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNewCategory_KeyUp);
-            // 
-            // btnRemoveCategory
-            // 
-            this.btnRemoveCategory.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnRemoveCategory.Location = new System.Drawing.Point(185, 25);
-            this.btnRemoveCategory.Name = "btnRemoveCategory";
-            this.btnRemoveCategory.Size = new System.Drawing.Size(25, 23);
-            this.btnRemoveCategory.TabIndex = 7;
-            this.btnRemoveCategory.Text = "-";
-            this.toolTips.SetToolTip(this.btnRemoveCategory, "Remove selected service category.");
-            this.btnRemoveCategory.UseVisualStyleBackColor = true;
-            this.btnRemoveCategory.Click += new System.EventHandler(this.btnRemoveCategory_Click);
             // 
             // label2
             // 
@@ -137,17 +158,6 @@
             this.lstServices.TabIndex = 6;
             this.lstServices.SelectedIndexChanged += new System.EventHandler(this.lstServices_SelectedIndexChanged);
             // 
-            // btnAddService
-            // 
-            this.btnAddService.Location = new System.Drawing.Point(373, 175);
-            this.btnAddService.Name = "btnAddService";
-            this.btnAddService.Size = new System.Drawing.Size(25, 23);
-            this.btnAddService.TabIndex = 7;
-            this.btnAddService.Text = "+";
-            this.toolTips.SetToolTip(this.btnAddService, "Add a new service.");
-            this.btnAddService.UseVisualStyleBackColor = true;
-            this.btnAddService.Click += new System.EventHandler(this.btnAddService_Click);
-            // 
             // txtNewService
             // 
             this.txtNewService.Location = new System.Drawing.Point(234, 178);
@@ -156,17 +166,6 @@
             this.txtNewService.TabIndex = 8;
             this.txtNewService.TextChanged += new System.EventHandler(this.txtNewService_TextChanged);
             this.txtNewService.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNewService_KeyUp);
-            // 
-            // btnRemoveService
-            // 
-            this.btnRemoveService.Location = new System.Drawing.Point(404, 25);
-            this.btnRemoveService.Name = "btnRemoveService";
-            this.btnRemoveService.Size = new System.Drawing.Size(25, 23);
-            this.btnRemoveService.TabIndex = 7;
-            this.btnRemoveService.Text = "-";
-            this.toolTips.SetToolTip(this.btnRemoveService, "Remove selected service.");
-            this.btnRemoveService.UseVisualStyleBackColor = true;
-            this.btnRemoveService.Click += new System.EventHandler(this.btnRemoveService_Click);
             // 
             // ProjectServicesDialog
             // 

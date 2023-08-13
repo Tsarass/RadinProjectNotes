@@ -72,6 +72,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.servicesHostPanel = new RadinProjectNotes.Controls.AssignedServicesPanel();
             this.projNrBox = new AutoCompleteTextBoxSample.AutoCompleteTextbox();
+            this.btnEditDueItem = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.trayMenu.SuspendLayout();
             this.latestNotesMenuStrip.SuspendLayout();
@@ -370,6 +371,16 @@
             this.projNrBox.AutocompleteListItemSelected += new System.EventHandler(this.projNrBox_ItemSelected);
             this.projNrBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.projNrBox_KeyUp);
             // 
+            // btnEditDueItem
+            // 
+            resources.ApplyResources(this.btnEditDueItem, "btnEditDueItem");
+            this.btnEditDueItem.BackColor = System.Drawing.SystemColors.Control;
+            this.btnEditDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.add_note;
+            this.btnEditDueItem.Name = "btnEditDueItem";
+            this.toolTips.SetToolTip(this.btnEditDueItem, resources.GetString("btnEditDueItem.ToolTip"));
+            this.btnEditDueItem.UseVisualStyleBackColor = false;
+            this.btnEditDueItem.Click += new System.EventHandler(this.btnEditDueItem_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -388,6 +399,7 @@
             this.Controls.Add(this.flowPanel);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.btnPrint);
+            this.Controls.Add(this.btnEditDueItem);
             this.Controls.Add(this.btnNewDueItem);
             this.Controls.Add(this.btnAddComment);
             this.Controls.Add(this.btnProjectInfo);
@@ -453,6 +465,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private Controls.AssignedServicesPanel servicesHostPanel;
         private System.Windows.Forms.Button btnNewDueItem;
+        private System.Windows.Forms.Button btnEditDueItem;
     }
 }
 

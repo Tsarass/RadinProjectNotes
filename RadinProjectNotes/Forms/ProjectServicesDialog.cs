@@ -297,7 +297,12 @@ namespace RadinProjectNotes
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            ProjectServicesController.TrySaveProjectServices(_serviceCategories);
+            bool couldSaveProjectServices = ProjectServicesController.TrySaveProjectServices(_serviceCategories);
+            if (!couldSaveProjectServices)
+            {
+                MessageBox.Show("Could not save project services to file. Ensure connection is working and try again.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
             this.Close();
         }

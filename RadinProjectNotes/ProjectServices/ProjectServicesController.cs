@@ -1,6 +1,5 @@
-﻿using System;
+﻿using RadinProjectNotes.DatabaseFiles;
 using System.IO;
-using static RadinProjectNotes.EncryptedDatabaseSerializer<RadinProjectNotes.ProjectServices.RadinProjectServices>;
 
 namespace RadinProjectNotes.ProjectServices
 {
@@ -27,7 +26,7 @@ namespace RadinProjectNotes.ProjectServices
 
             try
             {
-                RadinProjectServices loadedServices = encryptedDbSerializer.TryLoadDatabase();
+                RadinProjectServices loadedServices = encryptedDbSerializer.LoadDatabase();
                 return loadedServices;
             }
             catch (CouldNotLoadDatabase)
@@ -47,7 +46,7 @@ namespace RadinProjectNotes.ProjectServices
 
             try
             {   
-                encryptedDbSerializer.TrySaveDatabase(services);
+                encryptedDbSerializer.SaveDatabase(services);
                 return true;
             }
             catch (CouldNotSaveDatabase)

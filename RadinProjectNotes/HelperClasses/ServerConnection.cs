@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RadinProjectNotes.DueItems;
+using RadinProjectNotes.ProjectServices;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -15,7 +17,6 @@ namespace RadinProjectNotes
                                                                                @"\\nas-radin-gr\Projekte",
                                                                                @"\\nas-radin-lp\Projekte",};
         public static List<ProjectFolder> folderCache = new List<ProjectFolder>();
-
 
         public static bool Check()
         {
