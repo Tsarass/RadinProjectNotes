@@ -32,6 +32,51 @@ namespace RadinProjectNotes.DatabaseFiles
         }
 
         /// <summary>
+        /// Try to load the project services.
+        /// </summary>
+        /// <exception cref="CouldNotLoadDatabase"></exception>
+        public T TryLoadDatabase()
+        {
+            if (!File.Exists(_filepath))
+            {
+                throw new CouldNotLoadDatabase();
+            }
+
+            var maxRetryAttempts = 30;
+            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
+            var loadedDatabase = RetryHelper<T>.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () => {
+                return LoadDatabase();
+            });
+
+            // If the default value was returned, the database could not be loaded.
+            if (EqualityComparer<T>.Default.Equals(loadedDatabase, default(T)))
+            {
+                throw new CouldNotLoadDatabase();
+            }
+
+            return loadedDatabase;
+        }
+
+        /// <summary>
+        /// Try to save the project services.
+        /// </summary>
+        /// <param name="dataStructure">The class instance to save.</param>
+        /// <exception cref="CouldNotSaveDatabase"></exception>
+        public void TrySaveDatabase(T dataStructure)
+        {
+            var maxRetryAttempts = 30;
+            var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
+            var couldSave = RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () => {
+                SaveDatabase(dataStructure);
+            });
+
+            if (!couldSave)
+            {
+                throw new CouldNotSaveDatabase();
+            }
+        }
+
+        /// <summary>
         /// Encrypt and serialize a data structure of type T to a file.
         /// </summary>
         /// <param name="dataStructure"></param>

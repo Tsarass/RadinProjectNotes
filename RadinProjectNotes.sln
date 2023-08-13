@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectEmailNotificationSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptedDatabaseSerializer", "EncryptedDatabaseSerializer\EncryptedDatabaseSerializer.csproj", "{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetryHelper", "RetryHelper\RetryHelper.csproj", "{22F3E461-A031-4039-9D7E-F40D34D91638}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,14 @@ Global
 		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Release|x86.ActiveCfg = Release|Any CPU
 		{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}.Release|x86.Build.0 = Release|Any CPU
+		{22F3E461-A031-4039-9D7E-F40D34D91638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F3E461-A031-4039-9D7E-F40D34D91638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F3E461-A031-4039-9D7E-F40D34D91638}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{22F3E461-A031-4039-9D7E-F40D34D91638}.Debug|x86.Build.0 = Debug|Any CPU
+		{22F3E461-A031-4039-9D7E-F40D34D91638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F3E461-A031-4039-9D7E-F40D34D91638}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F3E461-A031-4039-9D7E-F40D34D91638}.Release|x86.ActiveCfg = Release|Any CPU
+		{22F3E461-A031-4039-9D7E-F40D34D91638}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

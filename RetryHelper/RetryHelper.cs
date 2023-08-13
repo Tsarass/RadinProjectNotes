@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace RadinProjectNotes
 {
+    /// <inheritdoc cref="RetryHelper"/>
     public class RetryHelper<T>
     {
         /// <summary>Takes a function as an argument and loops it with
@@ -41,6 +42,11 @@ namespace RadinProjectNotes
         }
     }
 
+    
+    /// /// <summary>
+    /// Run an operation a maximum amount of times with a specified delay until it runs without exception.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class RetryHelper
     {
         /// <summary>Takes a function as an argument and loops it with

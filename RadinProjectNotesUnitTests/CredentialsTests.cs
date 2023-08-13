@@ -13,7 +13,7 @@ namespace RadinProjectNotesUnitTests
 
         private void addMockUser()
         {
-            mockUser = Credentials.Instance.userDatabase.AddUser(mockUsername, mockPassword, Permissions.Low);
+            mockUser = Credentials.Instance.userDatabase.AddUser(mockUsername, mockPassword, Permissions.Read);
         }
 
         private bool couldDeleteMockUser()

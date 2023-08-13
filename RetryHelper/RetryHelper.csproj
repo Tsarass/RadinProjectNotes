@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9A8BCF19-4342-463B-A67C-E51FCD7C86DC}</ProjectGuid>
+    <ProjectGuid>{22F3E461-A031-4039-9D7E-F40D34D91638}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EncryptedDatabaseSerializer</RootNamespace>
-    <AssemblyName>EncryptedDatabaseSerializer</AssemblyName>
+    <RootNamespace>RetryHelper</RootNamespace>
+    <AssemblyName>RetryHelper</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\EncryptedDatabaseSerializer.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,16 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EncryptionKeys.cs" />
-    <Compile Include="EncryptedDatabaseSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RetryHelper\RetryHelper.csproj">
-      <Project>{22f3e461-a031-4039-9d7e-f40d34d91638}</Project>
-      <Name>RetryHelper</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <Compile Include="RetryHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

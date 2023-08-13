@@ -377,6 +377,10 @@
       <Project>{9a8bcf19-4342-463b-a67c-e51fcd7c86dc}</Project>
       <Name>EncryptedDatabaseSerializer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RetryHelper\RetryHelper.csproj">
+      <Project>{22f3e461-a031-4039-9d7e-f40d34d91638}</Project>
+      <Name>RetryHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
