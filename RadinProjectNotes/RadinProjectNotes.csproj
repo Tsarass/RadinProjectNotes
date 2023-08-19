@@ -127,9 +127,7 @@
     <Compile Include="Controls\AssignedServicesPanel.Designer.cs">
       <DependentUpon>AssignedServicesPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="DueItems\DueItem.cs" />
-    <Compile Include="DueItems\DueItemsDatabase.cs" />
-    <Compile Include="DueItems\DueItemsDatabaseController.cs" />
+    <Compile Include="DatabaseFiles\Controllers\DueItemsDatabaseController.cs" />
     <Compile Include="Forms\AddDueItem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -200,11 +198,11 @@
       <DependentUpon>CommentPackage.cs</DependentUpon>
     </Compile>
     <Compile Include="HelperClasses\ExtractIcon.cs" />
-    <Compile Include="HelperClasses\LatestPostsController.cs" />
+    <Compile Include="DatabaseFiles\Controllers\LatestPostsController.cs" />
     <Compile Include="HelperClasses\ProcessCommunication.cs" />
     <Compile Include="HelperClasses\ProjectFolder.cs" />
     <Compile Include="HelperClasses\ProjectInfosSpreadsheetController.cs" />
-    <Compile Include="HelperClasses\RecentChange.cs" />
+    <Compile Include="DatabaseFiles\RecentChange.cs" />
     <Compile Include="HelperClasses\Registry.cs" />
     <Compile Include="HelperClasses\Security.cs" />
     <Compile Include="Forms\UserSignup.cs">
@@ -229,18 +227,18 @@
     <Compile Include="Controls\SplitButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="HelperClasses\SplitButton.designer.cs" />
+    <Compile Include="Controls\SplitButton.designer.cs" />
     <Compile Include="NotesClasses\Attachment.cs" />
     <Compile Include="NotesClasses\AttachmentLibrary.cs" />
     <Compile Include="NotesClasses\ProjectNote.cs" />
     <Compile Include="NotesClasses\Notes.cs" />
     <Compile Include="Printer.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ProjectServices\ProjectAssignedServices.cs" />
-    <Compile Include="ProjectServices\ProjectAssignedServicesController.cs" />
-    <Compile Include="ProjectServices\RadinProjectServices.cs" />
-    <Compile Include="ProjectServices\ProjectServicesController.cs" />
-    <Compile Include="ProjectServices\ServiceCategory.cs" />
+    <Compile Include="DatabaseFiles\ProjectServices\ProjectAssignedServices.cs" />
+    <Compile Include="DatabaseFiles\Controllers\ProjectAssignedServicesController.cs" />
+    <Compile Include="DatabaseFiles\ProjectServices\RadinProjectServices.cs" />
+    <Compile Include="DatabaseFiles\Controllers\ProjectServicesController.cs" />
+    <Compile Include="DatabaseFiles\ProjectServices\ServiceCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
@@ -373,6 +371,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DueItems\DueItems.csproj">
+      <Project>{fb7af5b0-5124-43de-9c8a-6ab4f81479f6}</Project>
+      <Name>DueItems</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EncryptedDatabaseSerializer\EncryptedDatabaseSerializer.csproj">
       <Project>{9a8bcf19-4342-463b-a67c-e51fcd7c86dc}</Project>
       <Name>EncryptedDatabaseSerializer</Name>

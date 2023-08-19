@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using RadinProjectNotes.DatabaseFiles;
+using RadinProjectNotes.DatabaseFiles.Controllers;
 using RadinProjectNotes.DueItems;
 using RadinProjectNotes.Forms;
 using RadinProjectNotes.HelperClasses;
@@ -38,6 +39,8 @@ namespace RadinProjectNotes
         {
             InitializeComponent();
             HandleConsoleArgs(args);
+
+            Security.SetUpDatabaseSerializerEncryptionKeys();
 
             // Set back color to the new custom radin color.
             this.BackColor = radinColor;
@@ -1038,7 +1041,7 @@ namespace RadinProjectNotes
                 DueItemsDatabase dueItemsDatabase;
                 try
                 {
-                    dueItemsDatabase = DueItemsDatabaseController.TryLoadDueItems();
+                    dueItemsDatabase = DueItemsDatabaseController.TryLoadDueItems(currentProject);
                 }
                 catch (CouldNotLoadDatabase)
                 {
@@ -1049,7 +1052,7 @@ namespace RadinProjectNotes
 
                 dueItemsDatabase.Add(frm.SavedDueItem);
 
-                bool couldSave = DueItemsDatabaseController.TrySaveDueItems(dueItemsDatabase);
+                bool couldSave = DueItemsDatabaseController.TrySaveDueItems(currentProject, dueItemsDatabase);
                 if (!couldSave)
                 {
                     MessageBox.Show("Could not save to due items database file. Ensure connection is working and try again.",
@@ -1064,7 +1067,7 @@ namespace RadinProjectNotes
             DueItemsDatabase dueItemsDatabase;
             try
             {
-                dueItemsDatabase = DueItemsDatabaseController.TryLoadDueItems();
+                dueItemsDatabase = DueItemsDatabaseController.TryLoadDueItems(currentProject);
             }
             catch (CouldNotLoadDatabase)
             {

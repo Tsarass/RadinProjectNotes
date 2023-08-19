@@ -84,8 +84,8 @@ namespace RadinProjectNotes
                 }
             }
 
-            SavedDueItem = new DueItem(_projectCode, txtDescription.Text,
-                dateTimePicker1.Value.ToUniversalTime(), Credentials.Instance.currentUser, emails);
+            SavedDueItem = new DueItem(txtDescription.Text, dateTimePicker1.Value.ToUniversalTime(),
+                Credentials.Instance.currentUser.ID, emails);
 
             DialogResult = DialogResult.OK;
             this.Close();

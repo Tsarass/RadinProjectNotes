@@ -10,6 +10,8 @@ namespace ProjectEmailNotificationService
     {
         static void Main(string[] args)
         {
+
+
             EmailSender.SendEmail();
         }
     }

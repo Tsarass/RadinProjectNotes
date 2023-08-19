@@ -1,7 +1,6 @@
 ﻿using EncryptedDatabaseSerializer;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
@@ -106,7 +105,7 @@ namespace RadinProjectNotes.DatabaseFiles
                     File.SetAttributes(_filepath, FileAttributes.Hidden);
                 }
             }
-            catch (Exception e)
+            catch
             {
                 if (File.Exists(backupFile))
                 {

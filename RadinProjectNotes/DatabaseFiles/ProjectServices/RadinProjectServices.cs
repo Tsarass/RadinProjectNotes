@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RadinProjectNotes.ProjectServices
+namespace RadinProjectNotes.DatabaseFiles.ProjectServices
 {
     /// <summary>
     /// Services provided by the company as a list of categories with their subitems.
@@ -33,7 +33,7 @@ namespace RadinProjectNotes.ProjectServices
         /// Get the number of categories.
         /// </summary>
         /// <returns></returns>
-        public int getCategoriesCount()
+        public int GetCategoriesCount()
         {
             return _serviceCategories.Count;
         }
@@ -42,7 +42,7 @@ namespace RadinProjectNotes.ProjectServices
         /// Get the number of services under the supplied category.
         /// </summary>
         /// <returns></returns>
-        public int getServicesCount(string categoryTitle)
+        public int GetServicesCount(string categoryTitle)
         {
             var existingCategory = _serviceCategories.FirstOrDefault(c => c.Title == categoryTitle);
             if (existingCategory != null)
@@ -57,7 +57,7 @@ namespace RadinProjectNotes.ProjectServices
         /// Get all category titles.
         /// </summary>
         /// <returns></returns>
-        public List<string> getCategoryTitles()
+        public List<string> GetCategoryTitles()
         {
             return _serviceCategories.Select(a => a.Title).ToList();
         }
@@ -76,7 +76,7 @@ namespace RadinProjectNotes.ProjectServices
         /// Add a service category if one with the same title does not already exist.
         /// </summary>
         /// <param name="category"></param>
-        public void addServiceCategory(ServiceCategory category)
+        public void AddServiceCategory(ServiceCategory category)
         {
             if (category != null)
             {
@@ -92,7 +92,7 @@ namespace RadinProjectNotes.ProjectServices
         /// Remove a service category if it exists.
         /// </summary>
         /// <param name="categoryTitle"></param>
-        public void removeServiceCategory(string categoryTitle) 
+        public void RemoveServiceCategory(string categoryTitle) 
         { 
             var existingCategory = _serviceCategories.FirstOrDefault(a => a.Title.Equals(categoryTitle));
             if (existingCategory != null)
@@ -105,14 +105,14 @@ namespace RadinProjectNotes.ProjectServices
         /// Add a service to a category with the supplied title if it exists.
         /// </summary>
         /// <param name="categoryTitle"></param>
-        public void addServiceToCategory(string categoryTitle, string service)
+        public void AddServiceToCategory(string categoryTitle, string service)
         {
             if (string.IsNullOrEmpty(categoryTitle)) return;
             
             var existingCategory = _serviceCategories.FirstOrDefault(a => a.Title.Equals(categoryTitle));
             if (existingCategory != null)
             {
-                existingCategory.addService(service);
+                existingCategory.AddService(service);
             }
         }
 
@@ -127,7 +127,7 @@ namespace RadinProjectNotes.ProjectServices
             var existingCategory = _serviceCategories.FirstOrDefault(a => a.Title.Equals(categoryTitle));
             if (existingCategory != null)
             {
-                existingCategory.removeService(service);
+                existingCategory.RemoveService(service);
             }
         }
     }

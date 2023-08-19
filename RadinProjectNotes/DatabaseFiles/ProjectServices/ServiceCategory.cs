@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RadinProjectNotes.ProjectServices
+namespace RadinProjectNotes.DatabaseFiles.ProjectServices
 {
     /// <summary>
     /// A service category with its subitems.
@@ -26,7 +26,7 @@ namespace RadinProjectNotes.ProjectServices
         /// Add a service to this category if it doesn't exist.
         /// </summary>
         /// <param name="service"></param>
-        public void addService(string service)
+        public void AddService(string service)
         {
             var existingService = _services.FirstOrDefault(a => a.Equals(service));
             if (existingService is null)
@@ -39,7 +39,7 @@ namespace RadinProjectNotes.ProjectServices
         /// Remove a service from this category if it exists.
         /// </summary>
         /// <param name="service"></param>
-        public void removeService(string service) 
+        public void RemoveService(string service) 
         {
             _services.Remove(service);
         }

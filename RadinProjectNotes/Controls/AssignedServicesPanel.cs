@@ -1,10 +1,10 @@
 ﻿using System.Windows.Forms;
 using System.ComponentModel.Design;
 using System.ComponentModel;
-using RadinProjectNotes.ProjectServices;
 using System.Drawing;
 using System;
-using System.Collections.Generic;
+using RadinProjectNotes.DatabaseFiles.ProjectServices;
+using RadinProjectNotes.DatabaseFiles.Controllers;
 
 namespace RadinProjectNotes.Controls
 {
@@ -51,7 +51,7 @@ namespace RadinProjectNotes.Controls
             SetUpServiceColumns(services);
 
             int columnId = 0;
-            foreach (var categoryTitle in services.getCategoryTitles())
+            foreach (var categoryTitle in services.GetCategoryTitles())
             {
                 // Add label as a heading to each.
                 servicePanel.Controls.Add(new Label() { Font = headingFont, Text = categoryTitle, AutoSize = true }, columnId, 0);
@@ -74,7 +74,7 @@ namespace RadinProjectNotes.Controls
 
         private void SetUpServiceColumns(RadinProjectServices services)
         {
-            servicePanel.ColumnCount = services.getCategoriesCount();
+            servicePanel.ColumnCount = services.GetCategoriesCount();
             servicePanel.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 25f);
             for (int i = 1; i < servicePanel.ColumnCount; i++)
             {

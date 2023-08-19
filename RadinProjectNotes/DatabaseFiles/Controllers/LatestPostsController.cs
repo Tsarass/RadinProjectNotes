@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using ProtoBuf;
 using RadinProjectNotes.HelperClasses;
 
-namespace RadinProjectNotes
+namespace RadinProjectNotes.DatabaseFiles.Controllers
 {
     public class LatestPostsController
     {

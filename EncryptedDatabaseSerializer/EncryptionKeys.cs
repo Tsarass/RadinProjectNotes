@@ -5,7 +5,7 @@ namespace EncryptedDatabaseSerializer
     /// <summary>
     /// Encryption keys to be used by the serializer.
     /// </summary>
-    internal class EncryptionKeys
+    public class EncryptionKeys
     {
         private static byte[] _desKey;
         private static byte[] _desIV;

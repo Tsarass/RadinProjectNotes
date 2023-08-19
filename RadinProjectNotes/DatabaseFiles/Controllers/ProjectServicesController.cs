@@ -1,7 +1,7 @@
-﻿using RadinProjectNotes.DatabaseFiles;
+﻿using RadinProjectNotes.DatabaseFiles.ProjectServices;
 using System.IO;
 
-namespace RadinProjectNotes.ProjectServices
+namespace RadinProjectNotes.DatabaseFiles.Controllers
 {
     public static class ProjectServicesController
     {
@@ -19,6 +19,7 @@ namespace RadinProjectNotes.ProjectServices
         /// <summary>
         /// Try to load the project services.
         /// </summary>
+        /// <exception cref="CouldNotLoadDatabase"></exception>
         public static RadinProjectServices TryLoadProjectServices()
         {
             EncryptedDatabaseSerializer<RadinProjectServices>  encryptedDbSerializer = 
@@ -29,9 +30,14 @@ namespace RadinProjectNotes.ProjectServices
                 RadinProjectServices loadedServices = encryptedDbSerializer.LoadDatabase();
                 return loadedServices;
             }
+            catch (DatabaseFileNotFound)
+            {
+                // If the project services file does not exist, create an empty database.
+                return RadinProjectServices.CreateEmpty();
+            }
             catch (CouldNotLoadDatabase)
             {
-                return RadinProjectServices.CreateEmpty();
+                throw;
             }
         }
 
@@ -39,6 +45,7 @@ namespace RadinProjectNotes.ProjectServices
         /// Try to save the project services.
         /// </summary>
         /// <returns>True if the services could be saved.</returns>
+        /// <exception cref="CouldNotSaveDatabase"></exception>
         public static bool TrySaveProjectServices(RadinProjectServices services)
         {
             EncryptedDatabaseSerializer<RadinProjectServices> encryptedDbSerializer =

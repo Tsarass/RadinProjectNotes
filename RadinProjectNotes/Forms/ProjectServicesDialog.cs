@@ -1,4 +1,5 @@
-﻿using RadinProjectNotes.ProjectServices;
+﻿using RadinProjectNotes.DatabaseFiles.Controllers;
+using RadinProjectNotes.DatabaseFiles.ProjectServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace RadinProjectNotes
         {
             lstCategories.Items.Clear();
 
-            foreach (var categoryTitle in serviceCategories.getCategoryTitles())
+            foreach (var categoryTitle in serviceCategories.GetCategoryTitles())
             {
                 lstCategories.Items.Add(categoryTitle);
             }
@@ -72,7 +73,7 @@ namespace RadinProjectNotes
         /// <returns></returns>
         private RadinProjectServices GetDeepCopyOfServiceCategories(RadinProjectServices input)
         {
-            var categoryTitles = input.getCategoryTitles();
+            var categoryTitles = input.GetCategoryTitles();
 
             List<ServiceCategory> serviceCategories = categoryTitles.Select(title =>
             {
@@ -111,7 +112,7 @@ namespace RadinProjectNotes
             if (string.IsNullOrEmpty(txtNewCategory.Text)) return;
 
             ServiceCategory category = new ServiceCategory(txtNewCategory.Text, new List<string>());
-            _serviceCategories.addServiceCategory(category);
+            _serviceCategories.AddServiceCategory(category);
 
             UpdateCategoriesList(_serviceCategories);
 
@@ -127,7 +128,7 @@ namespace RadinProjectNotes
             if (lstCategories.SelectedItems.Count == 0) return;
 
             string categoryTitle = lstCategories.SelectedItem.ToString();
-            _serviceCategories.removeServiceCategory(categoryTitle);
+            _serviceCategories.RemoveServiceCategory(categoryTitle);
 
             UpdateCategoriesList(_serviceCategories);
 
@@ -147,7 +148,7 @@ namespace RadinProjectNotes
             if (string.IsNullOrEmpty(txtNewService.Text)) return;
             if (_selectedCategoryTitle == "") return;
 
-            _serviceCategories.addServiceToCategory(_selectedCategoryTitle, txtNewService.Text);
+            _serviceCategories.AddServiceToCategory(_selectedCategoryTitle, txtNewService.Text);
 
             UpdateCategoriesList(_serviceCategories);
 
@@ -246,19 +247,19 @@ namespace RadinProjectNotes
         private bool ServicesHaveChanged()
         {
             // Compare number of categories.
-            if (_cachedServiceCategories.getCategoriesCount() != _serviceCategories.getCategoriesCount())
+            if (_cachedServiceCategories.GetCategoriesCount() != _serviceCategories.GetCategoriesCount())
             {
                 return true;
             }
 
             // Deep compare.
-            foreach (var categoryTitle in _cachedServiceCategories.getCategoryTitles())
+            foreach (var categoryTitle in _cachedServiceCategories.GetCategoryTitles())
             {
-                var cachedCategory = _serviceCategories.getCategoryTitles().FirstOrDefault(a => a == categoryTitle);
+                var cachedCategory = _serviceCategories.GetCategoryTitles().FirstOrDefault(a => a == categoryTitle);
                 if (cachedCategory != null)
                 {
                     // Compare services.
-                    if (_cachedServiceCategories.getServicesCount(categoryTitle) != _serviceCategories.getServicesCount(categoryTitle))
+                    if (_cachedServiceCategories.GetServicesCount(categoryTitle) != _serviceCategories.GetServicesCount(categoryTitle))
                     {
                         return true;
                     }

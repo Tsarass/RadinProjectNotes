@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using EncryptedDatabaseSerializer;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RadinProjectNotes
 {
@@ -25,6 +22,11 @@ namespace RadinProjectNotes
                 sb.Append(hash[i].ToString("X2"));
             }
             return sb.ToString();
+        }
+
+        internal static void SetUpDatabaseSerializerEncryptionKeys()
+        {
+            EncryptionKeys.SetEncryptionKeys(desKey, desIV);
         }
     }
 }

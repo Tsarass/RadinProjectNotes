@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace RadinProjectNotes.ProjectServices
+namespace RadinProjectNotes.DatabaseFiles.ProjectServices
 {
     /// <summary>
     /// Services assigned to a project.
