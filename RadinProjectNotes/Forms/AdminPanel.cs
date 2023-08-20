@@ -46,7 +46,7 @@ namespace RadinProjectNotes
             }
 
             lstUsers.Items.Clear();
-            foreach (User user in Credentials.Instance.userDatabase)
+            foreach (User user in Credentials.Instance.userDatabase.userData)
             {
                 var item = lstUsers.Items.Add(user.ID.ToString());
                 item.SubItems.Add(user.username);

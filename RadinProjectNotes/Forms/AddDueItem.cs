@@ -1,15 +1,9 @@
 ﻿using RadinProjectNotes.DueItems;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RadinProjectNotes
@@ -29,6 +23,14 @@ namespace RadinProjectNotes
             if (editDueItem != null )
             {
                 setFromExisting(editDueItem);
+                Enum.GetValues(typeof(DueStatus)).Cast<DueStatus>().ToList().ForEach(a => cboStatus.Items.Add(a));
+                cboStatus.SelectedIndex = cboStatus.FindStringExact(editDueItem.DueStatus.ToString());
+                btnAddDueItem.Text = "Edit due item";
+            }
+            else
+            {
+                lblStatus.Visible = false;
+                cboStatus.Visible = false;
             }
         }
 
@@ -84,8 +86,17 @@ namespace RadinProjectNotes
                 }
             }
 
-            SavedDueItem = new DueItem(txtDescription.Text, dateTimePicker1.Value.ToUniversalTime(),
+            // Check if we are editing an existing due item.
+            if (_editDueItem != null)
+            {
+                Enum.TryParse(cboStatus.Text, true, out DueStatus newStatus);
+                _editDueItem.Edit(txtDescription.Text, dateTimePicker1.Value.ToUniversalTime(), emails, newStatus);
+            }
+            else
+            {
+                SavedDueItem = new DueItem(txtDescription.Text, dateTimePicker1.Value.ToUniversalTime(),
                 Credentials.Instance.currentUser.ID, emails);
+            }            
 
             DialogResult = DialogResult.OK;
             this.Close();

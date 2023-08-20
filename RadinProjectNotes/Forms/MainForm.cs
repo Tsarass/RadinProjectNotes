@@ -91,6 +91,7 @@ namespace RadinProjectNotes
 
             // Update panels.
             InitializeServiceHostPanel();
+            InitializeCalendarDueItemPanel();
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -133,6 +134,28 @@ namespace RadinProjectNotes
             servicesHostPanel.Width = flowPanel.Width;
             servicesHostPanel.Anchor = flowPanel.Anchor;
             servicesHostPanel.Visible = false;
+        }
+
+        private void InitializeCalendarDueItemPanel()
+        {
+            // Size services host panel to be the same size and location as the flow panel for notes.
+            calendarDueItemsHostPanel.Location = flowPanel.Location;
+            calendarDueItemsHostPanel.Height = flowPanel.Height;
+            calendarDueItemsHostPanel.Width = flowPanel.Width;
+            calendarDueItemsHostPanel.Anchor = flowPanel.Anchor;
+            calendarDueItemsHostPanel.Visible = false;
+
+            // Subscribe to the events.
+            calendarDueItemsHostPanel.HasListItemSelected += (s, a) =>
+            {
+                btnEditDueItem.Enabled = true;
+                btnDeleteDueItem.Enabled = true;
+            };
+            calendarDueItemsHostPanel.HasNoListItemSelected += (s, a) =>
+            {
+                btnEditDueItem.Enabled = false;
+                btnDeleteDueItem.Enabled = false;
+            };
         }
 
         private void UpdateWindowDescription()
@@ -241,6 +264,7 @@ namespace RadinProjectNotes
             btnPrint.Enabled = true;
             btnOpenFolder.Enabled = true;
             btnProjectInfo.Enabled = true;
+            btnAddDueItem.Enabled = true;
 
             //open notes database
             LoadNotesDatabaseAndUpdatePanel(projectFolder);
@@ -1006,23 +1030,42 @@ namespace RadinProjectNotes
 
         private void tabPanelSwitch_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Make all controls invisible.
+            flowPanel.Visible = false;
+            btnAddComment.Visible = false;
+            btnPrint.Visible = false;
+            servicesHostPanel.Visible = false;
+            calendarDueItemsHostPanel.Visible = false;
+            btnEditDueItem.Visible = false;
+            btnDeleteDueItem.Visible = false;
+            btnAddDueItem.Visible = false;
+
+            // Save services panel if the user chose anything else.
+            if (tabPanelSwitch.SelectedIndex != 1)
+            {
+                servicesHostPanel.ServicesPanelClosing();
+            }
+
             if (tabPanelSwitch.SelectedIndex == 1)
             {
                 servicesHostPanel.UpdateServicesPanel();
 
-                flowPanel.Visible = false;
-                btnAddComment.Visible = false;
-                btnPrint.Visible = false;
                 servicesHostPanel.Visible = true;
+            }
+            else if (tabPanelSwitch.SelectedIndex == 2)
+            {
+                calendarDueItemsHostPanel.UpdateCalendarDueItemsPanel();
+
+                calendarDueItemsHostPanel.Visible = true;
+                btnEditDueItem.Visible = true;
+                btnDeleteDueItem.Visible = true;
+                btnAddDueItem.Visible = true;
             }
             else
             {
-                servicesHostPanel.ServicesPanelClosing();
-
                 flowPanel.Visible = true;
                 btnAddComment.Visible = true;
                 btnPrint.Visible = true;
-                servicesHostPanel.Visible = false;
             }
         }
 
@@ -1034,53 +1077,43 @@ namespace RadinProjectNotes
 
         private void btnNewDueItem_Click(object sender, EventArgs e)
         {
+            if (!Credentials.Instance.currentUser.CanEditCalendarDueItems())
+            {
+                MessageBox.Show("This account has no permission for this action.", "Permission denied",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             AddDueItem frm = new AddDueItem(currentProject);
             var result = frm.ShowDialog();
             if (result == DialogResult.OK)
             {
-                DueItemsDatabase dueItemsDatabase;
-                try
-                {
-                    dueItemsDatabase = DueItemsDatabaseController.TryLoadDueItems(currentProject);
-                }
-                catch (CouldNotLoadDatabase)
-                {
-                    MessageBox.Show("Could not access due items database file. Ensure connection is working and try again.",
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                dueItemsDatabase.Add(frm.SavedDueItem);
-
-                bool couldSave = DueItemsDatabaseController.TrySaveDueItems(currentProject, dueItemsDatabase);
-                if (!couldSave)
-                {
-                    MessageBox.Show("Could not save to due items database file. Ensure connection is working and try again.",
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                calendarDueItemsHostPanel.AddNewDueItem(frm.SavedDueItem);
             }
         }
 
         private void btnEditDueItem_Click(object sender, EventArgs e)
         {
-            DueItemsDatabase dueItemsDatabase;
-            try
+            if (!Credentials.Instance.currentUser.CanEditCalendarDueItems())
             {
-                dueItemsDatabase = DueItemsDatabaseController.TryLoadDueItems(currentProject);
-            }
-            catch (CouldNotLoadDatabase)
-            {
-                MessageBox.Show("Could not access due items database file. Ensure connection is working and try again.",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("This account has no permission for this action.", "Permission denied",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (dueItemsDatabase.DueItems.Count > 0)
+            calendarDueItemsHostPanel.EditSelectedDueItem();
+        }
+
+        private void btnDeleteDueItem_Click(object sender, EventArgs e)
+        {
+            if (!Credentials.Instance.currentUser.CanEditCalendarDueItems())
             {
-                AddDueItem frm = new AddDueItem(currentProject, dueItemsDatabase.DueItems[dueItemsDatabase.DueItems.Count - 1]);
-                var result = frm.ShowDialog();
+                MessageBox.Show("This account has no permission for this action.", "Permission denied",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            calendarDueItemsHostPanel.DeleteSelectedDueItem();
         }
     }
 }

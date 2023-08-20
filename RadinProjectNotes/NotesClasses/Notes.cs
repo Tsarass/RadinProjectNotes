@@ -1,5 +1,4 @@
-﻿using ProtoBuf;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
@@ -63,7 +62,7 @@ namespace RadinProjectNotes
             //required to have simultaneous multi-user access to same project notes
             TryLoadNotesDatabaseInMemory(currentProject);
 
-            Notes.currentNoteData.noteData.Add(newNote);
+            currentNoteData.noteData.Add(newNote);
 
             TrySaveNotesDatabase(currentProject);
         }
@@ -74,7 +73,7 @@ namespace RadinProjectNotes
             var pauseBetweenFailures = TimeSpan.FromMilliseconds(300);
             RetryHelper.RetryOnException(maxRetryAttempts, pauseBetweenFailures, () =>
             {
-                Notes.SaveNotesDatabase(currentNoteData, currentProject);
+                SaveNotesDatabase(currentNoteData, currentProject);
             });
 
         }

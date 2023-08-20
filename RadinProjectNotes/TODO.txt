@@ -3,10 +3,10 @@
 -localisation
 
 [!Important!]
+-migrate serialized databases to protobuf!!!
 -connection checks without program flow disruption
 -code refactoring
 -reset password utility
--Services tab only changes if project changes through search box, make it so that any project reload changes the service tab
 
 [Minor improvements]
 -print orientation
@@ -25,6 +25,7 @@
 [Just an idea]
 
 [Due items]
- -panel control to show due items for projects in main form
+ - edit due item!!!
+  - due item status load and save correctly!!
  -service to monitor due items and send emails
  -save emails as defaults to use for every new due item

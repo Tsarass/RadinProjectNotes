@@ -36,7 +36,9 @@
             this.btnOpenFolder = new System.Windows.Forms.Button();
             this.btnListActiveProjects = new System.Windows.Forms.Button();
             this.btnProjectInfo = new System.Windows.Forms.Button();
-            this.btnNewDueItem = new System.Windows.Forms.Button();
+            this.btnAddDueItem = new System.Windows.Forms.Button();
+            this.btnEditDueItem = new System.Windows.Forms.Button();
+            this.btnDeleteDueItem = new System.Windows.Forms.Button();
             this.versionLabel = new System.Windows.Forms.Label();
             this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
@@ -66,18 +68,19 @@
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.latestPostsImageList = new System.Windows.Forms.ImageList(this.components);
             this.label2 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPanelSwitch = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.calendarDueItemsHostPanel = new RadinProjectNotes.Controls.CalendarDueItems();
             this.servicesHostPanel = new RadinProjectNotes.Controls.AssignedServicesPanel();
             this.projNrBox = new AutoCompleteTextBoxSample.AutoCompleteTextbox();
-            this.btnEditDueItem = new System.Windows.Forms.Button();
             this.mainMenu.SuspendLayout();
             this.trayMenu.SuspendLayout();
             this.latestNotesMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPanelSwitch.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnPrint
@@ -126,15 +129,35 @@
             this.btnProjectInfo.UseVisualStyleBackColor = true;
             this.btnProjectInfo.Click += new System.EventHandler(this.btnProjectInfo_Click);
             // 
-            // btnNewDueItem
+            // btnAddDueItem
             // 
-            resources.ApplyResources(this.btnNewDueItem, "btnNewDueItem");
-            this.btnNewDueItem.BackColor = System.Drawing.SystemColors.Control;
-            this.btnNewDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.add_note;
-            this.btnNewDueItem.Name = "btnNewDueItem";
-            this.toolTips.SetToolTip(this.btnNewDueItem, resources.GetString("btnNewDueItem.ToolTip"));
-            this.btnNewDueItem.UseVisualStyleBackColor = false;
-            this.btnNewDueItem.Click += new System.EventHandler(this.btnNewDueItem_Click);
+            resources.ApplyResources(this.btnAddDueItem, "btnAddDueItem");
+            this.btnAddDueItem.BackColor = System.Drawing.SystemColors.Control;
+            this.btnAddDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.calendar_add;
+            this.btnAddDueItem.Name = "btnAddDueItem";
+            this.toolTips.SetToolTip(this.btnAddDueItem, resources.GetString("btnAddDueItem.ToolTip"));
+            this.btnAddDueItem.UseVisualStyleBackColor = false;
+            this.btnAddDueItem.Click += new System.EventHandler(this.btnNewDueItem_Click);
+            // 
+            // btnEditDueItem
+            // 
+            resources.ApplyResources(this.btnEditDueItem, "btnEditDueItem");
+            this.btnEditDueItem.BackColor = System.Drawing.SystemColors.Control;
+            this.btnEditDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.calendar_edit;
+            this.btnEditDueItem.Name = "btnEditDueItem";
+            this.toolTips.SetToolTip(this.btnEditDueItem, resources.GetString("btnEditDueItem.ToolTip"));
+            this.btnEditDueItem.UseVisualStyleBackColor = false;
+            this.btnEditDueItem.Click += new System.EventHandler(this.btnEditDueItem_Click);
+            // 
+            // btnDeleteDueItem
+            // 
+            resources.ApplyResources(this.btnDeleteDueItem, "btnDeleteDueItem");
+            this.btnDeleteDueItem.BackColor = System.Drawing.SystemColors.Control;
+            this.btnDeleteDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.calendar_delete;
+            this.btnDeleteDueItem.Name = "btnDeleteDueItem";
+            this.toolTips.SetToolTip(this.btnDeleteDueItem, resources.GetString("btnDeleteDueItem.ToolTip"));
+            this.btnDeleteDueItem.UseVisualStyleBackColor = false;
+            this.btnDeleteDueItem.Click += new System.EventHandler(this.btnDeleteDueItem_Click);
             // 
             // versionLabel
             // 
@@ -324,18 +347,12 @@
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = global::RadinProjectNotes.Properties.Resources.search;
-            resources.ApplyResources(this.pictureBox1, "pictureBox1");
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.TabStop = false;
-            // 
             // tabPanelSwitch
             // 
             resources.ApplyResources(this.tabPanelSwitch, "tabPanelSwitch");
             this.tabPanelSwitch.Controls.Add(this.tabPage1);
             this.tabPanelSwitch.Controls.Add(this.tabPage2);
+            this.tabPanelSwitch.Controls.Add(this.tabPage3);
             this.tabPanelSwitch.Multiline = true;
             this.tabPanelSwitch.Name = "tabPanelSwitch";
             this.tabPanelSwitch.SelectedIndex = 0;
@@ -354,6 +371,24 @@
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // tabPage3
+            // 
+            resources.ApplyResources(this.tabPage3, "tabPage3");
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::RadinProjectNotes.Properties.Resources.search;
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.TabStop = false;
+            // 
+            // calendarDueItemsHostPanel
+            // 
+            resources.ApplyResources(this.calendarDueItemsHostPanel, "calendarDueItemsHostPanel");
+            this.calendarDueItemsHostPanel.Name = "calendarDueItemsHostPanel";
+            // 
             // servicesHostPanel
             // 
             this.servicesHostPanel.BackColor = System.Drawing.Color.White;
@@ -371,21 +406,12 @@
             this.projNrBox.AutocompleteListItemSelected += new System.EventHandler(this.projNrBox_ItemSelected);
             this.projNrBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.projNrBox_KeyUp);
             // 
-            // btnEditDueItem
-            // 
-            resources.ApplyResources(this.btnEditDueItem, "btnEditDueItem");
-            this.btnEditDueItem.BackColor = System.Drawing.SystemColors.Control;
-            this.btnEditDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.add_note;
-            this.btnEditDueItem.Name = "btnEditDueItem";
-            this.toolTips.SetToolTip(this.btnEditDueItem, resources.GetString("btnEditDueItem.ToolTip"));
-            this.btnEditDueItem.UseVisualStyleBackColor = false;
-            this.btnEditDueItem.Click += new System.EventHandler(this.btnEditDueItem_Click);
-            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.Controls.Add(this.calendarDueItemsHostPanel);
             this.Controls.Add(this.servicesHostPanel);
             this.Controls.Add(this.tabPanelSwitch);
             this.Controls.Add(this.label2);
@@ -400,11 +426,12 @@
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.btnPrint);
             this.Controls.Add(this.btnEditDueItem);
-            this.Controls.Add(this.btnNewDueItem);
             this.Controls.Add(this.btnAddComment);
             this.Controls.Add(this.btnProjectInfo);
             this.Controls.Add(this.btnListActiveProjects);
             this.Controls.Add(this.btnOpenFolder);
+            this.Controls.Add(this.btnAddDueItem);
+            this.Controls.Add(this.btnDeleteDueItem);
             this.Name = "MainForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
@@ -415,8 +442,8 @@
             this.mainMenu.PerformLayout();
             this.trayMenu.ResumeLayout(false);
             this.latestNotesMenuStrip.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPanelSwitch.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -464,8 +491,11 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private Controls.AssignedServicesPanel servicesHostPanel;
-        private System.Windows.Forms.Button btnNewDueItem;
+        private System.Windows.Forms.Button btnAddDueItem;
         private System.Windows.Forms.Button btnEditDueItem;
+        private System.Windows.Forms.TabPage tabPage3;
+        private Controls.CalendarDueItems calendarDueItemsHostPanel;
+        private System.Windows.Forms.Button btnDeleteDueItem;
     }
 }
 

@@ -48,16 +48,40 @@ namespace RadinProjectNotes.DueItems
         [IgnoreDataMember]
         public Guid Id { get { return _id; } }
         [IgnoreDataMember]
-        public string Description { get { return _description; } }
+        public string Description { get { return _description; } set { _description = value; } }
+        /// <summary>
+        /// Due date in UTC.
+        /// </summary>
         [IgnoreDataMember]
         public DateTime DueDate { get { return new DateTime(_dateDue, DateTimeKind.Utc); } }
+        /// <summary>
+        /// Issued date in UTC.
+        /// </summary>
         [IgnoreDataMember]
         public DateTime IssuedDate { get { return new DateTime(_dateIssued, DateTimeKind.Utc); } }
         [IgnoreDataMember]
-        public Guid CreatedBy { get { return _guidCreatedByUser; } }
+        public Guid CreatedByUserId { get { return _guidCreatedByUser; } }
         [IgnoreDataMember]
         public List<string> EmailsToBeNotified { get {  return _emailsToBeNotified; } }
         [IgnoreDataMember]
         public DueStatus DueStatus { get { return _dueStatus; } }
+
+        public void Edit(string description, DateTime dueDate,
+            List<string> emailsToBeNotified, DueStatus dueStatus)
+        {
+            _description = description;
+            _dueStatus = dueStatus;
+            _emailsToBeNotified = emailsToBeNotified;
+            _dateDue = dueDate.Ticks;
+        }
+
+        /// <summary>
+        /// Check if the due item has expired (it is still pending and the due date has passed).
+        /// </summary>
+        /// <returns></returns>
+        public bool HasExpired()
+        {
+            return _dueStatus == DueStatus.Pending && DateTime.Compare(DateTime.UtcNow, DueDate) > 0;
+        }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using static RadinProjectNotes.UserDatabase;
 
 namespace RadinProjectNotes
 {
@@ -59,7 +60,7 @@ namespace RadinProjectNotes
         private Credentials()
         {
             SuccessfullyLoaded = false;
-            userDatabase = UserDatabase.CreateEmpty();
+            userDatabase = CreateEmpty();
             _encryptedDbSerializer = new EncryptedDatabaseSerializer<UserDatabase>(databaseFile);
         }
 
@@ -75,8 +76,12 @@ namespace RadinProjectNotes
             }
             catch (CouldNotLoadDatabase)
             {
-                userDatabase = UserDatabase.CreateEmpty();
                 SuccessfullyLoaded = false;
+            }
+            catch (DatabaseFileNotFound)
+            {
+                userDatabase = CreateEmpty();
+                SuccessfullyLoaded = true;
             }
         }
 
@@ -112,6 +117,23 @@ namespace RadinProjectNotes
             TrySaveUserDatabase();
 
             return newUser;
+        }
+
+        /// <summary>
+        /// Get the display name of the user with the specified id. If the user is not found, a generic string will be returned.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetUserDisplayNameById(Guid id)
+        {
+            try
+            {
+                return FindUserById(id).displayName;
+            }
+            catch (UserNotFound)
+            {
+                return "<User deleted>";
+            }
         }
 
         public User FindUserById(Guid id)

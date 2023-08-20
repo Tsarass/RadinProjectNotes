@@ -5,6 +5,7 @@ using System.Drawing;
 using System;
 using RadinProjectNotes.DatabaseFiles.ProjectServices;
 using RadinProjectNotes.DatabaseFiles.Controllers;
+using RadinProjectNotes.DatabaseFiles;
 
 namespace RadinProjectNotes.Controls
 {
@@ -46,8 +47,19 @@ namespace RadinProjectNotes.Controls
             // Clear panel.
             ClearServicesPanel();
 
-            _cachedAssignedServices = ProjectAssignedServicesController.TryLoadProjectServices(MainForm.currentProject);
-            RadinProjectServices services = ProjectServicesController.TryLoadProjectServices();
+            RadinProjectServices services;
+            try
+            {
+                _cachedAssignedServices = ProjectAssignedServicesController.TryLoadProjectServices(MainForm.currentProject);
+                services = ProjectServicesController.TryLoadProjectServices();
+            }
+            catch (CouldNotLoadDatabase)
+            {
+                MessageBox.Show("Could not access the services database. Check connection and try again.", "Connection failed",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
             SetUpServiceColumns(services);
 
             int columnId = 0;

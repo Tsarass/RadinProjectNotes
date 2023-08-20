@@ -1,7 +1,6 @@
 ﻿using ProtoBuf;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace RadinProjectNotes
 {
@@ -103,16 +102,7 @@ namespace RadinProjectNotes
                 get
                 {
                     //find the guid of the user
-                    Guid id = this.userCreated.ID;
-                    try
-                    {
-                        User user = Credentials.Instance.FindUserById(id);
-                        return user.displayName;
-                    }
-                    catch (UserDatabase.UserNotFound)
-                    {
-                        return "<Unknown user>";
-                    }
+                    return Credentials.Instance.GetUserDisplayNameById(this.userCreated.ID);
                 }
             }
 

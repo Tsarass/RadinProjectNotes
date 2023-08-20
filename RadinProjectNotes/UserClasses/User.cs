@@ -148,6 +148,15 @@ namespace RadinProjectNotes
             return IsAdmin || permissions.HasFlag(Permissions.EditProjectServices);
         }
 
+        /// <summary>
+        /// Checks if the user can edit calendar due items.
+        /// </summary>
+        /// <returns></returns>
+        public bool CanEditCalendarDueItems()
+        {
+            return IsAdmin || permissions.HasFlag(Permissions.EditCalendarDueItems);
+        }
+
         public void ResetPassword()
         {
             this.password = Security.ResetPassword;

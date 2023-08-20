@@ -121,12 +121,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoUpdater.cs" />
+    <Compile Include="Controls\CalendarDueItemsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CalendarDueItemsPanel.Designer.cs">
+      <DependentUpon>CalendarDueItemsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AssignedServicesPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\AssignedServicesPanel.Designer.cs">
       <DependentUpon>AssignedServicesPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="HelperClasses\ListviewItemDateTimeComparer.cs" />
     <Compile Include="DatabaseFiles\Controllers\DueItemsDatabaseController.cs" />
     <Compile Include="Forms\AddDueItem.cs">
       <SubType>Form</SubType>
@@ -251,6 +258,9 @@
     <Compile Include="UserClasses\UserDatabase.cs" />
     <Compile Include="UserClasses\Permissions.cs" />
     <Compile Include="Versioning.cs" />
+    <EmbeddedResource Include="Controls\CalendarDueItemsPanel.resx">
+      <DependentUpon>CalendarDueItemsPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\AssignedServicesPanel.resx">
       <DependentUpon>AssignedServicesPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -353,6 +363,9 @@
     <None Include="icons\search.png" />
     <None Include="icons\filter.png" />
     <None Include="icons\info.png" />
+    <None Include="icons\calendar_add.png" />
+    <None Include="icons\calendar_edit.png" />
+    <None Include="icons\calendar_delete.png" />
     <Content Include="icons\unknown-file.png" />
     <EmbeddedResource Include="icons\unknown-file.ico" />
     <Content Include="notes.ico" />
