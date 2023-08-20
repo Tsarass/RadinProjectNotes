@@ -2,18 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 
 
 namespace EncryptedDatabaseSerializer
 {
     /// <summary>
-    /// Serialize and encrypt any serializable class to a file.<br/>
+    /// Serialize and encrypt any serializable class to a file usign protobuf.<br/>
     /// Supports simultaneous user access to the same file with the Try... functions.
     /// </summary>
     /// <typeparam name="T">Type of class instance to serialize.</typeparam>
-    public class EncryptedDatabaseSerializer<T>
+    public class EncryptedDatabaseProtobufSerializer<T>
     {
         private string _filepath;
         private bool _hideDatabaseFile;
@@ -24,7 +23,7 @@ namespace EncryptedDatabaseSerializer
         /// </summary>
         /// <param name="filepath"></param>
         /// <param name="hideDatabaseFile"></param>
-        public EncryptedDatabaseSerializer(string filepath, bool hideDatabaseFile = true)
+        public EncryptedDatabaseProtobufSerializer(string filepath, bool hideDatabaseFile = true)
         {
             _filepath = filepath;
             _hideDatabaseFile = hideDatabaseFile;
@@ -96,8 +95,7 @@ namespace EncryptedDatabaseSerializer
                 using (var fs = new FileStream(_filepath, FileMode.Create, FileAccess.Write))
                 using (var cryptoStream = new CryptoStream(fs, des.CreateEncryptor(EncryptionKeys.DesKey, EncryptionKeys.DesIV), CryptoStreamMode.Write))
                 {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(cryptoStream, dataStructure);
+                    ProtoBuf.Serializer.Serialize(cryptoStream, dataStructure);
                 }
 
                 if (_hideDatabaseFile)
@@ -140,8 +138,7 @@ namespace EncryptedDatabaseSerializer
                 using (var fs = new FileStream(_filepath, FileMode.Open, FileAccess.Read))
                 using (var cryptoStream = new CryptoStream(fs, des.CreateDecryptor(EncryptionKeys.DesKey, EncryptionKeys.DesIV), CryptoStreamMode.Read))
                 {
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    return (T)formatter.Deserialize(cryptoStream);
+                    return ProtoBuf.Serializer.Deserialize<T>(cryptoStream);
                 }
             }
             catch

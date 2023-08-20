@@ -3,10 +3,10 @@ using System.ComponentModel.Design;
 using System.ComponentModel;
 using System;
 using RadinProjectNotes.DatabaseFiles.Controllers;
-using RadinProjectNotes.DueItems;
-using RadinProjectNotes.DatabaseFiles;
 using RadinProjectNotes.HelperClasses;
 using System.Drawing;
+using DueItems;
+using EncryptedDatabaseSerializer;
 
 namespace RadinProjectNotes.Controls
 {

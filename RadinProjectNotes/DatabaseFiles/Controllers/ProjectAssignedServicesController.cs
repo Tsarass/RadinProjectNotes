@@ -1,4 +1,5 @@
 ﻿
+using EncryptedDatabaseSerializer;
 using RadinProjectNotes.DatabaseFiles.ProjectServices;
 
 namespace RadinProjectNotes.DatabaseFiles.Controllers

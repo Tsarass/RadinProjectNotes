@@ -1,4 +1,4 @@
-﻿using RadinProjectNotes.DueItems;
+﻿using DueItems;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -90,7 +90,8 @@ namespace RadinProjectNotes
             if (_editDueItem != null)
             {
                 Enum.TryParse(cboStatus.Text, true, out DueStatus newStatus);
-                _editDueItem.Edit(txtDescription.Text, dateTimePicker1.Value.ToUniversalTime(), emails, newStatus);
+                DueItemState newDueItemState = new DueItemState(txtDescription.Text, dateTimePicker1.Value.ToUniversalTime(), newStatus, emails);
+                _editDueItem.Edit(Credentials.Instance.currentUser.ID, newDueItemState);
             }
             else
             {

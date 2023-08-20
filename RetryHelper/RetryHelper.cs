@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace RadinProjectNotes
+namespace RetryOnExceptionHelper
 {
     /// <inheritdoc cref="RetryHelper"/>
     public class RetryHelper<T>

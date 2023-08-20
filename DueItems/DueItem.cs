@@ -1,10 +1,11 @@
-﻿using System;
+﻿using DueItems;
+using ProtoBuf;
+using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 
-namespace RadinProjectNotes.DueItems
+namespace DueItems
 {
-    [Serializable]
+    [ProtoContract]
     public enum DueStatus
     {
         Pending = 0,    // An item that is pending.
@@ -15,16 +16,25 @@ namespace RadinProjectNotes.DueItems
     /// <summary>
     /// Represents an item with a description that is due on a specific date.
     /// </summary>
-    [Serializable]
+    [ProtoContract]
     public class DueItem
     {
+        [ProtoMember(1)]
         private Guid _id;
+        [ProtoMember(2)]
         private string _description;
+        [ProtoMember(3)]
         private long _dateIssued;
+        [ProtoMember(4)]
         private long _dateDue;
+        [ProtoMember(5)]
         private Guid _guidCreatedByUser;
+        [ProtoMember(6)]
         private DueStatus _dueStatus;
+        [ProtoMember(7)]
         private List<string> _emailsToBeNotified;
+        [ProtoMember(8)]
+        private List<DueItemHistoryAction> _historyActions;
 
         /// <summary>
         /// Create a new due item for a project.
@@ -43,36 +53,45 @@ namespace RadinProjectNotes.DueItems
             _dateIssued = DateTime.UtcNow.Ticks;
             _dueStatus = DueStatus.Pending;
             _id = Guid.NewGuid();
+
+            // Add a history action for the creation of this due item.
+            _historyActions = new List<DueItemHistoryAction>();
+            DueItemState stateAtCreation = new DueItemState(_description, dueDate, _dueStatus, _emailsToBeNotified);
+            _historyActions.Add(new DueItemHistoryAction(guidCreatedByUser, DueItemHistoryActionType.Created, stateAtCreation));
         }
 
-        [IgnoreDataMember]
+        [ProtoIgnore]
         public Guid Id { get { return _id; } }
-        [IgnoreDataMember]
+        [ProtoIgnore]
         public string Description { get { return _description; } set { _description = value; } }
         /// <summary>
         /// Due date in UTC.
         /// </summary>
-        [IgnoreDataMember]
+        [ProtoIgnore]
         public DateTime DueDate { get { return new DateTime(_dateDue, DateTimeKind.Utc); } }
         /// <summary>
         /// Issued date in UTC.
         /// </summary>
-        [IgnoreDataMember]
+        [ProtoIgnore]
         public DateTime IssuedDate { get { return new DateTime(_dateIssued, DateTimeKind.Utc); } }
-        [IgnoreDataMember]
+        [ProtoIgnore]
         public Guid CreatedByUserId { get { return _guidCreatedByUser; } }
-        [IgnoreDataMember]
+        [ProtoIgnore]
         public List<string> EmailsToBeNotified { get {  return _emailsToBeNotified; } }
-        [IgnoreDataMember]
+        [ProtoIgnore]
         public DueStatus DueStatus { get { return _dueStatus; } }
+        [ProtoIgnore]
+        public List<DueItemHistoryAction> HistoryActions { get { return _historyActions; } }
 
-        public void Edit(string description, DateTime dueDate,
-            List<string> emailsToBeNotified, DueStatus dueStatus)
+        public void Edit(Guid userId, DueItemState newDueItemState)
         {
-            _description = description;
-            _dueStatus = dueStatus;
-            _emailsToBeNotified = emailsToBeNotified;
-            _dateDue = dueDate.Ticks;
+            _description = newDueItemState.Description;
+            _dueStatus = newDueItemState.DueStatus;
+            _emailsToBeNotified = newDueItemState.EmailsToBeNotified;
+            _dateDue = newDueItemState.DueDate.Ticks;
+
+            // Add a history action for the editing of this due item.
+            _historyActions.Add(new DueItemHistoryAction(userId, DueItemHistoryActionType.Edited, newDueItemState));
         }
 
         /// <summary>

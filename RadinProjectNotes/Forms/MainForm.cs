@@ -7,9 +7,9 @@ using System.Reflection;
 using System.Windows.Forms;
 using RadinProjectNotes.DatabaseFiles;
 using RadinProjectNotes.DatabaseFiles.Controllers;
-using RadinProjectNotes.DueItems;
 using RadinProjectNotes.Forms;
 using RadinProjectNotes.HelperClasses;
+using RetryOnExceptionHelper;
 
 namespace RadinProjectNotes
 {

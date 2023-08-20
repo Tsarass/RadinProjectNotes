@@ -24,7 +24,7 @@ namespace AutoUpdate
             {
                 fv = FileVersionInfo.GetVersionInfo(candidate);
             }
-            catch (Exception e)
+            catch
             {
                 Console.WriteLine($"Could not get assembly info on {original}. Aborting update of file.");
                 return false;

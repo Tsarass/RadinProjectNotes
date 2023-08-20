@@ -4,6 +4,9 @@
 
 [!Important!]
 -migrate serialized databases to protobuf!!!
+ -UserDatabase
+ -ProjectServices
+ -ProjectAssignedServices
 -connection checks without program flow disruption
 -code refactoring
 -reset password utility

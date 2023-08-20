@@ -1,14 +1,14 @@
-﻿using System;
+﻿using ProtoBuf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 
-namespace RadinProjectNotes.DueItems
+namespace DueItems
 {
     /// <summary>
     /// Global database of due items.
     /// </summary>
-    [Serializable]
+    [ProtoContract]
     public class DueItemsDatabase
     {
         public static DueItemsDatabase CreateEmpty()
@@ -16,11 +16,12 @@ namespace RadinProjectNotes.DueItems
             return new DueItemsDatabase();
         }
 
+        [ProtoMember(1)]
         private List<DueItem> _dueItems = new List<DueItem>();
 
         private DueItemsDatabase() { }
-        
-        [IgnoreDataMember]
+
+        [ProtoIgnore]
         public List<DueItem> DueItems { get { return _dueItems; } }
 
         public void Add(DueItem item)
@@ -45,19 +46,29 @@ namespace RadinProjectNotes.DueItems
             }
         }
 
-        public void Edit(DueItem item, string description, DateTime dueDate,
-            List<string> emailsToBeNotified, DueStatus dueStatus)
+        /// <summary>
+        /// Edit the state of this due item.
+        /// </summary>
+        /// <param name="userId">User who committed the new state.</param>
+        /// <param name="item">Due item.</param>
+        /// <param name="newDueItemState">New state for this due item.</param>
+        public void Edit(Guid userId, DueItem item, DueItemState newDueItemState)
         {
-            Edit(item.Id, description, dueDate, emailsToBeNotified, dueStatus);
+            Edit(userId, item.Id, newDueItemState);
         }
 
-        public void Edit(Guid itemId, string description, DateTime dueDate,
-            List<string> emailsToBeNotified, DueStatus dueStatus)
+        /// <summary>
+        /// Edit the state of this due item.
+        /// </summary>
+        /// <param name="userId">User who committed the new state.</param>
+        /// <param name="itemId">Due item id.</param>
+        /// <param name="newDueItemState">New state for this due item.</param>
+        public void Edit(Guid userId, Guid itemId, DueItemState newDueItemState)
         {
             var hit = FindById(itemId);
             if (hit != null)
             {
-                hit.Edit(description, dueDate, emailsToBeNotified, dueStatus);
+                hit.Edit(userId, newDueItemState);
             }
         }
 
