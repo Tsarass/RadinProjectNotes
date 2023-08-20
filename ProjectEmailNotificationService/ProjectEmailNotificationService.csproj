@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,16 +45,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmailSender.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="ProcessedDueItemsController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProcessedDueItem.cs" />
+    <Compile Include="ProcessedDueItemsDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DueItems\DueItems.csproj">
+      <Project>{fb7af5b0-5124-43de-9c8a-6ab4f81479f6}</Project>
+      <Name>DueItems</Name>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\EncryptedDatabaseSerializer\EncryptedDatabaseSerializer.csproj">
       <Project>{9a8bcf19-4342-463b-a67c-e51fcd7c86dc}</Project>
       <Name>EncryptedDatabaseSerializer</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\RetryHelper\RetryHelper.csproj">
+      <Project>{22f3e461-a031-4039-9d7e-f40d34d91638}</Project>
+      <Name>RetryHelper</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

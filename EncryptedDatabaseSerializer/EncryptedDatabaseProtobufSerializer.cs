@@ -37,7 +37,7 @@ namespace EncryptedDatabaseSerializer
         {
             if (!File.Exists(_filepath))
             {
-                throw new CouldNotLoadDatabase();
+                throw new DatabaseFileNotFound();
             }
 
             var maxRetryAttempts = 30;
@@ -91,7 +91,6 @@ namespace EncryptedDatabaseSerializer
                     File.Copy(_filepath, backupFile, overwrite: true);
                     File.Delete(_filepath);
                 }
-                File.Delete(_filepath);
                 using (var fs = new FileStream(_filepath, FileMode.Create, FileAccess.Write))
                 using (var cryptoStream = new CryptoStream(fs, des.CreateEncryptor(EncryptionKeys.DesKey, EncryptionKeys.DesIV), CryptoStreamMode.Write))
                 {

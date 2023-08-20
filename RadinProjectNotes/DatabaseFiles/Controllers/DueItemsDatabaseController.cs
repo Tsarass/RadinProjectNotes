@@ -19,12 +19,12 @@ namespace RadinProjectNotes.DatabaseFiles.Controllers
         /// <exception cref="CouldNotLoadDatabase"></exception>
         public static DueItemsDatabase TryLoadDueItems(ProjectFolder projectFolder)
         {
-            EncryptedDatabaseSerializer<DueItemsDatabase> encryptedDbSerializer =
-                new EncryptedDatabaseSerializer<DueItemsDatabase>(GetDueItemsFilePath(projectFolder));
+            EncryptedDatabaseProtobufSerializer<DueItemsDatabase> encryptedDbSerializer =
+                new EncryptedDatabaseProtobufSerializer<DueItemsDatabase>(GetDueItemsFilePath(projectFolder));
 
             try
             {
-                DueItemsDatabase loadedServices = encryptedDbSerializer.LoadDatabase();
+                DueItemsDatabase loadedServices = encryptedDbSerializer.TryLoadDatabase();
                 return loadedServices;
             }
             catch (CouldNotLoadDatabase)
@@ -45,12 +45,12 @@ namespace RadinProjectNotes.DatabaseFiles.Controllers
         /// <exception cref="CouldNotSaveDatabase"></exception>
         public static bool TrySaveDueItems(ProjectFolder projectFolder, DueItemsDatabase dueItemsDatabase)
         {
-            EncryptedDatabaseSerializer<DueItemsDatabase> encryptedDbSerializer =
-                new EncryptedDatabaseSerializer<DueItemsDatabase>(GetDueItemsFilePath(projectFolder));
+            EncryptedDatabaseProtobufSerializer<DueItemsDatabase> encryptedDbSerializer =
+                new EncryptedDatabaseProtobufSerializer<DueItemsDatabase>(GetDueItemsFilePath(projectFolder));
 
             try
             {
-                encryptedDbSerializer.SaveDatabase(dueItemsDatabase);
+                encryptedDbSerializer.TrySaveDatabase(dueItemsDatabase);
                 return true;
             }
             catch (CouldNotSaveDatabase)

@@ -11,7 +11,7 @@ namespace ProjectEmailNotificationService
     internal class EmailSender
     {
 
-        public static void SendEmail()
+        public static void SendEmail(string content)
         {
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
@@ -20,7 +20,7 @@ namespace ProjectEmailNotificationService
                 EnableSsl = true,
             };
 
-            smtpClient.Send("christsaridis@gmail.com", "rr_tsaras@hotmail.com", "AUTOMATED MAIL", "HELLO!!");
+            smtpClient.Send("christsaridis@gmail.com", "rr_tsaras@hotmail.com", "AUTOMATED MAIL", content);
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using DueItems;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -10,31 +8,28 @@ namespace RadinProjectNotes
 {
     public partial class AddDueItem : Form
     {
-        private string _projectCode;
         DueItem _editDueItem;
 
-        public AddDueItem(ProjectFolder projectFolder, DueItem editDueItem = null)
+        public AddDueItem(DueItem editDueItem = null)
         {
             InitializeComponent();
 
-            _projectCode = GetProjectCode(projectFolder);
             _editDueItem = editDueItem;
 
             if (editDueItem != null )
             {
                 setFromExisting(editDueItem);
-                Enum.GetValues(typeof(DueStatus)).Cast<DueStatus>().ToList().ForEach(a => cboStatus.Items.Add(a));
-                cboStatus.SelectedIndex = cboStatus.FindStringExact(editDueItem.DueStatus.ToString());
                 btnAddDueItem.Text = "Edit due item";
             }
             else
             {
                 lblStatus.Visible = false;
-                cboStatus.Visible = false;
+                txtStatus.Visible = false;
             }
         }
 
         public DueItem SavedDueItem { get; set; }
+        public DueItemState EditedDueItemState { get; set; }
 
         /// <summary>
         /// Set the form control data according to an existing due item.
@@ -45,20 +40,7 @@ namespace RadinProjectNotes
             txtDescription.Text = editDueItem.Description;
             dateTimePicker1.Value = editDueItem.DueDate.ToUniversalTime();
             editDueItem.EmailsToBeNotified.ForEach(a => lstEmails.Items.Add(a));
-        }
-
-        /// <summary>
-        /// Get the code for a project.
-        /// </summary>
-        /// <param name="projectFolder"></param>
-        /// <returns></returns>
-        private string GetProjectCode(ProjectFolder projectFolder)
-        {
-            if (projectFolder.projectPath.Length < 9)
-            {
-                return projectFolder.projectPath;
-            }
-            return projectFolder.projectPath.Substring(0, 9);
+            txtStatus.Text = editDueItem.GetStatusText();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -89,9 +71,8 @@ namespace RadinProjectNotes
             // Check if we are editing an existing due item.
             if (_editDueItem != null)
             {
-                Enum.TryParse(cboStatus.Text, true, out DueStatus newStatus);
-                DueItemState newDueItemState = new DueItemState(txtDescription.Text, dateTimePicker1.Value.ToUniversalTime(), newStatus, emails);
-                _editDueItem.Edit(Credentials.Instance.currentUser.ID, newDueItemState);
+                EditedDueItemState = new DueItemState(txtDescription.Text, dateTimePicker1.Value.ToUniversalTime(),
+                    _editDueItem.DueStatus, emails);
             }
             else
             {

@@ -18,7 +18,6 @@ namespace NotesBackupService
 
             //if backup directory doesnt exist, create it
             DirectoryInfo di = new DirectoryInfo(backupDirectory);
-            DirectoryInfo di2 = new DirectoryInfo(baseDirectory);
             if (!di.Exists)
             {
                 di.Create();

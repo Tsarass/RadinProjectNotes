@@ -8,9 +8,12 @@ namespace DueItems
     [ProtoContract]
     public enum DueStatus
     {
-        Pending = 0,    // An item that is pending.
-        Complete = 1,   // An item that is complete.
-        Transferred = 2 // An item whose due date was transferred to a later date (will never complete)
+        /// <summary>An item that is pending.</summary>
+        Pending = 0,
+        /// <summary>An item whose due date was transferred to a later date.</summary>
+        Transferred = 1,
+        /// <summary>An item that was cancelled.</summary>
+        Cancelled = 2
     }
 
     /// <summary>
@@ -26,7 +29,7 @@ namespace DueItems
         [ProtoMember(3)]
         private long _dateIssued;
         [ProtoMember(4)]
-        private long _dateDue;
+        private long _dueDate;
         [ProtoMember(5)]
         private Guid _guidCreatedByUser;
         [ProtoMember(6)]
@@ -35,6 +38,13 @@ namespace DueItems
         private List<string> _emailsToBeNotified;
         [ProtoMember(8)]
         private List<DueItemHistoryAction> _historyActions;
+        [ProtoMember(9)]
+        private bool _isCompleted;
+
+        public DueItem()
+        {
+            // Parameterless constructor for protobuf.
+        }
 
         /// <summary>
         /// Create a new due item for a project.
@@ -46,12 +56,13 @@ namespace DueItems
         public DueItem(string description, DateTime dueDate, Guid guidCreatedByUser, List<string> emailsToBeNotified)
         {
             _description = description;
-            _dateDue = dueDate.Ticks;
+            _dueDate = dueDate.Ticks;
             _guidCreatedByUser = guidCreatedByUser;
             _emailsToBeNotified = emailsToBeNotified;
 
             _dateIssued = DateTime.UtcNow.Ticks;
             _dueStatus = DueStatus.Pending;
+            _isCompleted = false;
             _id = Guid.NewGuid();
 
             // Add a history action for the creation of this due item.
@@ -68,7 +79,7 @@ namespace DueItems
         /// Due date in UTC.
         /// </summary>
         [ProtoIgnore]
-        public DateTime DueDate { get { return new DateTime(_dateDue, DateTimeKind.Utc); } }
+        public DateTime DueDate { get { return new DateTime(_dueDate, DateTimeKind.Utc); } }
         /// <summary>
         /// Issued date in UTC.
         /// </summary>
@@ -77,21 +88,39 @@ namespace DueItems
         [ProtoIgnore]
         public Guid CreatedByUserId { get { return _guidCreatedByUser; } }
         [ProtoIgnore]
-        public List<string> EmailsToBeNotified { get {  return _emailsToBeNotified; } }
+        public List<string> EmailsToBeNotified {
+            get {
+                if (_emailsToBeNotified is null)
+                {
+                    _emailsToBeNotified = new List<string>();
+                }
+                return _emailsToBeNotified;
+            }
+        }
         [ProtoIgnore]
         public DueStatus DueStatus { get { return _dueStatus; } }
         [ProtoIgnore]
         public List<DueItemHistoryAction> HistoryActions { get { return _historyActions; } }
+        [ProtoIgnore]
+        public bool IsCompleted { get { return _isCompleted; } }
 
         public void Edit(Guid userId, DueItemState newDueItemState)
         {
             _description = newDueItemState.Description;
             _dueStatus = newDueItemState.DueStatus;
             _emailsToBeNotified = newDueItemState.EmailsToBeNotified;
-            _dateDue = newDueItemState.DueDate.Ticks;
+            _dueDate = newDueItemState.DueDate.Ticks;
 
             // Add a history action for the editing of this due item.
             _historyActions.Add(new DueItemHistoryAction(userId, DueItemHistoryActionType.Edited, newDueItemState));
+        }
+
+        /// <summary>
+        /// Set the completed status of this due item.
+        /// </summary>
+        public void SetCompletedStatus(bool completed)
+        {
+            _isCompleted = completed;
         }
 
         /// <summary>
@@ -100,7 +129,17 @@ namespace DueItems
         /// <returns></returns>
         public bool HasExpired()
         {
-            return _dueStatus == DueStatus.Pending && DateTime.Compare(DateTime.UtcNow, DueDate) > 0;
+            double daysUntilDueDate = DueDate.Subtract(DateTime.UtcNow).TotalDays;
+            return _dueStatus == DueStatus.Pending && daysUntilDueDate < -1;
+        }
+
+        /// <summary>
+        /// Get the status text for this due item.
+        /// </summary>
+        /// <returns>"Complete" if it is completed otherwise the due status.</returns>
+        public string GetStatusText()
+        {
+            return IsCompleted ? "Complete" : DueStatus.ToString();
         }
     }
 }

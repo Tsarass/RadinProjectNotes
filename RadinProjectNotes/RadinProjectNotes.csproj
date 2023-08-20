@@ -253,6 +253,12 @@
     <Compile Include="Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UIMessageBoxes.cs" />
     <Compile Include="UserClasses\Credentials.cs" />
     <Compile Include="UserClasses\User.cs" />
     <Compile Include="UserClasses\UserDatabase.cs" />
@@ -318,14 +324,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
@@ -366,6 +367,8 @@
     <None Include="icons\calendar_add.png" />
     <None Include="icons\calendar_edit.png" />
     <None Include="icons\calendar_delete.png" />
+    <None Include="icons\check.png" />
+    <None Include="icons\uncheck.png" />
     <Content Include="icons\unknown-file.png" />
     <EmbeddedResource Include="icons\unknown-file.ico" />
     <Content Include="notes.ico" />

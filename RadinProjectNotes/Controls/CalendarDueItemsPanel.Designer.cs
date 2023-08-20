@@ -49,10 +49,9 @@
             this.calendarListView.FullRowSelect = true;
             this.calendarListView.GridLines = true;
             this.calendarListView.HideSelection = false;
-            this.calendarListView.Location = new System.Drawing.Point(4, 4);
-            this.calendarListView.Margin = new System.Windows.Forms.Padding(4);
+            this.calendarListView.Location = new System.Drawing.Point(3, 3);
             this.calendarListView.Name = "calendarListView";
-            this.calendarListView.Size = new System.Drawing.Size(719, 326);
+            this.calendarListView.Size = new System.Drawing.Size(644, 266);
             this.calendarListView.TabIndex = 0;
             this.calendarListView.UseCompatibleStateImageBehavior = false;
             this.calendarListView.View = System.Windows.Forms.View.Details;
@@ -67,11 +66,12 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "Due date";
-            this.columnHeader2.Width = 93;
+            this.columnHeader2.Width = 100;
             // 
             // columnHeader3
             // 
             this.columnHeader3.Text = "Status";
+            this.columnHeader3.Width = 91;
             // 
             // columnHeader4
             // 
@@ -86,21 +86,19 @@
             this.tableLayoutPanel.Controls.Add(this.calendarListView, 0, 0);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 1;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.Size = new System.Drawing.Size(727, 334);
+            this.tableLayoutPanel.Size = new System.Drawing.Size(650, 271);
             this.tableLayoutPanel.TabIndex = 6;
             // 
             // CalendarDueItems
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "CalendarDueItems";
-            this.Size = new System.Drawing.Size(727, 334);
+            this.Size = new System.Drawing.Size(650, 271);
             this.tableLayoutPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 

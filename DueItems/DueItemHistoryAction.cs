@@ -22,6 +22,11 @@ namespace DueItems
         [ProtoMember(4)]
         private long _actionTime;
 
+        public DueItemHistoryAction()
+        {
+            // Parameterless constructor for protobuf.
+        }
+
         /// <summary>
         /// Create a new history action for a due item.
         /// </summary>

@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace NotesBackupService
+namespace ProjectEmailNotificationService
 {
     public class Logger
     {
-        static readonly string logFilename = @"backup.log";
+        static readonly string logFilename = @"service.log";
 
         private static string LogFilePath
         {
             get
             {
-                return Path.Combine(AppdataFolder(), logFilename);
+                return Path.Combine(ProcessedDueItemsController.AppdataFolder, logFilename);
             }
         }
 
@@ -46,19 +46,6 @@ namespace NotesBackupService
                     writer.WriteLine(entry);
                 }
             }
-        }
-
-        public static string AppdataFolder()
-        {
-            string path = @"%appdata%\NotesBackupService";
-            path = Environment.ExpandEnvironmentVariables(path);
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            return path;
         }
 
     }

@@ -19,6 +19,11 @@ namespace DueItems
         [ProtoMember(4)]
         private List<string> _emailsToBeNotified;
 
+        public DueItemState()
+        {
+            // Parameterless constructor for protobuf.
+        }
+
         /// <summary>
         /// Create a new state for a due item.
         /// </summary>

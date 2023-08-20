@@ -72,6 +72,11 @@ namespace DueItems
             }
         }
 
+        /// <summary>
+        /// Find a due item with the supplied id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>The due item with the supplied id or null if not found.</returns>
         public DueItem FindById(Guid id)
         {
             return _dueItems.FirstOrDefault(a => a.Id == id);

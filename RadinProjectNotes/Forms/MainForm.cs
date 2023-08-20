@@ -150,11 +150,26 @@ namespace RadinProjectNotes
             {
                 btnEditDueItem.Enabled = true;
                 btnDeleteDueItem.Enabled = true;
+                btnDueItemSetAsComplete.Enabled = true;
+                btnDueItemSetAsIncomplete.Enabled = true;
+                btnDueItemSetAsComplete.Visible = false;
+                btnDueItemSetAsIncomplete.Visible = false;
+                if (calendarDueItemsHostPanel.SelectedDueItem.IsCompleted)
+                {
+                    btnDueItemSetAsIncomplete.Visible = true;
+                }
+                else
+                {
+                    btnDueItemSetAsComplete.Visible = true;
+                }
             };
+
             calendarDueItemsHostPanel.HasNoListItemSelected += (s, a) =>
             {
                 btnEditDueItem.Enabled = false;
                 btnDeleteDueItem.Enabled = false;
+                btnDueItemSetAsComplete.Enabled = false;
+                btnDueItemSetAsIncomplete.Enabled = false;
             };
         }
 
@@ -1039,6 +1054,8 @@ namespace RadinProjectNotes
             btnEditDueItem.Visible = false;
             btnDeleteDueItem.Visible = false;
             btnAddDueItem.Visible = false;
+            btnDueItemSetAsComplete.Visible = false;
+            btnDueItemSetAsIncomplete.Visible = false;
 
             // Save services panel if the user chose anything else.
             if (tabPanelSwitch.SelectedIndex != 1)
@@ -1060,6 +1077,8 @@ namespace RadinProjectNotes
                 btnEditDueItem.Visible = true;
                 btnDeleteDueItem.Visible = true;
                 btnAddDueItem.Visible = true;
+                btnDueItemSetAsComplete.Visible = true;
+                btnDueItemSetAsIncomplete.Visible = true;
             }
             else
             {
@@ -1084,7 +1103,7 @@ namespace RadinProjectNotes
                 return;
             }
 
-            AddDueItem frm = new AddDueItem(currentProject);
+            AddDueItem frm = new AddDueItem();
             var result = frm.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -1096,8 +1115,7 @@ namespace RadinProjectNotes
         {
             if (!Credentials.Instance.currentUser.CanEditCalendarDueItems())
             {
-                MessageBox.Show("This account has no permission for this action.", "Permission denied",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                UIMessageBoxes.NoPermissionsForThisAction();
                 return;
             }
 
@@ -1108,12 +1126,38 @@ namespace RadinProjectNotes
         {
             if (!Credentials.Instance.currentUser.CanEditCalendarDueItems())
             {
-                MessageBox.Show("This account has no permission for this action.", "Permission denied",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                UIMessageBoxes.NoPermissionsForThisAction();
                 return;
             }
 
-            calendarDueItemsHostPanel.DeleteSelectedDueItem();
+            var result = MessageBox.Show("Are you sure you want to delete the selected calendar item?", "Confirmation",
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                calendarDueItemsHostPanel.DeleteSelectedDueItem();
+            }
+        }
+
+        private void btnDueItemSetAsIncomplete_Click(object sender, EventArgs e)
+        {
+            if (!Credentials.Instance.currentUser.CanEditCalendarDueItems())
+            {
+                UIMessageBoxes.NoPermissionsForThisAction();
+                return;
+            }
+
+            calendarDueItemsHostPanel.SetSelectedDueItemCompletedStatus(completed: false);
+        }
+
+        private void btnDueItemSetAsComplete_Click(object sender, EventArgs e)
+        {
+            if (!Credentials.Instance.currentUser.CanEditCalendarDueItems())
+            {
+                UIMessageBoxes.NoPermissionsForThisAction();
+                return;
+            }
+
+            calendarDueItemsHostPanel.SetSelectedDueItemCompletedStatus(completed: true);
         }
     }
 }
