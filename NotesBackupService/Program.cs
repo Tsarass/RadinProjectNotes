@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ServiceProcess;
 
 namespace NotesBackupService
 {
@@ -18,10 +13,9 @@ namespace NotesBackupService
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-            new BackupService()
+                new BackupService()
             };
             ServiceBase.Run(ServicesToRun);
-
         }
     }
 }

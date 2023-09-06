@@ -29,6 +29,7 @@ namespace NotesBackupService
         public ExceptionLogger(Exception ex, string appDataFolder)
         {
             _ex = ex;
+            _appDataFolder = appDataFolder;
         }
 
         /// <summary>

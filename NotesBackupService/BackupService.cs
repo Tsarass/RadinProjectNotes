@@ -1,6 +1,5 @@
 ﻿using RadinProjectNotesCommon;
 using System;
-using System.IO;
 using System.ServiceProcess;
 using System.Timers;
 
@@ -9,7 +8,7 @@ namespace NotesBackupService
     public partial class BackupService : ServiceBase
     {
 
-        Timer timer = new Timer(); // name space(using System.Timers;)  
+        Timer timer = new Timer();
         public BackupService()
         {
             InitializeComponent();
@@ -24,7 +23,7 @@ namespace NotesBackupService
 
         protected override void OnStop()
         {
-            RegistryFunctions.SetRegistryKeyValue(RegistryEntry.ServiceStoppedOn, DateTime.Now.ToString()) ;
+            RegistryFunctions.SetRegistryKeyValue(RegistryEntries.ServiceStoppedOn, DateTime.Now.ToString()) ;
         }
 
         private void OnElapsedTime(object source, ElapsedEventArgs e)
@@ -36,10 +35,9 @@ namespace NotesBackupService
                 
                 try
                 {
-                    RegistryFunctions.ClearRegistryValues();
                     FileBackup fileBackup = new FileBackup(Filepaths.GetAppDataFolder());
                     fileBackup.Start();
-                    RegistryFunctions.SetRegistryKeyValue(RegistryEntry.LastBackupDate, DateTime.Now.ToString());
+                    RegistryFunctions.SetRegistryKeyValue(RegistryEntries.LastBackupDate, DateTime.Now.ToString());
                 }
                 catch (Exception ex)
                 {
@@ -54,7 +52,7 @@ namespace NotesBackupService
         private bool BackupOnThisDayRequired()
         {
 
-            string lastBackupDate = RegistryFunctions.GetRegistryKeyValue(RegistryEntry.LastBackupDate);
+            string lastBackupDate = RegistryFunctions.GetRegistryKeyValue(RegistryEntries.LastBackupDate);
             if ((lastBackupDate is null) || (lastBackupDate == String.Empty))
             {
                 return true;
