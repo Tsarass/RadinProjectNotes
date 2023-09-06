@@ -75,6 +75,8 @@ namespace NotesBackupService
             {
                 settingsFile.AddNewSetting("Configuration", "Max file revisions", _maxRevisions);
             }
+
+            settingsFile.WriteSettings();
         }
 
         public void Start()
