@@ -1,10 +1,8 @@
-﻿using System;
+﻿using RadinProjectNotesCommon;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NotesBackupService
 {
@@ -13,25 +11,27 @@ namespace NotesBackupService
     {
         public static readonly string fileInfoFilename = @"backup_file_info.dat";
 
-        List<BackupFile> files = new List<BackupFile>();
+        private List<BackupFile> _files = new List<BackupFile>();
+        private string _appDataFolder;
+        private Logger _logger;
+
+        public BackupFileInfo(string appDataFolder, Logger logger)
+        {
+            _appDataFolder = appDataFolder;
+            _logger = logger;
+        }
 
         private string BackupFileInfoFilePath
         {
             get
             {
-                return Path.Combine(Logger.AppdataFolder(), fileInfoFilename);
+                return Path.Combine(_appDataFolder, fileInfoFilename);
             }
-        }
-
-        public BackupFileInfo()
-        {
-            
         }
 
         public void LoadFromDisk()
         {
-            string filePath = Path.Combine(Logger.AppdataFolder(),fileInfoFilename);
-            if (File.Exists(filePath))
+            if (File.Exists(BackupFileInfoFilePath))
             {
                 try
                 {
@@ -40,7 +40,7 @@ namespace NotesBackupService
                         BinaryFormatter formatter = new BinaryFormatter();
                         // This is where you deserialize the class
                         BackupFileInfo data = (BackupFileInfo)formatter.Deserialize(fs);
-                        this.files = data.files;
+                        this._files = data._files;
                     }
                 }
                 catch (Exception e)
@@ -81,7 +81,7 @@ namespace NotesBackupService
             BackupFile matchingFile = FindMatchingFile(filePath);
             if (matchingFile is null)
             {
-                files.Add(new BackupFile(filePath));
+                _files.Add(new BackupFile(filePath, _logger));
             }
             else
             {
@@ -103,9 +103,9 @@ namespace NotesBackupService
 
         private BackupFile FindMatchingFile(string filePath)
         {
-            foreach (var file in files)
+            foreach (var file in _files)
             {
-                if (file.filePath == filePath)
+                if (file.FilePath == filePath)
                 {
                     return file;
                 }
@@ -126,15 +126,15 @@ namespace NotesBackupService
 
         public void DeleteObsoleteFiles()
         {
-            for (int i = files.Count - 1; i >= 0; i--)
+            for (int i = _files.Count - 1; i >= 0; i--)
             {
-                BackupFile file = files[i];
+                BackupFile file = _files[i];
                 //find the time elapsed since last file update
-                TimeSpan timeElapsed = DateTime.Now.Subtract(file.timeLastUpdated);
+                TimeSpan timeElapsed = DateTime.Now.Subtract(file.TimeLastUpdated);
                 if (timeElapsed.TotalDays > 30) //remove obsolete files after 30 days
                 {
                     file.Delete();
-                    files.RemoveAt(i);
+                    _files.RemoveAt(i);
                 }
             }
         }

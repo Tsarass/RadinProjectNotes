@@ -1,11 +1,7 @@
-﻿using DueItems;
-using EncryptedDatabaseSerializer;
-using System;
-using System.Collections.Generic;
+﻿using RadinProjectNotesCommon;
+using RadinProjectNotesCommon.DueItems;
+using RadinProjectNotesCommon.EncryptedDatabaseSerializer;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectEmailNotificationService
 {
@@ -17,15 +13,17 @@ namespace ProjectEmailNotificationService
         public static byte[] desKey = { 10, 25, 11, 35, 207, 108, 56, 99 };
         public static byte[] desIV = { 38, 13, 7, 1, 116, 222, 111, 6 };
 
+        private static Logger _logger;
+
         static void Main(string[] args)
         {
-            Logger.ResetLogFile();
+            _logger = new Logger(Filepaths.GetAppDataFolder());
 
             EncryptionKeys.SetEncryptionKeys(desKey, desIV);
 
             SendEmailsForUnprocessedExpiredDueItems();
 
-            Logger.SaveLogFile();
+            _logger.SaveLogFile(autoCreateFolder: true);
         }
 
         private static void SendEmailsForUnprocessedExpiredDueItems()
@@ -38,7 +36,7 @@ namespace ProjectEmailNotificationService
             }
             catch (CouldNotLoadDatabase)
             {
-                Logger.AddEntry($"Could not read from the processed due items database from file {ProcessedDueItemsController.DatabaseFilePath}.");
+                _logger.AddEntry($"Could not read from the processed due items database from file {ProcessedDueItemsController.DatabaseFilePath}.");
                 return;
             }
 
@@ -66,7 +64,7 @@ namespace ProjectEmailNotificationService
                     if (dueItem.HasExpired() && !processedDueItems.Contains(projectCode, dueItem.Id))
                     {
                         EmailSender.SendEmail($"Due item \"{dueItem.Description}\" expired.");
-                        Logger.AddEntry($"Sending emails for due item with id {dueItem.Id} of project {projectCode}.");
+                        _logger.AddEntry($"Sending emails for due item with id {dueItem.Id} of project {projectCode}.");
                         ProcessedDueItem processedDueItem = new ProcessedDueItem(projectCode, dueItem.Id);
                         processedDueItems.Add(processedDueItem);
                     }
@@ -79,11 +77,8 @@ namespace ProjectEmailNotificationService
             }
             catch (CouldNotSaveDatabase)
             {
-                Logger.AddEntry($"Could not save the processed due items database to file {ProcessedDueItemsController.DatabaseFilePath}.");
+                _logger.AddEntry($"Could not save the processed due items database to file {ProcessedDueItemsController.DatabaseFilePath}.");
             }
-            
-
-
         }
 
         private static string GetProjectCodeFromProjectFullName(string projectFullName)

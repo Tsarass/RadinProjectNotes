@@ -9,7 +9,10 @@ using RadinProjectNotes.DatabaseFiles;
 using RadinProjectNotes.DatabaseFiles.Controllers;
 using RadinProjectNotes.Forms;
 using RadinProjectNotes.HelperClasses;
-using RetryOnExceptionHelper;
+using RadinProjectNotesCommon.RetryOnExceptionHelper;
+using RadinProjectNotesCommon.DueItems;
+using Microsoft.Win32;
+using RadinProjectNotesCommon;
 
 namespace RadinProjectNotes
 {
@@ -96,6 +99,10 @@ namespace RadinProjectNotes
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
+            //check for updates
+            AutoUpdater updater = new AutoUpdater(true, this);
+            updater.CheckForUpdate();
+
             if (ShowLoginDialog(resetCredentials: false) == false)
             {
                 //if login fails, return here
@@ -109,10 +116,6 @@ namespace RadinProjectNotes
 
                 minimizeOnLoad = false;
             }
-
-            //check for updates
-            AutoUpdater updater = new AutoUpdater(true, this);
-            updater.CheckForUpdate();
 
             //load project data from folders
             LoadProjectData();
@@ -184,11 +187,11 @@ namespace RadinProjectNotes
             string startWithWindows = RegistryFunctions.GetRegistryKeyValue(RegistryEntry.StartWithWindows);
             if (startWithWindows == "1")
             {
-                RegistryFunctions.SetAppToRunOnStartup( runOnStartup : true);
+                AppSetup.SetAppToRunOnStartup( runOnStartup : true);
             }
             else
             {
-                RegistryFunctions.SetAppToRunOnStartup(runOnStartup: false);
+                AppSetup.SetAppToRunOnStartup(runOnStartup: false);
             }
         }
 

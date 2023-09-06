@@ -37,7 +37,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,7 +47,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -133,6 +133,14 @@
     <Compile Include="Controls\AssignedServicesPanel.Designer.cs">
       <DependentUpon>AssignedServicesPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\EmailGroups.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EmailGroups.Designer.cs">
+      <DependentUpon>EmailGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HelperClasses\AppSetup.cs" />
+    <Compile Include="HelperClasses\Emails.cs" />
     <Compile Include="HelperClasses\ListviewItemDateTimeComparer.cs" />
     <Compile Include="DatabaseFiles\Controllers\DueItemsDatabaseController.cs" />
     <Compile Include="Forms\AddDueItem.cs">
@@ -210,7 +218,6 @@
     <Compile Include="HelperClasses\ProjectFolder.cs" />
     <Compile Include="HelperClasses\ProjectInfosSpreadsheetController.cs" />
     <Compile Include="DatabaseFiles\RecentChange.cs" />
-    <Compile Include="HelperClasses\Registry.cs" />
     <Compile Include="HelperClasses\Security.cs" />
     <Compile Include="Forms\UserSignup.cs">
       <SubType>Form</SubType>
@@ -284,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DownloadAttachments.resx">
       <DependentUpon>DownloadAttachments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EmailGroups.resx">
+      <DependentUpon>EmailGroups.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.en.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -369,6 +379,7 @@
     <None Include="icons\calendar_delete.png" />
     <None Include="icons\check.png" />
     <None Include="icons\uncheck.png" />
+    <None Include="icons\email-group.png" />
     <Content Include="icons\unknown-file.png" />
     <EmbeddedResource Include="icons\unknown-file.ico" />
     <Content Include="notes.ico" />
@@ -387,17 +398,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DueItems\DueItems.csproj">
-      <Project>{fb7af5b0-5124-43de-9c8a-6ab4f81479f6}</Project>
-      <Name>DueItems</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EncryptedDatabaseSerializer\EncryptedDatabaseSerializer.csproj">
-      <Project>{9a8bcf19-4342-463b-a67c-e51fcd7c86dc}</Project>
-      <Name>EncryptedDatabaseSerializer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RetryHelper\RetryHelper.csproj">
-      <Project>{22f3e461-a031-4039-9d7e-f40d34d91638}</Project>
-      <Name>RetryHelper</Name>
+    <ProjectReference Include="..\RadinProjectNotesCommon\RadinProjectNotesCommon.csproj">
+      <Project>{b305b806-8404-456d-8e71-28487b1c5163}</Project>
+      <Name>RadinProjectNotesCommon</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RadinProjectNotesCommon;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -10,11 +11,17 @@ namespace NotesBackupService
         static readonly string baseDirectory = @"\\nas-radin-lp\DATEN\notes";
         static readonly string backupDirectory = @"\\nas-radin-gr\FSERVER\Z_NotesBackup";
 
-        static BackupFileInfo backupFileInfo = new BackupFileInfo();
+        private BackupFileInfo _backupFileInfo;
+        private Logger _logger;
+        private string _appDataFolder;
 
-        public FileBackup()
+        public FileBackup(string appDataFolder)
         {
-            Logger.ResetLogFile();
+            _appDataFolder = appDataFolder;
+
+            string logFileNameWithDate = $"backup_{DateTime.Now.ToString("yyyymmddhhmmss")}.log";
+            string logFilePath = Path.Combine(appDataFolder, logFileNameWithDate);
+            _logger = new Logger(logFilePath);
 
             //if backup directory doesnt exist, create it
             DirectoryInfo di = new DirectoryInfo(backupDirectory);
@@ -27,31 +34,31 @@ namespace NotesBackupService
 
         public void Start()
         {
-            Logger.AddEntry($"Starting backup at {DateTime.Now.ToString()}");
+            _logger.AddEntry($"Starting backup at {DateTime.Now.ToString()}");
 
-            backupFileInfo.LoadFromDisk();
+            _backupFileInfo = new BackupFileInfo(_appDataFolder, _logger);
+            _backupFileInfo.LoadFromDisk();
 
             List<string> filesToBackup = ListAllFilesUnderDirectory(baseDirectory);
 
-            Logger.AddEntry($"Found {filesToBackup.Count} files to backup");
+            _logger.AddEntry($"Found {filesToBackup.Count} files to backup");
             CopyAllFiles(filesToBackup);
 
-            Logger.AddEntry(@"Checking for obsolete files in backup directory..");
-            DeleteObsoleteFiles(filesToBackup);
+            _logger.AddEntry(@"Checking for obsolete files in backup directory..");
+            DeleteObsoleteFiles();
 
-            Logger.AddEntry($"Backup finished at {DateTime.Now.ToString()}");
-            Logger.SaveLogFile();
+            _logger.AddEntry($"Backup finished at {DateTime.Now.ToString()}");
+            _logger.SaveLogFile();
 
-            backupFileInfo.SaveToDisk();
+            _backupFileInfo.SaveToDisk();
         }
 
         /// <summary>
         /// Deletes any files in the backup directory not found in the base file list.
         /// </summary>
-        /// <param name="filesToBackup"></param>
-        private void DeleteObsoleteFiles(List<string> filesToBackup)
+        private void DeleteObsoleteFiles()
         {
-            backupFileInfo.DeleteObsoleteFiles();
+            _backupFileInfo.DeleteObsoleteFiles();
         }
 
         /// <summary>
@@ -96,7 +103,6 @@ namespace NotesBackupService
                 Thread.Sleep(100);
                 CopyFile(file);
             }
-
         }
 
         private void CopyFile(string filePath)
@@ -117,12 +123,12 @@ namespace NotesBackupService
                     if (FileNeedsBackup(filePath, targetFilePath))
                     {
                         //file exists already, create a revision entry
-                        backupFileInfo.AddFileRevision(targetFilePath);
+                        _backupFileInfo.AddFileRevision(targetFilePath);
                     }
                     else
                     {
-                        backupFileInfo.SkipFile(targetFilePath);
-                        Logger.AddEntry($"Skipping file {filePath}");
+                        _backupFileInfo.SkipFile(targetFilePath);
+                        _logger.AddEntry($"Skipping file {filePath}");
                         return;
                     }
 
@@ -130,17 +136,17 @@ namespace NotesBackupService
                 else
                 {
                     //file looks new, add it to the file info list
-                    backupFileInfo.AddFile(targetFilePath);
+                    _backupFileInfo.AddFile(targetFilePath);
                 }
 
-                Logger.AddEntry($"Copying file {filePath}");
+                _logger.AddEntry($"Copying file {filePath}");
                 try
                 {
                     fi.CopyTo(targetFilePath, true);
                 }
                 catch (Exception ex)
                 {
-                    Logger.AddEntry($"Error: {ex.Message.ToString()}");
+                    _logger.AddEntry($"Error: {ex.Message.ToString()}");
                 }
 
             }

@@ -1,4 +1,4 @@
-﻿using EncryptedDatabaseSerializer;
+﻿using RadinProjectNotesCommon.EncryptedDatabaseSerializer;
 using System;
 using System.Diagnostics;
 using System.IO;

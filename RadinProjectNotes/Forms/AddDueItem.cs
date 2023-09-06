@@ -1,8 +1,10 @@
-﻿using DueItems;
+﻿using RadinProjectNotesCommon.DueItems;
+using RadinProjectNotes.Forms;
+using RadinProjectNotes.HelperClasses;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using RadinProjectNotesCommon;
 
 namespace RadinProjectNotes
 {
@@ -23,8 +25,24 @@ namespace RadinProjectNotes
             }
             else
             {
+                SetEmailsFromGroups();
                 lblStatus.Visible = false;
                 txtStatus.Visible = false;
+            }
+        }
+
+        /// <summary>
+        /// Set the emails in the email list from the saved email groups.
+        /// </summary>
+        private void SetEmailsFromGroups()
+        {
+            string emailGroups = RegistryFunctions.GetRegistryKeyValue(RegistryEntry.EmailGroups);
+            if (!string.IsNullOrEmpty(emailGroups) )
+            {
+                foreach (var email in emailGroups.Split(','))
+                {
+                    lstEmails.Items.Add(email);
+                }
             }
         }
 
@@ -71,14 +89,21 @@ namespace RadinProjectNotes
             // Check if we are editing an existing due item.
             if (_editDueItem != null)
             {
+                // Change status if the date has changed.
+                DueStatus newStatus = _editDueItem.DueStatus;
+                if (DueDateChanged(_editDueItem.DueDate, dateTimePicker1.Value.ToUniversalTime()))
+                {
+                    newStatus = DueStatus.Transferred;
+                }
+
                 EditedDueItemState = new DueItemState(txtDescription.Text, dateTimePicker1.Value.ToUniversalTime(),
-                    _editDueItem.DueStatus, emails);
+                    newStatus, emails);
             }
             else
             {
                 SavedDueItem = new DueItem(txtDescription.Text, dateTimePicker1.Value.ToUniversalTime(),
                 Credentials.Instance.currentUser.ID, emails);
-            }            
+            }
 
             DialogResult = DialogResult.OK;
             this.Close();
@@ -106,7 +131,7 @@ namespace RadinProjectNotes
             if (txtNewEmail.Text.Length > 0)
             {
                 // Verify that email is in the correct format.
-                if (!VerifyEmailFormat(txtNewEmail.Text))
+                if (!Emails.VerifyEmailFormat(txtNewEmail.Text))
                 {
                     MessageBox.Show($"Email address {txtNewEmail.Text} is not valid.", "Invalid email address", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -150,20 +175,20 @@ namespace RadinProjectNotes
             btnAddDueItem.Enabled = txtDescription.Text.Length > 0;
         }
 
-        /// <summary>
-        /// Verify that a given string is a valid e-mail address.
-        /// ref 
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        private bool VerifyEmailFormat(string email)
+        private void btnEmailGroups_Click(object sender, EventArgs e)
         {
-            // ref https://www.rhyous.com/2010/06/15/csharp-email-regular-expression/
-            string theEmailPattern = @"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
-                                   + "@"
-                                   + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))\z";
+            EmailGroups dialog = new EmailGroups();
+            var dlgResult = dialog.ShowDialog();
+            if (dlgResult == DialogResult.OK)
+            {
+                lstEmails.Items.Clear();
+                dialog.GroupEmails.ForEach(a => lstEmails.Items.Add(a));
+            }
+        }
 
-            return Regex.IsMatch(email, theEmailPattern);
+        private bool DueDateChanged(DateTime oldDueDate, DateTime newDueDate)
+        {
+            return !oldDueDate.Equals(newDueDate);
         }
     }
 }

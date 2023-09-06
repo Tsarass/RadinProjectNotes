@@ -5,8 +5,7 @@ using System.Drawing;
 using System;
 using RadinProjectNotes.DatabaseFiles.ProjectServices;
 using RadinProjectNotes.DatabaseFiles.Controllers;
-using RadinProjectNotes.DatabaseFiles;
-using EncryptedDatabaseSerializer;
+using RadinProjectNotesCommon.EncryptedDatabaseSerializer;
 
 namespace RadinProjectNotes.Controls
 {

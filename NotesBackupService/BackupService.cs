@@ -1,14 +1,16 @@
-﻿using System;
+﻿using RadinProjectNotesCommon;
+using System;
+using System.IO;
 using System.ServiceProcess;
 using System.Timers;
 
 namespace NotesBackupService
 {
-    public partial class Service1 : ServiceBase
+    public partial class BackupService : ServiceBase
     {
 
         Timer timer = new Timer(); // name space(using System.Timers;)  
-        public Service1()
+        public BackupService()
         {
             InitializeComponent();
         }
@@ -35,14 +37,14 @@ namespace NotesBackupService
                 try
                 {
                     RegistryFunctions.ClearRegistryValues();
-                    FileBackup fileBackup = new FileBackup();
+                    FileBackup fileBackup = new FileBackup(Filepaths.GetAppDataFolder());
                     fileBackup.Start();
                     RegistryFunctions.SetRegistryKeyValue(RegistryEntry.LastBackupDate, DateTime.Now.ToString());
                 }
                 catch (Exception ex)
                 {
-                    ExceptionRecorder exRecorder = new ExceptionRecorder(ex);
-                    exRecorder.SaveExceptionRecordFile();
+                    ExceptionLogger exRecorder = new ExceptionLogger(ex, Filepaths.GetAppDataFolder());
+                    exRecorder.SaveExceptionLogFile();
                 }
 
                 timer.Enabled = true;

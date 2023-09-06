@@ -55,22 +55,19 @@
   <ItemGroup>
     <Compile Include="BackupFile.cs" />
     <Compile Include="BackupFileInfo.cs" />
-    <Compile Include="DiskMonitor.cs" />
-    <Compile Include="ExceptionRecorder.cs" />
+    <Compile Include="ExceptionLogger.cs" />
     <Compile Include="FileBackup.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
-    <Compile Include="Registry.cs" />
-    <Compile Include="Service1.cs">
+    <Compile Include="BackupService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Service1.Designer.cs">
-      <DependentUpon>Service1.cs</DependentUpon>
+    <Compile Include="BackupService.Designer.cs">
+      <DependentUpon>BackupService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,6 +80,12 @@
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RadinProjectNotesCommon\RadinProjectNotesCommon.csproj">
+      <Project>{B305B806-8404-456D-8E71-28487B1C5163}</Project>
+      <Name>RadinProjectNotesCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

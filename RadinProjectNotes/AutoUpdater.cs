@@ -71,7 +71,8 @@ namespace RadinProjectNotes
 
             if (UpdateFileVersionNewer(currentVersion, fv))
             {
-                DialogResult dlg = MessageBox.Show($"Update available: Version {fv.FileVersion}\nDo you want to update now?", "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                DialogResult dlg = MessageBox.Show($"Update available: Version {fv.FileVersion}\nDo you want to update now?\r\nIt is highly recommended to keep the application up to date.",
+                    "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (dlg == DialogResult.Yes)
                 {
                     RunUpdater(new string[] { executable });

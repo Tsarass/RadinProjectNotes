@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using RadinProjectNotes.HelperClasses;
+using RadinProjectNotesCommon;
 
 namespace RadinProjectNotes
 {
@@ -57,12 +58,12 @@ namespace RadinProjectNotes
             if (chkStartup.Checked)
             {
                 RegistryFunctions.SetRegistryKeyValue(RegistryEntry.StartWithWindows, "1");
-                RegistryFunctions.SetAppToRunOnStartup(runOnStartup: true);
+                AppSetup.SetAppToRunOnStartup(runOnStartup: true);
             }
             else
             {
                 RegistryFunctions.SetRegistryKeyValue(RegistryEntry.StartWithWindows, "0");
-                RegistryFunctions.SetAppToRunOnStartup(runOnStartup: false);
+                AppSetup.SetAppToRunOnStartup(runOnStartup: false);
             }
 
             if (chkTray.Checked)

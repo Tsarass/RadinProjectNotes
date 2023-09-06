@@ -1,13 +1,6 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace RadinProjectNotes.HelperClasses
+namespace RadinProjectNotesCommon
 {
     /// <summary>
     /// Holds the list of registry keys used by the application as fields.
@@ -20,9 +13,13 @@ namespace RadinProjectNotes.HelperClasses
         public static readonly string AutoLogin = "AutoLogin";
         public static readonly string MinimizeToSystemTray = "MinimizeToSystemTray";
         public static readonly string LatestPostsDatabaseLastSize = "LatestPostsDatabaseLastSize";
-        public static readonly string MinimizeInsteadOfProgramExit = "MinimizeInsteadOfProgramExit"; 
+        public static readonly string MinimizeInsteadOfProgramExit = "MinimizeInsteadOfProgramExit";
+        public static readonly string EmailGroups = "EmailGroups";
     }
 
+    /// <summary>
+    /// Wrapper functions to access the registry entries for Project Notes.
+    /// </summary>
     public class RegistryFunctions
     {
         public static string appRegistryKey = @"SOFTWARE\\Radin Project Notes";
@@ -86,28 +83,6 @@ namespace RadinProjectNotes.HelperClasses
             if (value != null)  //if key exists
             {
                 rk.DeleteValue(key);
-            }
-        }
-
-        public static void SetAppToRunOnStartup(bool runOnStartup = true)
-        {
-            RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            string appName = Assembly.GetExecutingAssembly().GetName().Name;
-            if (rk != null)
-            {
-                object pathRegistered = rk.GetValue(appName);
-
-                if (runOnStartup)
-                {
-                    rk.SetValue(appName, Application.ExecutablePath + " -minimized");
-                }
-                else
-                {
-                    if (pathRegistered != null)
-                    {
-                        rk.DeleteValue(appName);
-                    }
-                }
             }
         }
     }

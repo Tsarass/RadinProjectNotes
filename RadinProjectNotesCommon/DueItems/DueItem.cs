@@ -1,9 +1,9 @@
-﻿using DueItems;
+﻿using RadinProjectNotesCommon.DueItems;
 using ProtoBuf;
 using System;
 using System.Collections.Generic;
 
-namespace DueItems
+namespace RadinProjectNotesCommon.DueItems
 {
     [ProtoContract]
     public enum DueStatus

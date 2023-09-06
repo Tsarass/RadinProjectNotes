@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnAddDueItem = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -41,6 +42,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.txtStatus = new System.Windows.Forms.TextBox();
+            this.btnEmailGroups = new System.Windows.Forms.Button();
+            this.tooltips = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // btnAddDueItem
@@ -82,6 +85,7 @@
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(360, 20);
             this.txtDescription.TabIndex = 3;
+            this.tooltips.SetToolTip(this.txtDescription, "Write a description for the calendar item.");
             this.txtDescription.TextChanged += new System.EventHandler(this.txtDescription_TextChanged);
             // 
             // dateTimePicker1
@@ -113,19 +117,21 @@
             // 
             this.btnRemoveEmail.Location = new System.Drawing.Point(348, 70);
             this.btnRemoveEmail.Name = "btnRemoveEmail";
-            this.btnRemoveEmail.Size = new System.Drawing.Size(25, 23);
+            this.btnRemoveEmail.Size = new System.Drawing.Size(25, 25);
             this.btnRemoveEmail.TabIndex = 10;
             this.btnRemoveEmail.Text = "-";
+            this.tooltips.SetToolTip(this.btnRemoveEmail, "Remove the selected email address from the list.");
             this.btnRemoveEmail.UseVisualStyleBackColor = true;
             this.btnRemoveEmail.Click += new System.EventHandler(this.btnRemoveEmail_Click);
             // 
             // btnAddEmail
             // 
-            this.btnAddEmail.Location = new System.Drawing.Point(317, 145);
+            this.btnAddEmail.Location = new System.Drawing.Point(317, 142);
             this.btnAddEmail.Name = "btnAddEmail";
-            this.btnAddEmail.Size = new System.Drawing.Size(25, 23);
+            this.btnAddEmail.Size = new System.Drawing.Size(25, 25);
             this.btnAddEmail.TabIndex = 11;
             this.btnAddEmail.Text = "+";
+            this.tooltips.SetToolTip(this.btnAddEmail, "Add a valid email address to the list.");
             this.btnAddEmail.UseVisualStyleBackColor = true;
             this.btnAddEmail.Click += new System.EventHandler(this.btnAddEmail_Click);
             // 
@@ -136,6 +142,7 @@
             this.lstEmails.Name = "lstEmails";
             this.lstEmails.Size = new System.Drawing.Size(164, 69);
             this.lstEmails.TabIndex = 9;
+            this.tooltips.SetToolTip(this.lstEmails, "List of emails to be notified when the calendar item expires.");
             this.lstEmails.SelectedIndexChanged += new System.EventHandler(this.lstEmails_SelectedIndexChanged);
             // 
             // label3
@@ -163,10 +170,23 @@
             this.txtStatus.ReadOnly = true;
             this.txtStatus.Size = new System.Drawing.Size(100, 20);
             this.txtStatus.TabIndex = 14;
+            this.tooltips.SetToolTip(this.txtStatus, "Status of the calendar item.");
+            // 
+            // btnEmailGroups
+            // 
+            this.btnEmailGroups.BackgroundImage = global::RadinProjectNotes.Properties.Resources.email_group;
+            this.btnEmailGroups.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnEmailGroups.Location = new System.Drawing.Point(348, 114);
+            this.btnEmailGroups.Name = "btnEmailGroups";
+            this.btnEmailGroups.Size = new System.Drawing.Size(25, 25);
+            this.btnEmailGroups.TabIndex = 10;
+            this.btnEmailGroups.Text = "-";
+            this.tooltips.SetToolTip(this.btnEmailGroups, "Fill the emails list from the email groups dialog.");
+            this.btnEmailGroups.UseVisualStyleBackColor = true;
+            this.btnEmailGroups.Click += new System.EventHandler(this.btnEmailGroups_Click);
             // 
             // AddDueItem
             // 
-            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
@@ -174,6 +194,7 @@
             this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtNewEmail);
+            this.Controls.Add(this.btnEmailGroups);
             this.Controls.Add(this.btnRemoveEmail);
             this.Controls.Add(this.btnAddEmail);
             this.Controls.Add(this.lstEmails);
@@ -190,7 +211,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Add due item";
+            this.Text = "Add calendar item";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -210,5 +231,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.TextBox txtStatus;
+        private System.Windows.Forms.Button btnEmailGroups;
+        private System.Windows.Forms.ToolTip tooltips;
     }
 }

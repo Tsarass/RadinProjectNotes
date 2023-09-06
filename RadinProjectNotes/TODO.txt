@@ -22,13 +22,12 @@
 
 [Far dreams]
 -popup window on new change
--client server model
+-client server model.
 -logging for administration
 
 [Just an idea]
 
 [Due items]
- - edit due item!!!
-  - due item status load and save correctly!!
+ -due item show history!
  -service to monitor due items and send emails
  -save emails as defaults to use for every new due item

@@ -1,5 +1,4 @@
-﻿using DueItems;
-using EncryptedDatabaseSerializer;
+﻿using RadinProjectNotesCommon.EncryptedDatabaseSerializer;
 using System;
 using System.IO;
 

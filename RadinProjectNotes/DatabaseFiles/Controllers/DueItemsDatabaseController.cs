@@ -1,6 +1,5 @@
-﻿
-using DueItems;
-using EncryptedDatabaseSerializer;
+﻿using RadinProjectNotesCommon.DueItems;
+using RadinProjectNotesCommon.EncryptedDatabaseSerializer;
 
 namespace RadinProjectNotes.DatabaseFiles.Controllers
 {

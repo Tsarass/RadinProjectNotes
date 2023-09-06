@@ -5,8 +5,8 @@ using System;
 using RadinProjectNotes.DatabaseFiles.Controllers;
 using RadinProjectNotes.HelperClasses;
 using System.Drawing;
-using DueItems;
-using EncryptedDatabaseSerializer;
+using RadinProjectNotesCommon.DueItems;
+using RadinProjectNotesCommon.EncryptedDatabaseSerializer;
 
 namespace RadinProjectNotes.Controls
 {
@@ -39,16 +39,16 @@ namespace RadinProjectNotes.Controls
 
         internal void AddNewDueItem(DueItem dueItem)
         {
-            var dueItemsDatabase = LoadAndCacheDueItemsDatabase();
-            if (dueItemsDatabase is null) return;
+            _cachedDatabase = LoadAndCacheDueItemsDatabase();
+            if (_cachedDatabase is null) return;
 
             // Add to database and to list view.
-            dueItemsDatabase.Add(dueItem);
+            _cachedDatabase.Add(dueItem);
             AddDueItemToList(dueItem);
 
             calendarListView.Sort();
 
-            SaveDueItemsDatabase(dueItemsDatabase);
+            SaveDueItemsDatabase(_cachedDatabase);
         }
 
         /// <summary>
@@ -219,6 +219,9 @@ namespace RadinProjectNotes.Controls
             calendarListView.SelectedItems[0].ForeColor = GetColorForDueItem(_selectedDueItem);
 
             SaveDueItemsDatabase(_cachedDatabase);
+
+            // Make sure the subscribers are notified that something changed.
+            calendarListView_SelectedIndexChanged(this, EventArgs.Empty);
         }
 
         /// <summary>

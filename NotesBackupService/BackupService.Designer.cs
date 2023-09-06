@@ -1,7 +1,7 @@
 ﻿
 namespace NotesBackupService
 {
-    partial class Service1
+    partial class BackupService
     {
         /// <summary> 
         /// Required designer variable.
