@@ -24,16 +24,18 @@ namespace NotesBackupService
                 }
             }
 
-            private readonly int maxRevisions = 8;
             private string _filePath;
             private DateTime _timeLastUpdated;
             private List<BackupRevisionFile> _revisions = new List<BackupRevisionFile>();
             private Logger _logger;
+            private int _maxRevisions;
 
-            public BackupFile(string filePath, Logger logger)
+            public BackupFile(string filePath, int maxRevisions, Logger logger)
             {
-                this._filePath = filePath;
+                _filePath = filePath;
                 _logger = logger;
+                _maxRevisions = maxRevisions;
+
                 UpdateFile();
             }
 
@@ -71,7 +73,7 @@ namespace NotesBackupService
                 _revisions.Add(new BackupRevisionFile(revisionFileName));
                 _logger.AddEntry($"Saving revision {revisionFileName}");
 
-                if (_revisions.Count > maxRevisions)
+                if (_revisions.Count > _maxRevisions)
                 {
                     RemoveOldestRevision();
                 }

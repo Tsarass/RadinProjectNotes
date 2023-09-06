@@ -14,11 +14,13 @@ namespace NotesBackupService
         private List<BackupFile> _files = new List<BackupFile>();
         private string _appDataFolder;
         private Logger _logger;
+        private int _maxRevisions;
 
-        public BackupFileInfo(string appDataFolder, Logger logger)
+        public BackupFileInfo(string appDataFolder, int maxRevisions, Logger logger)
         {
             _appDataFolder = appDataFolder;
             _logger = logger;
+            _maxRevisions = maxRevisions;
         }
 
         private string BackupFileInfoFilePath
@@ -81,7 +83,7 @@ namespace NotesBackupService
             BackupFile matchingFile = FindMatchingFile(filePath);
             if (matchingFile is null)
             {
-                _files.Add(new BackupFile(filePath, _logger));
+                _files.Add(new BackupFile(filePath, _maxRevisions, _logger));
             }
             else
             {

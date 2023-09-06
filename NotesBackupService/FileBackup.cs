@@ -1,4 +1,5 @@
-﻿using RadinProjectNotesCommon;
+﻿using ConfigurationFileIO;
+using RadinProjectNotesCommon;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,8 +9,13 @@ namespace NotesBackupService
 {
     public class FileBackup
     {
-        static readonly string baseDirectory = @"\\nas-radin-lp\DATEN\notes";
-        static readonly string backupDirectory = @"\\nas-radin-gr\FSERVER\Z_NotesBackup";
+        const string CONFIGURATION_FILE_NAME = @"settings.ini";
+        const string DEFAULT_BASE_DIRECTORY = @"\\nas-radin-lp\DATEN\notes";
+        const string DEFAULT_BACKUP_DIRECTORY = @"\\nas-radin-gr\FSERVER\Z_NotesBackup";
+
+        private string _baseDirectory;
+        private string _backupDirectory;
+        private int _maxRevisions = 8;
 
         private BackupFileInfo _backupFileInfo;
         private Logger _logger;
@@ -18,13 +24,14 @@ namespace NotesBackupService
         public FileBackup(string appDataFolder)
         {
             _appDataFolder = appDataFolder;
+            ReadConfigurationFile();
 
             string logFileNameWithDate = $"backup_{DateTime.Now.ToString("yyyymmddhhmmss")}.log";
             string logFilePath = Path.Combine(appDataFolder, logFileNameWithDate);
             _logger = new Logger(logFilePath);
 
-            //if backup directory doesnt exist, create it
-            DirectoryInfo di = new DirectoryInfo(backupDirectory);
+            // If backup directory doesnt exist, create it
+            DirectoryInfo di = new DirectoryInfo(_backupDirectory);
             if (!di.Exists)
             {
                 di.Create();
@@ -32,14 +39,52 @@ namespace NotesBackupService
             di.Attributes |= FileAttributes.Hidden;
         }
 
+        /// <summary>
+        /// Read the settings from the configuration file.
+        /// </summary>
+        private void ReadConfigurationFile()
+        {
+            // Get the directories.
+            ConfigurationFile settingsFile = new ConfigurationFile(CONFIGURATION_FILE_NAME);
+            if (settingsFile.SettingExists("Directories", "Base directory"))
+            {
+                _baseDirectory = settingsFile.GetSettingValue("Directories", "Base directory").AsString();
+            }
+            else
+            {
+                _baseDirectory = DEFAULT_BASE_DIRECTORY;
+                settingsFile.AddNewSetting("Directories", "Base directory", DEFAULT_BASE_DIRECTORY);
+            }
+
+            if (settingsFile.SettingExists("Directories", "Backup directory"))
+            {
+                _baseDirectory = settingsFile.GetSettingValue("Directories", "Backup directory").AsString();
+            }
+            else
+            {
+                _backupDirectory = DEFAULT_BACKUP_DIRECTORY;
+                settingsFile.AddNewSetting("Directories", "Backup directory", DEFAULT_BACKUP_DIRECTORY);
+            }
+
+            // Get the max backup file revisions.
+            if (settingsFile.SettingExists("Configuration", "Max file revisions"))
+            {
+                _maxRevisions = settingsFile.GetSettingValue("Configuration", "Max file revisions").AsInteger();
+            }
+            else
+            {
+                settingsFile.AddNewSetting("Configuration", "Max file revisions", _maxRevisions);
+            }
+        }
+
         public void Start()
         {
             _logger.AddEntry($"Starting backup at {DateTime.Now.ToString()}");
 
-            _backupFileInfo = new BackupFileInfo(_appDataFolder, _logger);
+            _backupFileInfo = new BackupFileInfo(_appDataFolder, _maxRevisions, _logger);
             _backupFileInfo.LoadFromDisk();
 
-            List<string> filesToBackup = ListAllFilesUnderDirectory(baseDirectory);
+            List<string> filesToBackup = ListAllFilesUnderDirectory(_baseDirectory);
 
             _logger.AddEntry($"Found {filesToBackup.Count} files to backup");
             CopyAllFiles(filesToBackup);
@@ -110,7 +155,7 @@ namespace NotesBackupService
             FileInfo fi = new FileInfo(filePath);
             string fileName = fi.Name;
             string directory = fi.DirectoryName;
-            string targetDirectory = Path.Combine(backupDirectory, DirectoryPartAfterBase(directory, baseDirectory));
+            string targetDirectory = Path.Combine(_backupDirectory, DirectoryPartAfterBase(directory, _baseDirectory));
             string targetFilePath = Path.Combine(targetDirectory, fileName);
 
 
