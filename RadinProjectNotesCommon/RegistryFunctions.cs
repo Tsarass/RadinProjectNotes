@@ -25,6 +25,16 @@ namespace RadinProjectNotesCommon
         public static string appRegistryKey = @"SOFTWARE\\Radin Project Notes";
         private static RegistryKey applicationRegistryKey;
 
+        /// <summary>
+        /// Set a key path for the registry key to be used by the registry functions.
+        /// </summary>
+        /// <remarks>The resulting path will be HKCR\\SOFTWARE\\<paramref name="appKeyPath"/></remarks>
+        /// <param name="appKeyPath"></param>
+        public static void SetAppKeyPath(string appKeyPath)
+        {
+            appRegistryKey = $"SOFTWARE\\{appKeyPath}";
+        }
+
         /// <summary>Returns a <c>RegistryKey</c> of the app's registry key. Creates it if it doesn't exist.</summary>
         public static RegistryKey GetAppRegistryKey()
         {

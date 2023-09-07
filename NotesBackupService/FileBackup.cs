@@ -10,7 +10,7 @@ namespace NotesBackupService
     public class FileBackup
     {
         const string CONFIGURATION_FILE_NAME = @"settings.ini";
-        const string DEFAULT_BASE_DIRECTORY = @"\\nas-radin-lp\DATEN\notes";
+        const string DEFAULT_BASE_DIRECTORY = @"C:\backup_test";
         const string DEFAULT_BACKUP_DIRECTORY = @"\\nas-radin-gr\FSERVER\Z_NotesBackup";
 
         private string _baseDirectory;
@@ -44,37 +44,16 @@ namespace NotesBackupService
         /// </summary>
         private void ReadConfigurationFile()
         {
-            // Get the directories.
-            ConfigurationFile settingsFile = new ConfigurationFile(CONFIGURATION_FILE_NAME);
-            if (settingsFile.SettingExists("Directories", "Base directory"))
-            {
-                _baseDirectory = settingsFile.GetSettingValue("Directories", "Base directory").AsString();
-            }
-            else
-            {
-                _baseDirectory = DEFAULT_BASE_DIRECTORY;
-                settingsFile.AddNewSetting("Directories", "Base directory", DEFAULT_BASE_DIRECTORY);
-            }
+            string settingsFilePath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            ConfigurationFile settingsFile = new ConfigurationFile(Path.Combine(settingsFilePath, CONFIGURATION_FILE_NAME));
+            settingsFile.ReadSettings();
 
-            if (settingsFile.SettingExists("Directories", "Backup directory"))
-            {
-                _baseDirectory = settingsFile.GetSettingValue("Directories", "Backup directory").AsString();
-            }
-            else
-            {
-                _backupDirectory = DEFAULT_BACKUP_DIRECTORY;
-                settingsFile.AddNewSetting("Directories", "Backup directory", DEFAULT_BACKUP_DIRECTORY);
-            }
+            // Get the directories.
+            _baseDirectory = settingsFile.GetSettingValue("Directories", "Base directory").AsString(DEFAULT_BASE_DIRECTORY);
+            _backupDirectory = settingsFile.GetSettingValue("Directories", "Backup directory").AsString(DEFAULT_BACKUP_DIRECTORY);
 
             // Get the max backup file revisions.
-            if (settingsFile.SettingExists("Configuration", "Max file revisions"))
-            {
-                _maxRevisions = settingsFile.GetSettingValue("Configuration", "Max file revisions").AsInteger();
-            }
-            else
-            {
-                settingsFile.AddNewSetting("Configuration", "Max file revisions", _maxRevisions);
-            }
+             _maxRevisions = settingsFile.GetSettingValue("Configuration", "Max file revisions").AsInteger(_maxRevisions);
 
             settingsFile.WriteSettings();
         }
@@ -159,7 +138,6 @@ namespace NotesBackupService
             string directory = fi.DirectoryName;
             string targetDirectory = Path.Combine(_backupDirectory, DirectoryPartAfterBase(directory, _baseDirectory));
             string targetFilePath = Path.Combine(targetDirectory, fileName);
-
 
             if (File.Exists(filePath))
             {

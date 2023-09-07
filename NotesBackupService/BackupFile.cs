@@ -1,4 +1,4 @@
-﻿using RadinProjectNotesCommon;
+﻿using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,13 +8,15 @@ namespace NotesBackupService
 {
     public partial class BackupFileInfo
     {
-        [Serializable]
+        [ProtoContract]
         private class BackupFile
         {
-            [Serializable]
+            [ProtoContract]
             public class BackupRevisionFile
             {
+                [ProtoMember(1)]
                 public string filePath;
+                [ProtoMember(2)]
                 public DateTime timeCreated;
 
                 public BackupRevisionFile(string filePath)
@@ -22,27 +24,41 @@ namespace NotesBackupService
                     this.filePath = filePath;
                     this.timeCreated = DateTime.Now;
                 }
+
+                public BackupRevisionFile()
+                {
+                    //parameterless constructor for protobuf
+                }
             }
 
+            [ProtoMember(1)]
             private string _filePath;
+            [ProtoMember(2)]
             private DateTime _timeLastUpdated;
+            [ProtoMember(3)]
             private List<BackupRevisionFile> _revisions = new List<BackupRevisionFile>();
-            private Logger _logger;
+            [ProtoIgnore]
             private int _maxRevisions;
 
-            public BackupFile(string filePath, int maxRevisions, Logger logger)
+            public BackupFile()
+            {
+                //parameterless constructor for protobuf
+            }
+
+            public BackupFile(string filePath, int maxRevisions)
             {
                 _filePath = filePath;
-                _logger = logger;
                 _maxRevisions = maxRevisions;
 
                 UpdateFile();
             }
 
             /// <summary>Get the file's filepath.</summary>
+            [ProtoIgnore]
             public string FilePath { get { return _filePath; } }
 
             /// <summary>Get the file's last update time (added, revised or skipped).</summary>
+            [ProtoIgnore]
             public DateTime TimeLastUpdated { get { return _timeLastUpdated; } }
 
             /// <summary>
