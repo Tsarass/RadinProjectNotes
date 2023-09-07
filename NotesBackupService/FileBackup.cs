@@ -49,11 +49,14 @@ namespace NotesBackupService
             settingsFile.ReadSettings();
 
             // Get the directories.
-            _baseDirectory = settingsFile.GetSettingValue("Directories", "Base directory").AsString(DEFAULT_BASE_DIRECTORY);
-            _backupDirectory = settingsFile.GetSettingValue("Directories", "Backup directory").AsString(DEFAULT_BACKUP_DIRECTORY);
+            _baseDirectory = settingsFile.GetSettingValue("Directories", "Base directory")
+                .AsString(DEFAULT_BASE_DIRECTORY);
+            _backupDirectory = settingsFile.GetSettingValue("Directories", "Backup directory")
+                .AsString(DEFAULT_BACKUP_DIRECTORY);
 
             // Get the max backup file revisions.
-             _maxRevisions = settingsFile.GetSettingValue("Configuration", "Max file revisions").AsInteger(_maxRevisions);
+             _maxRevisions = settingsFile.GetSettingValue("Configuration", "Max file revisions")
+                .AsInteger(_maxRevisions);
 
             settingsFile.WriteSettings();
         }
