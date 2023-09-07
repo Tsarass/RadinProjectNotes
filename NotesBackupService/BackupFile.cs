@@ -37,18 +37,15 @@ namespace NotesBackupService
             private DateTime _timeLastUpdated;
             [ProtoMember(3)]
             private List<BackupRevisionFile> _revisions = new List<BackupRevisionFile>();
-            [ProtoIgnore]
-            private int _maxRevisions;
 
             public BackupFile()
             {
                 //parameterless constructor for protobuf
             }
 
-            public BackupFile(string filePath, int maxRevisions)
+            public BackupFile(string filePath)
             {
                 _filePath = filePath;
-                _maxRevisions = maxRevisions;
 
                 UpdateFile();
             }

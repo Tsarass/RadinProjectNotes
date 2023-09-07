@@ -10,7 +10,7 @@ namespace NotesBackupService
     public class FileBackup
     {
         const string CONFIGURATION_FILE_NAME = @"settings.ini";
-        const string DEFAULT_BASE_DIRECTORY = @"C:\backup_test";
+        const string DEFAULT_BASE_DIRECTORY = @"\\nas-radin-lp\DATEN\notes";
         const string DEFAULT_BACKUP_DIRECTORY = @"\\nas-radin-gr\FSERVER\Z_NotesBackup";
 
         private string _baseDirectory;

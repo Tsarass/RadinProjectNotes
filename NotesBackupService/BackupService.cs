@@ -22,7 +22,7 @@ namespace NotesBackupService
         protected override void OnStart(string[] args)
         {
             timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
-            timer.Interval = 60000; //number in miliseconds
+            timer.Interval = 300000; //number in miliseconds
             timer.Enabled = true;
 
             // Set up.
@@ -89,7 +89,6 @@ namespace NotesBackupService
 
         private bool ValidHourForBackup()
         {
-            return true;
             DateTime now = DateTime.Now;
 
             if ((now.Hour >= 22) || (now.Hour <= 5))

@@ -14,13 +14,13 @@ namespace NotesBackupService
         public static readonly string fileInfoFilename = @"backup_file_info.dat";
         [ProtoIgnore]
         private static Logger _logger;
+        [ProtoIgnore]
+        private static int _maxRevisions;
 
         [ProtoMember(1)]
         private List<BackupFile> _files = new List<BackupFile>();
         [ProtoIgnore]
         private string _appDataFolder;
-        [ProtoIgnore]
-        private int _maxRevisions;
 
         public BackupFileInfo()
         {
@@ -88,7 +88,7 @@ namespace NotesBackupService
             BackupFile matchingFile = FindMatchingFile(filePath);
             if (matchingFile is null)
             {
-                _files.Add(new BackupFile(filePath, _maxRevisions));
+                _files.Add(new BackupFile(filePath));
             }
             else
             {
