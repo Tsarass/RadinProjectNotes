@@ -182,7 +182,10 @@ namespace RadinProjectNotes
             if (dlgResult == DialogResult.OK)
             {
                 lstEmails.Items.Clear();
-                dialog.GroupEmails.ForEach(a => lstEmails.Items.Add(a));
+                if (dialog.GroupEmails != null && dialog.GroupEmails.Count > 0)
+                {
+                    dialog.GroupEmails.ForEach(a => lstEmails.Items.Add(a));
+                }
             }
         }
 

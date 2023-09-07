@@ -86,19 +86,15 @@ namespace RadinProjectNotes.Forms
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (lstEmails.Items.Count > 0)
+            GroupEmails = new List<string>();
+
+            foreach (string email in lstEmails.Items)
             {
-                GroupEmails = new List<string>();
-
-                foreach (string email in lstEmails.Items)
-                {
-                    GroupEmails.Add(email);
-                }
-
-                string registryentry = string.Join(",", GroupEmails);
-                RegistryFunctions.SetRegistryKeyValue(RegistryEntry.EmailGroups, registryentry);
+                GroupEmails.Add(email);
             }
 
+            string registryentry = string.Join(",", GroupEmails);
+            RegistryFunctions.SetRegistryKeyValue(RegistryEntry.EmailGroups, registryentry);
 
             DialogResult = DialogResult.OK;
             this.Close();

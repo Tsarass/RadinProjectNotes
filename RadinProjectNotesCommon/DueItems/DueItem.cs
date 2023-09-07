@@ -129,7 +129,7 @@ namespace RadinProjectNotesCommon.DueItems
         /// <returns></returns>
         public bool HasExpired()
         {
-            return _dueStatus == DueStatus.Pending && getDaysUntilDueDate() < -1;
+            return !IsCompleted && getDaysUntilDueDate() < -1;
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace RadinProjectNotesCommon.DueItems
             }
 
             int daysExpired = (int)getDaysUntilDueDate();
-            if (DueStatus == DueStatus.Pending && daysExpired <= -1)
+            if (daysExpired <= -1)
             {
                 return $"{-daysExpired} days late";
             }

@@ -50,11 +50,11 @@
             // 
             this.btnAddDueItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddDueItem.Enabled = false;
-            this.btnAddDueItem.Location = new System.Drawing.Point(178, 182);
+            this.btnAddDueItem.Location = new System.Drawing.Point(164, 182);
             this.btnAddDueItem.Name = "btnAddDueItem";
-            this.btnAddDueItem.Size = new System.Drawing.Size(94, 30);
+            this.btnAddDueItem.Size = new System.Drawing.Size(108, 30);
             this.btnAddDueItem.TabIndex = 1;
-            this.btnAddDueItem.Text = "Add due item";
+            this.btnAddDueItem.Text = "Add calendar item";
             this.btnAddDueItem.UseVisualStyleBackColor = true;
             this.btnAddDueItem.Click += new System.EventHandler(this.btnAddDueItem_Click);
             // 
