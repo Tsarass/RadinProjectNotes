@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using static ConfigurationFileIO.ConfigurationFileIOExceptions;
 
 namespace NotesBackupService
 {
@@ -46,7 +47,12 @@ namespace NotesBackupService
         {
             string settingsFilePath = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             ConfigurationFile settingsFile = new ConfigurationFile(Path.Combine(settingsFilePath, CONFIGURATION_FILE_NAME));
-            settingsFile.ReadSettings();
+            try
+            {
+                settingsFile.ReadSettings();
+            }
+            catch (AccessingConfigurationFileFailed)
+            { }
 
             // Get the directories.
             _baseDirectory = settingsFile.GetSettingValue("Directories", "Base directory")
