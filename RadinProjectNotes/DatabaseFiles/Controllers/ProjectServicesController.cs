@@ -23,8 +23,8 @@ namespace RadinProjectNotes.DatabaseFiles.Controllers
         /// <exception cref="CouldNotLoadDatabase"></exception>
         public static RadinProjectServices TryLoadProjectServices()
         {
-            EncryptedDatabaseSerializer<RadinProjectServices>  encryptedDbSerializer = 
-                new EncryptedDatabaseSerializer<RadinProjectServices>(getServicesFileFilepath());
+            EncryptedDatabaseProtobufSerializer<RadinProjectServices>  encryptedDbSerializer = 
+                new EncryptedDatabaseProtobufSerializer<RadinProjectServices>(getServicesFileFilepath());
 
             try
             {
@@ -49,8 +49,8 @@ namespace RadinProjectNotes.DatabaseFiles.Controllers
         /// <exception cref="CouldNotSaveDatabase"></exception>
         public static bool TrySaveProjectServices(RadinProjectServices services)
         {
-            EncryptedDatabaseSerializer<RadinProjectServices> encryptedDbSerializer =
-                new EncryptedDatabaseSerializer<RadinProjectServices>(getServicesFileFilepath());
+            EncryptedDatabaseProtobufSerializer<RadinProjectServices> encryptedDbSerializer =
+                new EncryptedDatabaseProtobufSerializer<RadinProjectServices>(getServicesFileFilepath());
 
             try
             {   

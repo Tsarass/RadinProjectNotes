@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Protobuf;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +7,7 @@ namespace RadinProjectNotes.DatabaseFiles.ProjectServices
     /// <summary>
     /// Services provided by the company as a list of categories with their subitems.
     /// </summary>
-    [Serializable]
+    [ProtoContract]
     public class RadinProjectServices
     {
         /// <summary>
@@ -22,6 +22,7 @@ namespace RadinProjectNotes.DatabaseFiles.ProjectServices
         /// <summary>
         /// Available project services.
         /// </summary>
+        [ProtoMember(1)]
         private List<ServiceCategory> _serviceCategories;
 
         public RadinProjectServices(List<ServiceCategory> projectServiceCategories)
