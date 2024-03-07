@@ -1,5 +1,4 @@
-﻿using Protobuf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace RadinProjectNotes.DatabaseFiles.ProjectServices
@@ -7,25 +6,28 @@ namespace RadinProjectNotes.DatabaseFiles.ProjectServices
     /// <summary>
     /// Services provided by the company as a list of categories with their subitems.
     /// </summary>
-    [ProtoContract]
-    public class RadinProjectServices
+    public class ProjectServicesDatabase
     {
+        public const string LATEST_VERSION_STRING = "Version 2";
+
         /// <summary>
         /// Create an empty instance of service categories.
         /// </summary>
         /// <returns></returns>
-        public static RadinProjectServices CreateEmpty()
+        public static ProjectServicesDatabase CreateEmpty()
         {
-            return new RadinProjectServices(new List<ServiceCategory>());
+            return new ProjectServicesDatabase(new List<ServiceCategory>());
         }
 
-        /// <summary>
-        /// Available project services.
-        /// </summary>
-        [ProtoMember(1)]
+        /// <summary>Available project services.</summary>
         private List<ServiceCategory> _serviceCategories;
 
-        public RadinProjectServices(List<ServiceCategory> projectServiceCategories)
+        public ProjectServicesDatabase()
+        {
+            // parameterless constructor for protobuf
+        }
+
+        public ProjectServicesDatabase(List<ServiceCategory> projectServiceCategories)
         {
             this._serviceCategories = projectServiceCategories;
         }

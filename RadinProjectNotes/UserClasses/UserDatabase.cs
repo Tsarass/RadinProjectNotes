@@ -1,25 +1,27 @@
-﻿using System;
+﻿using ProtoBuf;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace RadinProjectNotes
 {
     [Serializable]
-    public class UserDatabase : IEnumerable<User>
+    [ProtoContract]
+    public class UserDatabase
     {
         public static UserDatabase CreateEmpty()
         {
-            return new UserDatabase();
+            return new UserDatabase() { dateSaved = 0, userData = new List<User>() };
         }
 
-
+        [ProtoMember(1)]
         public long dateSaved;  //in ticks since unix era (DateTime.UtcNow.Ticks)
+        [ProtoMember(2, OverwriteList = true)]
         public List<User> userData;
 
         public UserDatabase()
         {
-            this.userData = new List<User>();
-            this.dateSaved = 0;
+            // parameterless constructor for protobuf
         }
 
         public int NumUsers
@@ -132,16 +134,6 @@ namespace RadinProjectNotes
             }
 
             return false;
-        }
-
-        public IEnumerator<User> GetEnumerator()
-        {
-            return ((IEnumerable<User>)userData).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable)userData).GetEnumerator();
         }
 
         public class UserNotFound : Exception

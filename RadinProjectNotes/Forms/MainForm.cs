@@ -10,8 +10,6 @@ using RadinProjectNotes.DatabaseFiles.Controllers;
 using RadinProjectNotes.Forms;
 using RadinProjectNotes.HelperClasses;
 using RadinProjectNotesCommon.RetryOnExceptionHelper;
-using RadinProjectNotesCommon.DueItems;
-using Microsoft.Win32;
 using RadinProjectNotesCommon;
 
 namespace RadinProjectNotes
@@ -44,6 +42,9 @@ namespace RadinProjectNotes
             HandleConsoleArgs(args);
 
             Security.SetUpDatabaseSerializerEncryptionKeys();
+
+            //Migration migration = new Migration();
+            //migration.ShowDialog();
 
             // Set back color to the new custom radin color.
             this.BackColor = radinColor;
