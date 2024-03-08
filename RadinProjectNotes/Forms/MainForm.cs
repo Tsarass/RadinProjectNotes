@@ -43,8 +43,8 @@ namespace RadinProjectNotes
 
             Security.SetUpDatabaseSerializerEncryptionKeys();
 
-            //Migration migration = new Migration();
-            //migration.ShowDialog();
+            Migration migration = new Migration();
+            migration.ShowDialog();
 
             // Set back color to the new custom radin color.
             this.BackColor = radinColor;

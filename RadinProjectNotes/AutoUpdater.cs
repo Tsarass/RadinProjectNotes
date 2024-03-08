@@ -48,8 +48,8 @@ namespace RadinProjectNotes
                 if (!silent)
                 {
                     MessageBox.Show($"Executable not found.\n{assemblyName}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
                 }
+                return;
             }
 
             //get the version of the executable's assembly
@@ -112,7 +112,7 @@ namespace RadinProjectNotes
         {
             foreach (var file in updateFiles)
             {
-                if (file.Contains(assemblyName))
+                if (file.EndsWith($"{assemblyName}.exe"))
                 {
                     return file;
                 }

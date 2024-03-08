@@ -29,18 +29,19 @@ namespace RadinProjectNotes.Forms
         }
 
         private void migrateFile(string migrationTarget) {
-            string target = Path.Combine(ServerConnection.serverFolder, migrationTarget);
-            var reader = new EncryptedDatabaseProtobufSerializer<ProjectAssignedServices>(target);
+            string[] bfts = Directory.GetFiles(ServerConnection.serverFolder, "*.bft");
+            foreach (string bft in bfts) {
+                var reader = new EncryptedDatabaseSerializer<ProjectAssignedServices>(bft);
 
-            ProjectAssignedServices data = reader.LoadDatabase();
+                ProjectAssignedServices data = reader.LoadDatabase();
 
-            if (string.IsNullOrEmpty(data.versionString)) {
-                data.versionString = "Version 1";
+                if (string.IsNullOrEmpty(data.versionString)) {
+                    data.versionString = "Version 1";
+                }
+
+                var writer = new EncryptedDatabaseProtobufSerializer<ProjectAssignedServices>(bft);
+                writer.SaveDatabase(data);
             }
-
-            var writer = new EncryptedDatabaseProtobufSerializer<ProjectAssignedServices>(target);
-            writer.SaveDatabase(data);
-
         }
     }
 }
