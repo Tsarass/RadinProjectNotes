@@ -139,12 +139,6 @@
     <Compile Include="Forms\EmailGroups.Designer.cs">
       <DependentUpon>EmailGroups.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Migration.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Migration.Designer.cs">
-      <DependentUpon>Migration.cs</DependentUpon>
-    </Compile>
     <Compile Include="HelperClasses\AppSetup.cs" />
     <Compile Include="HelperClasses\Emails.cs" />
     <Compile Include="HelperClasses\ListviewItemDateTimeComparer.cs" />
@@ -309,9 +303,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainFormConfirmationDialog.resx">
       <DependentUpon>MainFormConfirmationDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Migration.resx">
-      <DependentUpon>Migration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PastedImagePreview.resx">
       <DependentUpon>PastedImagePreview.cs</DependentUpon>

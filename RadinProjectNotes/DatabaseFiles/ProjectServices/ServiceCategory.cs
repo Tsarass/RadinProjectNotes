@@ -7,7 +7,6 @@ namespace RadinProjectNotes.DatabaseFiles.ProjectServices
     /// <summary>
     /// A service category with its subitems.
     /// </summary>
-    [Serializable]
     public class ServiceCategory
     {
         private string _title;

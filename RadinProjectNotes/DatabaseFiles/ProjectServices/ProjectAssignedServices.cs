@@ -8,7 +8,6 @@ namespace RadinProjectNotes.DatabaseFiles.ProjectServices
     /// <summary>
     /// Services assigned to a project.
     /// </summary>
-    [Serializable]
     [ProtoContract]
     public class ProjectAssignedServices
     {
@@ -18,23 +17,19 @@ namespace RadinProjectNotes.DatabaseFiles.ProjectServices
         }
 
         /// <summary>Version string to match the assigned services to a service category list from the configuration.</summary>
-        [IgnoreDataMember]
         [ProtoMember(2)]
         private string _versionString;
 
-        [IgnoreDataMember]
         [ProtoMember(1)]
         private List<AssignedService> _assignedServices = new List<AssignedService>();
 
         public ProjectAssignedServices()
         { }
 
-        [IgnoreDataMember]
         public bool IsEmpty { get { return _assignedServices.Count == 0; } }
 
         public List<AssignedService> AssignedServices { get { return _assignedServices; } }
 
-        [IgnoreDataMember]
         public string versionString { get { return _versionString; } set { _versionString = value; } }
 
         public void AddAssignedService(AssignedService service)
@@ -65,7 +60,6 @@ namespace RadinProjectNotes.DatabaseFiles.ProjectServices
         /// <summary>
         /// A service assigned to a project with a category title and service description.
         /// </summary>
-        [Serializable]
         [ProtoContract]
         public class AssignedService
         {

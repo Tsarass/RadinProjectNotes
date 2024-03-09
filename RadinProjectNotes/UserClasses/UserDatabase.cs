@@ -1,11 +1,9 @@
 ﻿using ProtoBuf;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace RadinProjectNotes
 {
-    [Serializable]
     [ProtoContract]
     public class UserDatabase
     {

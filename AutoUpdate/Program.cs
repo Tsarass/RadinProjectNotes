@@ -17,8 +17,8 @@ namespace AutoUpdate
         static string executableName = "";
         static void Main(string[] args)
         {
-            string assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-            string assemblyVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+            string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Console.WriteLine($"{assemblyName} v.{assemblyVersion}\n");
 
             Thread.Sleep(500);

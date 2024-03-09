@@ -111,6 +111,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_500AD72D5372B0B40794FEDA4EB03910"
+        "OwnerKey" = "8:_D6941EE0DAF5417481CDAB1945AE84F4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_503425FC89C743359C21A06197AB5D92"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -124,7 +130,7 @@
         "Entry"
         {
         "MsmKey" = "8:_55E609C1FED333D34C27DE798C302039"
-        "OwnerKey" = "8:_8127F0F9F6A1E34FCC14C34A0575710E"
+        "OwnerKey" = "8:_EF3A16D1DE823FCDBF4E3DC983D363C7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -137,12 +143,6 @@
         {
         "MsmKey" = "8:_55E609C1FED333D34C27DE798C302039"
         "OwnerKey" = "8:_86328B1FA7B14876800817F934C64785"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8127F0F9F6A1E34FCC14C34A0575710E"
-        "OwnerKey" = "8:_D6941EE0DAF5417481CDAB1945AE84F4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -184,7 +184,7 @@
         "Entry"
         {
         "MsmKey" = "8:_ABD7C0B4DCB011FDA9C56C1C213B2ADF"
-        "OwnerKey" = "8:_8127F0F9F6A1E34FCC14C34A0575710E"
+        "OwnerKey" = "8:_EF3A16D1DE823FCDBF4E3DC983D363C7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -203,6 +203,12 @@
         {
         "MsmKey" = "8:_D6941EE0DAF5417481CDAB1945AE84F4"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EF3A16D1DE823FCDBF4E3DC983D363C7"
+        "OwnerKey" = "8:_D6941EE0DAF5417481CDAB1945AE84F4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -256,12 +262,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8127F0F9F6A1E34FCC14C34A0575710E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_96A2725FA6F441379492A2F3A51460B2"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -275,6 +275,18 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_D6941EE0DAF5417481CDAB1945AE84F4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_EF3A16D1DE823FCDBF4E3DC983D363C7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_500AD72D5372B0B40794FEDA4EB03910"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -424,7 +436,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:v4.6.1    "
+                "FrameworkVersion" = "8:v4.6.1     "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
                 }
@@ -556,6 +568,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_500AD72D5372B0B40794FEDA4EB03910"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ConfigurationFileIO, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_500AD72D5372B0B40794FEDA4EB03910"
+                    {
+                    "Name" = "8:ConfigurationFileIO.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:ConfigurationFileIO.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D1A7FC601F7C4ED4993884C9B5FEB7A8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_503425FC89C743359C21A06197AB5D92"
             {
             "AssemblyRegister" = "3:1"
@@ -601,37 +644,6 @@
                     }
                 }
             "SourcePath" = "8:protobuf-net.Core.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D1A7FC601F7C4ED4993884C9B5FEB7A8"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8127F0F9F6A1E34FCC14C34A0575710E"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:RadinProjectNotesCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_8127F0F9F6A1E34FCC14C34A0575710E"
-                    {
-                    "Name" = "8:RadinProjectNotesCommon.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:RadinProjectNotesCommon.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D1A7FC601F7C4ED4993884C9B5FEB7A8"
@@ -780,6 +792,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EF3A16D1DE823FCDBF4E3DC983D363C7"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:RadinProjectNotesCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_EF3A16D1DE823FCDBF4E3DC983D363C7"
+                    {
+                    "Name" = "8:RadinProjectNotesCommon.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:RadinProjectNotesCommon.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D1A7FC601F7C4ED4993884C9B5FEB7A8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F3FA70264978B89067EBE0169C48BAD2"
@@ -933,16 +976,16 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Radin Project Notes"
-        "ProductCode" = "8:{935AEEF9-B4D4-4205-918D-823B0AF1F09B}"
-        "PackageCode" = "8:{1AABC961-54AC-4F21-AAC6-03076A91BD5D}"
+        "ProductCode" = "8:{16303812-D008-4460-A778-76AB9852F821}"
+        "PackageCode" = "8:{7EC88B44-E90D-4E8B-AF7A-FC307608CA10}"
         "UpgradeCode" = "8:{72B3B4D6-4312-417F-A4CF-D8C9FCEBE85B}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.2.0"
-        "Manufacturer" = "8:Baustatik Radin"
+        "ProductVersion" = "8:1.1.24"
+        "Manufacturer" = "8:Radin Tragwerke"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:Radin Project Notes"
