@@ -28,7 +28,7 @@ namespace RadinProjectNotes
         private static Stream MakeUknownFileIcon()
         {
             System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
-            System.IO.Stream st = a.GetManifestResourceStream("RadinProjectNotes.icons.unknown-file.ico");
+            Stream st = a.GetManifestResourceStream("RadinProjectNotes.icons.unknown-file.ico");
             return st;
         }
 

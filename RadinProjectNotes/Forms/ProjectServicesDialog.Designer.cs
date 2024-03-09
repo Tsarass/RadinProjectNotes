@@ -42,12 +42,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lstServices = new System.Windows.Forms.ListBox();
             this.txtNewService = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cboVersions = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(344, 209);
+            this.btnCancel.Location = new System.Drawing.Point(344, 244);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(83, 32);
             this.btnCancel.TabIndex = 3;
@@ -60,7 +62,7 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnOK.Location = new System.Drawing.Point(255, 209);
+            this.btnOK.Location = new System.Drawing.Point(255, 244);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(83, 32);
             this.btnOK.TabIndex = 4;
@@ -71,7 +73,7 @@
             // 
             // btnAddCategory
             // 
-            this.btnAddCategory.Location = new System.Drawing.Point(154, 149);
+            this.btnAddCategory.Location = new System.Drawing.Point(153, 187);
             this.btnAddCategory.Name = "btnAddCategory";
             this.btnAddCategory.Size = new System.Drawing.Size(25, 23);
             this.btnAddCategory.TabIndex = 7;
@@ -82,7 +84,7 @@
             // 
             // btnRemoveCategory
             // 
-            this.btnRemoveCategory.Location = new System.Drawing.Point(185, 25);
+            this.btnRemoveCategory.Location = new System.Drawing.Point(184, 63);
             this.btnRemoveCategory.Name = "btnRemoveCategory";
             this.btnRemoveCategory.Size = new System.Drawing.Size(25, 23);
             this.btnRemoveCategory.TabIndex = 7;
@@ -93,7 +95,7 @@
             // 
             // btnAddService
             // 
-            this.btnAddService.Location = new System.Drawing.Point(373, 175);
+            this.btnAddService.Location = new System.Drawing.Point(372, 213);
             this.btnAddService.Name = "btnAddService";
             this.btnAddService.Size = new System.Drawing.Size(25, 23);
             this.btnAddService.TabIndex = 7;
@@ -104,7 +106,7 @@
             // 
             // btnRemoveService
             // 
-            this.btnRemoveService.Location = new System.Drawing.Point(404, 25);
+            this.btnRemoveService.Location = new System.Drawing.Point(403, 63);
             this.btnRemoveService.Name = "btnRemoveService";
             this.btnRemoveService.Size = new System.Drawing.Size(25, 23);
             this.btnRemoveService.TabIndex = 7;
@@ -116,7 +118,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(11, 47);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 5;
@@ -125,7 +127,7 @@
             // lstCategories
             // 
             this.lstCategories.FormattingEnabled = true;
-            this.lstCategories.Location = new System.Drawing.Point(15, 25);
+            this.lstCategories.Location = new System.Drawing.Point(12, 63);
             this.lstCategories.Name = "lstCategories";
             this.lstCategories.Size = new System.Drawing.Size(164, 121);
             this.lstCategories.TabIndex = 6;
@@ -133,7 +135,7 @@
             // 
             // txtNewCategory
             // 
-            this.txtNewCategory.Location = new System.Drawing.Point(15, 152);
+            this.txtNewCategory.Location = new System.Drawing.Point(14, 190);
             this.txtNewCategory.Name = "txtNewCategory";
             this.txtNewCategory.Size = new System.Drawing.Size(133, 20);
             this.txtNewCategory.TabIndex = 8;
@@ -143,7 +145,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(231, 9);
+            this.label2.Location = new System.Drawing.Point(230, 47);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(48, 13);
             this.label2.TabIndex = 5;
@@ -152,7 +154,7 @@
             // lstServices
             // 
             this.lstServices.FormattingEnabled = true;
-            this.lstServices.Location = new System.Drawing.Point(234, 25);
+            this.lstServices.Location = new System.Drawing.Point(233, 63);
             this.lstServices.Name = "lstServices";
             this.lstServices.Size = new System.Drawing.Size(164, 147);
             this.lstServices.TabIndex = 6;
@@ -160,18 +162,39 @@
             // 
             // txtNewService
             // 
-            this.txtNewService.Location = new System.Drawing.Point(234, 178);
+            this.txtNewService.Location = new System.Drawing.Point(233, 216);
             this.txtNewService.Name = "txtNewService";
             this.txtNewService.Size = new System.Drawing.Size(133, 20);
             this.txtNewService.TabIndex = 8;
             this.txtNewService.TextChanged += new System.EventHandler(this.txtNewService_TextChanged);
             this.txtNewService.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtNewService_KeyUp);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Available versions:";
+            // 
+            // cboVersions
+            // 
+            this.cboVersions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboVersions.FormattingEnabled = true;
+            this.cboVersions.Location = new System.Drawing.Point(113, 6);
+            this.cboVersions.Name = "cboVersions";
+            this.cboVersions.Size = new System.Drawing.Size(109, 21);
+            this.cboVersions.TabIndex = 10;
+            this.cboVersions.SelectedIndexChanged += new System.EventHandler(this.cboVersions_SelectedIndexChanged);
+            // 
             // ProjectServicesDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(439, 254);
+            this.ClientSize = new System.Drawing.Size(439, 289);
+            this.Controls.Add(this.cboVersions);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.txtNewService);
             this.Controls.Add(this.txtNewCategory);
             this.Controls.Add(this.btnAddService);
@@ -210,5 +233,7 @@
         private System.Windows.Forms.Button btnAddService;
         private System.Windows.Forms.TextBox txtNewService;
         private System.Windows.Forms.Button btnRemoveService;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cboVersions;
     }
 }

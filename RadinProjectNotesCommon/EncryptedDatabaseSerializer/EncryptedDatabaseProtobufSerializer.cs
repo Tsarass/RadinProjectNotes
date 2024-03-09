@@ -30,7 +30,7 @@ namespace RadinProjectNotesCommon.EncryptedDatabaseSerializer
         }
 
         /// <summary>
-        /// Try to load the project services.
+        /// Try to load a database file.
         /// </summary>
         /// <exception cref="CouldNotLoadDatabase"></exception>
         public T TryLoadDatabase()
@@ -56,7 +56,7 @@ namespace RadinProjectNotesCommon.EncryptedDatabaseSerializer
         }
 
         /// <summary>
-        /// Try to save the project services.
+        /// Try to save the specified data structure.
         /// </summary>
         /// <param name="dataStructure">The class instance to save.</param>
         /// <exception cref="CouldNotSaveDatabase"></exception>

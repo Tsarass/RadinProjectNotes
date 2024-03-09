@@ -15,7 +15,7 @@ namespace RadinProjectNotes.DatabaseFiles
 
         public RecentChange()
         {
-
+            // parameterless constructor for protobuf
         }
 
         public RecentChange(string projectTitle, string username, DateTime date)

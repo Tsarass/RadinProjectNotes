@@ -10,8 +10,6 @@ using RadinProjectNotes.DatabaseFiles.Controllers;
 using RadinProjectNotes.Forms;
 using RadinProjectNotes.HelperClasses;
 using RadinProjectNotesCommon.RetryOnExceptionHelper;
-using RadinProjectNotesCommon.DueItems;
-using Microsoft.Win32;
 using RadinProjectNotesCommon;
 
 namespace RadinProjectNotes

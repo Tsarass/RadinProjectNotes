@@ -40,7 +40,7 @@ namespace RadinProjectNotes
 
             //try to locate the executable file
             string[] updateFiles = Directory.GetFiles(updateFilesDirectory);
-            string assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+            string assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
             string executable = FindExecutable(updateFiles, assemblyName);
 
             if (executable == String.Empty)
@@ -48,8 +48,8 @@ namespace RadinProjectNotes
                 if (!silent)
                 {
                     MessageBox.Show($"Executable not found.\n{assemblyName}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
                 }
+                return;
             }
 
             //get the version of the executable's assembly
@@ -91,8 +91,8 @@ namespace RadinProjectNotes
         {
 
             //get the current directory
-            string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+            string strExeFilePath = Assembly.GetExecutingAssembly().Location;
+            string strWorkPath = Path.GetDirectoryName(strExeFilePath);
             string updaterFileName = Path.Combine(strWorkPath, updaterExecutable);
 
             var process = new Process
@@ -112,7 +112,7 @@ namespace RadinProjectNotes
         {
             foreach (var file in updateFiles)
             {
-                if (file.Contains(assemblyName))
+                if (file.EndsWith($"{assemblyName}.exe"))
                 {
                     return file;
                 }

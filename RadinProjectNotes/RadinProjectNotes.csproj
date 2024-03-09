@@ -81,6 +81,9 @@
     <ManifestKeyFile>RadinProjectNotes_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ConfigurationFileIO, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ConfigurationFileIO.1.0.5\lib\net472\ConfigurationFileIO.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <HintPath>..\packages\protobuf-net.3.2.26\lib\net462\protobuf-net.dll</HintPath>
     </Reference>
@@ -247,7 +250,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="DatabaseFiles\ProjectServices\ProjectAssignedServices.cs" />
     <Compile Include="DatabaseFiles\Controllers\ProjectAssignedServicesController.cs" />
-    <Compile Include="DatabaseFiles\ProjectServices\RadinProjectServices.cs" />
+    <Compile Include="DatabaseFiles\ProjectServices\ProjectServicesDatabase.cs" />
     <Compile Include="DatabaseFiles\Controllers\ProjectServicesController.cs" />
     <Compile Include="DatabaseFiles\ProjectServices\ServiceCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

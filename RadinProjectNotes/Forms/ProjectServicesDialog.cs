@@ -9,8 +9,9 @@ namespace RadinProjectNotes
 {
     public partial class ProjectServicesDialog : Form
     {
-        private RadinProjectServices _cachedServiceCategories;
-        private RadinProjectServices _serviceCategories;
+
+        private Dictionary<string, ProjectServicesDatabase> _cachedServiceCategories;
+        private Dictionary<string, ProjectServicesDatabase> _serviceCategories;
         private string _selectedCategoryTitle;
 
         public ProjectServicesDialog()
@@ -27,10 +28,20 @@ namespace RadinProjectNotes
 
         private void InitialiseProjectServices()
         {
-            _cachedServiceCategories = ProjectServicesController.TryLoadProjectServices();
+            _cachedServiceCategories = ProjectServicesController.LoadProjectServices();
 
+            cboVersions.Items.Clear();
+            foreach (var version in _cachedServiceCategories.Keys) {
+                cboVersions.Items.Add(version);
+            }
+            if (cboVersions.Items.Count == 0) {
+                return;
+            }
+            cboVersions.SelectedIndex = 0;
+
+            // Make a deep copy of the service lists in order to be able to track changes.
             _serviceCategories = GetDeepCopyOfServiceCategories(_cachedServiceCategories);
-            UpdateCategoriesList(_serviceCategories);
+            UpdateCategoriesList(_cachedServiceCategories[cboVersions.Text]);
 
             // Select the first index if it exists.
             if (lstCategories.Items.Count > 0)
@@ -43,7 +54,7 @@ namespace RadinProjectNotes
         /// Update the categories list with the data from the supplied service categories object.
         /// </summary>
         /// <param name="serviceCategories"></param>
-        private void UpdateCategoriesList(RadinProjectServices serviceCategories)
+        private void UpdateCategoriesList(ProjectServicesDatabase serviceCategories)
         {
             lstCategories.Items.Clear();
 
@@ -58,7 +69,7 @@ namespace RadinProjectNotes
         /// </summary>
         /// <param name="serviceCategories"></param>
         /// <param name="categoryTitle"></param>
-        private void UpdateServicesList(RadinProjectServices serviceCategories, string categoryTitle)
+        private void UpdateServicesList(ProjectServicesDatabase serviceCategories, string categoryTitle)
         {
             foreach (var service in serviceCategories.getServicesForCategory(categoryTitle))
             {
@@ -71,16 +82,20 @@ namespace RadinProjectNotes
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private RadinProjectServices GetDeepCopyOfServiceCategories(RadinProjectServices input)
+        private Dictionary<string, ProjectServicesDatabase> GetDeepCopyOfServiceCategories(Dictionary<string, ProjectServicesDatabase> input)
         {
-            var categoryTitles = input.GetCategoryTitles();
+            Dictionary<string, ProjectServicesDatabase> copy = new Dictionary<string, ProjectServicesDatabase>();
+            foreach (var version in input.Keys) {
+                var categoryTitles = input[version].GetCategoryTitles();
 
-            List<ServiceCategory> serviceCategories = categoryTitles.Select(title =>
-            {
-                return new ServiceCategory(title, input.getServicesForCategory(title).ToList());
-            }).ToList();
+                List<ServiceCategory> serviceCategories = categoryTitles.Select(title =>
+                {
+                    return new ServiceCategory(title, input[version].getServicesForCategory(title).ToList());
+                }).ToList();
+                copy.Add(version, new ProjectServicesDatabase(serviceCategories));
+            }
 
-            return new RadinProjectServices(serviceCategories);
+            return copy;
         }
 
         private void lstCategories_SelectedIndexChanged(object sender, EventArgs e)
@@ -92,7 +107,7 @@ namespace RadinProjectNotes
                 _selectedCategoryTitle = lstCategories.SelectedItem.ToString();
                 btnRemoveCategory.Enabled = true;
 
-                UpdateServicesList(_serviceCategories, _selectedCategoryTitle);
+                UpdateServicesList(_serviceCategories[cboVersions.Text], _selectedCategoryTitle);
 
                 // Select the first service.
                 if (lstServices.Items.Count > 0)
@@ -112,9 +127,9 @@ namespace RadinProjectNotes
             if (string.IsNullOrEmpty(txtNewCategory.Text)) return;
 
             ServiceCategory category = new ServiceCategory(txtNewCategory.Text, new List<string>());
-            _serviceCategories.AddServiceCategory(category);
+            _serviceCategories[cboVersions.Text].AddServiceCategory(category);
 
-            UpdateCategoriesList(_serviceCategories);
+            UpdateCategoriesList(_serviceCategories[cboVersions.Text]);
 
             // Select the last index.
             lstCategories.SelectedIndex = lstCategories.Items.Count - 1;
@@ -128,9 +143,9 @@ namespace RadinProjectNotes
             if (lstCategories.SelectedItems.Count == 0) return;
 
             string categoryTitle = lstCategories.SelectedItem.ToString();
-            _serviceCategories.RemoveServiceCategory(categoryTitle);
+            _serviceCategories[cboVersions.Text].RemoveServiceCategory(categoryTitle);
 
-            UpdateCategoriesList(_serviceCategories);
+            UpdateCategoriesList(_serviceCategories[cboVersions.Text]);
 
             // Select the last index if it exists.
             if (lstCategories.Items.Count > 0)
@@ -148,9 +163,9 @@ namespace RadinProjectNotes
             if (string.IsNullOrEmpty(txtNewService.Text)) return;
             if (_selectedCategoryTitle == "") return;
 
-            _serviceCategories.AddServiceToCategory(_selectedCategoryTitle, txtNewService.Text);
+            _serviceCategories[cboVersions.Text].AddServiceToCategory(_selectedCategoryTitle, txtNewService.Text);
 
-            UpdateCategoriesList(_serviceCategories);
+            UpdateCategoriesList(_serviceCategories[cboVersions.Text]);
 
             // Select the cached category.
             SelectListItemByValue(lstCategories, _selectedCategoryTitle);
@@ -167,9 +182,9 @@ namespace RadinProjectNotes
             if (_selectedCategoryTitle == "") return;
 
             string service = lstServices.SelectedItem.ToString();
-            _serviceCategories.removeServiceFromCategory(_selectedCategoryTitle, service);
+            _serviceCategories[cboVersions.Text].removeServiceFromCategory(_selectedCategoryTitle, service);
 
-            UpdateCategoriesList(_serviceCategories);
+            UpdateCategoriesList(_serviceCategories[cboVersions.Text]);
 
             // Select the cached category.
             SelectListItemByValue(lstCategories, _selectedCategoryTitle);
@@ -246,35 +261,39 @@ namespace RadinProjectNotes
         /// <returns></returns>
         private bool ServicesHaveChanged()
         {
-            // Compare number of categories.
-            if (_cachedServiceCategories.GetCategoriesCount() != _serviceCategories.GetCategoriesCount())
-            {
+            if (_cachedServiceCategories.Count != _serviceCategories.Count) {
                 return true;
             }
 
-            // Deep compare.
-            foreach (var categoryTitle in _cachedServiceCategories.GetCategoryTitles())
-            {
-                var cachedCategory = _serviceCategories.GetCategoryTitles().FirstOrDefault(a => a == categoryTitle);
-                if (cachedCategory != null)
-                {
-                    // Compare services.
-                    if (_cachedServiceCategories.GetServicesCount(categoryTitle) != _serviceCategories.GetServicesCount(categoryTitle))
-                    {
-                        return true;
-                    }
+            foreach (var version in _cachedServiceCategories.Keys) {
+                // Check that the same version exists.
+                if (!_serviceCategories.ContainsKey(version)) {
+                    return true;
+                }
 
-                    foreach (var service in _cachedServiceCategories.getServicesForCategory(categoryTitle))
-                    {
-                        if (!_serviceCategories.getServicesForCategory(categoryTitle).Contains(service))
-                        {
+                // Compare number of categories.
+                if (_cachedServiceCategories[version].GetCategoriesCount() != _serviceCategories[version].GetCategoriesCount()) {
+                    return true;
+                }
+
+                // Deep compare.
+                foreach (var categoryTitle in _cachedServiceCategories[version].GetCategoryTitles()) {
+                    var cachedCategory = _serviceCategories[version].GetCategoryTitles().FirstOrDefault(a => a == categoryTitle);
+                    if (cachedCategory != null) {
+                        // Compare services.
+                        if (_cachedServiceCategories[version].GetServicesCount(categoryTitle) != _serviceCategories[version].GetServicesCount(categoryTitle)) {
                             return true;
                         }
+
+                        foreach (var service in _cachedServiceCategories[version].getServicesForCategory(categoryTitle)) {
+                            if (!_serviceCategories[version].getServicesForCategory(categoryTitle).Contains(service)) {
+                                return true;
+                            }
+                        }
                     }
-                }
-                else
-                {
-                    return true;
+                    else {
+                        return true;
+                    }
                 }
             }
 
@@ -298,7 +317,7 @@ namespace RadinProjectNotes
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            bool couldSaveProjectServices = ProjectServicesController.TrySaveProjectServices(_serviceCategories);
+            bool couldSaveProjectServices = ProjectServicesController.SaveProjectServices(_serviceCategories);
             if (!couldSaveProjectServices)
             {
                 MessageBox.Show("Could not save project services to file. Ensure connection is working and try again.", "Error",
@@ -306,6 +325,12 @@ namespace RadinProjectNotes
             }
 
             this.Close();
+        }
+
+        private void cboVersions_SelectedIndexChanged(object sender, EventArgs e) {
+            if (lstCategories.Items.Count > 0) {
+                lstCategories.SelectedIndex = 0;
+            }
         }
     }
 }

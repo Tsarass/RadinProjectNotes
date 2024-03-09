@@ -17,7 +17,7 @@ namespace RadinProjectNotes
         private readonly string databaseFile = Path.Combine(ServerConnection.serverFolder, "users.db");
 
         public UserDatabase userDatabase;
-        private EncryptedDatabaseSerializer<UserDatabase> _encryptedDbSerializer;
+        private EncryptedDatabaseProtobufSerializer<UserDatabase> _encryptedDbSerializer;
         public User currentUser;
         public bool SuccessfullyLoaded { get; set; }
 
@@ -61,7 +61,7 @@ namespace RadinProjectNotes
         {
             SuccessfullyLoaded = false;
             userDatabase = CreateEmpty();
-            _encryptedDbSerializer = new EncryptedDatabaseSerializer<UserDatabase>(databaseFile);
+            _encryptedDbSerializer = new EncryptedDatabaseProtobufSerializer<UserDatabase>(databaseFile);
         }
 
         /// <summary>

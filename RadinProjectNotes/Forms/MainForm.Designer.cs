@@ -31,6 +31,16 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolTips = new System.Windows.Forms.ToolTip(this.components);
+            this.btnPrint = new System.Windows.Forms.Button();
+            this.btnAddComment = new System.Windows.Forms.Button();
+            this.btnOpenFolder = new System.Windows.Forms.Button();
+            this.btnListActiveProjects = new System.Windows.Forms.Button();
+            this.btnProjectInfo = new System.Windows.Forms.Button();
+            this.btnAddDueItem = new System.Windows.Forms.Button();
+            this.btnEditDueItem = new System.Windows.Forms.Button();
+            this.btnDeleteDueItem = new System.Windows.Forms.Button();
+            this.btnDueItemSetAsComplete = new System.Windows.Forms.Button();
+            this.btnDueItemSetAsIncomplete = new System.Windows.Forms.Button();
             this.versionLabel = new System.Windows.Forms.Label();
             this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
@@ -63,18 +73,7 @@
             this.tabPanelSwitch = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.btnPrint = new System.Windows.Forms.Button();
-            this.btnAddComment = new System.Windows.Forms.Button();
-            this.btnOpenFolder = new System.Windows.Forms.Button();
-            this.btnListActiveProjects = new System.Windows.Forms.Button();
-            this.btnProjectInfo = new System.Windows.Forms.Button();
-            this.btnAddDueItem = new System.Windows.Forms.Button();
-            this.btnEditDueItem = new System.Windows.Forms.Button();
-            this.btnDeleteDueItem = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnDueItemSetAsComplete = new System.Windows.Forms.Button();
-            this.btnDueItemSetAsIncomplete = new System.Windows.Forms.Button();
             this.calendarDueItemsHostPanel = new RadinProjectNotes.Controls.CalendarDueItems();
             this.servicesHostPanel = new RadinProjectNotes.Controls.AssignedServicesPanel();
             this.projNrBox = new AutoCompleteTextBoxSample.AutoCompleteTextbox();
@@ -84,6 +83,102 @@
             this.tabPanelSwitch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // btnPrint
+            // 
+            resources.ApplyResources(this.btnPrint, "btnPrint");
+            this.btnPrint.BackgroundImage = global::RadinProjectNotes.Properties.Resources.printer;
+            this.btnPrint.Name = "btnPrint";
+            this.toolTips.SetToolTip(this.btnPrint, resources.GetString("btnPrint.ToolTip"));
+            this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            // 
+            // btnAddComment
+            // 
+            resources.ApplyResources(this.btnAddComment, "btnAddComment");
+            this.btnAddComment.BackColor = System.Drawing.SystemColors.Control;
+            this.btnAddComment.BackgroundImage = global::RadinProjectNotes.Properties.Resources.add_note;
+            this.btnAddComment.Name = "btnAddComment";
+            this.toolTips.SetToolTip(this.btnAddComment, resources.GetString("btnAddComment.ToolTip"));
+            this.btnAddComment.UseVisualStyleBackColor = false;
+            this.btnAddComment.Click += new System.EventHandler(this.btnAddComment_Click);
+            // 
+            // btnOpenFolder
+            // 
+            this.btnOpenFolder.BackgroundImage = global::RadinProjectNotes.Properties.Resources.folder;
+            resources.ApplyResources(this.btnOpenFolder, "btnOpenFolder");
+            this.btnOpenFolder.Name = "btnOpenFolder";
+            this.toolTips.SetToolTip(this.btnOpenFolder, resources.GetString("btnOpenFolder.ToolTip"));
+            this.btnOpenFolder.UseVisualStyleBackColor = true;
+            this.btnOpenFolder.Click += new System.EventHandler(this.btnOpenFolder_Click);
+            // 
+            // btnListActiveProjects
+            // 
+            this.btnListActiveProjects.BackgroundImage = global::RadinProjectNotes.Properties.Resources.filter;
+            resources.ApplyResources(this.btnListActiveProjects, "btnListActiveProjects");
+            this.btnListActiveProjects.Name = "btnListActiveProjects";
+            this.toolTips.SetToolTip(this.btnListActiveProjects, resources.GetString("btnListActiveProjects.ToolTip"));
+            this.btnListActiveProjects.UseVisualStyleBackColor = true;
+            this.btnListActiveProjects.Click += new System.EventHandler(this.btnListActiveProjects_Click);
+            // 
+            // btnProjectInfo
+            // 
+            this.btnProjectInfo.BackgroundImage = global::RadinProjectNotes.Properties.Resources.info;
+            resources.ApplyResources(this.btnProjectInfo, "btnProjectInfo");
+            this.btnProjectInfo.Name = "btnProjectInfo";
+            this.toolTips.SetToolTip(this.btnProjectInfo, resources.GetString("btnProjectInfo.ToolTip"));
+            this.btnProjectInfo.UseVisualStyleBackColor = true;
+            this.btnProjectInfo.Click += new System.EventHandler(this.btnProjectInfo_Click);
+            // 
+            // btnAddDueItem
+            // 
+            resources.ApplyResources(this.btnAddDueItem, "btnAddDueItem");
+            this.btnAddDueItem.BackColor = System.Drawing.SystemColors.Control;
+            this.btnAddDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.calendar_add;
+            this.btnAddDueItem.Name = "btnAddDueItem";
+            this.toolTips.SetToolTip(this.btnAddDueItem, resources.GetString("btnAddDueItem.ToolTip"));
+            this.btnAddDueItem.UseVisualStyleBackColor = false;
+            this.btnAddDueItem.Click += new System.EventHandler(this.btnNewDueItem_Click);
+            // 
+            // btnEditDueItem
+            // 
+            resources.ApplyResources(this.btnEditDueItem, "btnEditDueItem");
+            this.btnEditDueItem.BackColor = System.Drawing.SystemColors.Control;
+            this.btnEditDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.calendar_edit;
+            this.btnEditDueItem.Name = "btnEditDueItem";
+            this.toolTips.SetToolTip(this.btnEditDueItem, resources.GetString("btnEditDueItem.ToolTip"));
+            this.btnEditDueItem.UseVisualStyleBackColor = false;
+            this.btnEditDueItem.Click += new System.EventHandler(this.btnEditDueItem_Click);
+            // 
+            // btnDeleteDueItem
+            // 
+            resources.ApplyResources(this.btnDeleteDueItem, "btnDeleteDueItem");
+            this.btnDeleteDueItem.BackColor = System.Drawing.SystemColors.Control;
+            this.btnDeleteDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.calendar_delete;
+            this.btnDeleteDueItem.Name = "btnDeleteDueItem";
+            this.toolTips.SetToolTip(this.btnDeleteDueItem, resources.GetString("btnDeleteDueItem.ToolTip"));
+            this.btnDeleteDueItem.UseVisualStyleBackColor = false;
+            this.btnDeleteDueItem.Click += new System.EventHandler(this.btnDeleteDueItem_Click);
+            // 
+            // btnDueItemSetAsComplete
+            // 
+            resources.ApplyResources(this.btnDueItemSetAsComplete, "btnDueItemSetAsComplete");
+            this.btnDueItemSetAsComplete.BackColor = System.Drawing.SystemColors.Control;
+            this.btnDueItemSetAsComplete.BackgroundImage = global::RadinProjectNotes.Properties.Resources.check;
+            this.btnDueItemSetAsComplete.Name = "btnDueItemSetAsComplete";
+            this.toolTips.SetToolTip(this.btnDueItemSetAsComplete, resources.GetString("btnDueItemSetAsComplete.ToolTip"));
+            this.btnDueItemSetAsComplete.UseVisualStyleBackColor = false;
+            this.btnDueItemSetAsComplete.Click += new System.EventHandler(this.btnDueItemSetAsComplete_Click);
+            // 
+            // btnDueItemSetAsIncomplete
+            // 
+            resources.ApplyResources(this.btnDueItemSetAsIncomplete, "btnDueItemSetAsIncomplete");
+            this.btnDueItemSetAsIncomplete.BackColor = System.Drawing.SystemColors.Control;
+            this.btnDueItemSetAsIncomplete.BackgroundImage = global::RadinProjectNotes.Properties.Resources.uncheck;
+            this.btnDueItemSetAsIncomplete.Name = "btnDueItemSetAsIncomplete";
+            this.toolTips.SetToolTip(this.btnDueItemSetAsIncomplete, resources.GetString("btnDueItemSetAsIncomplete.ToolTip"));
+            this.btnDueItemSetAsIncomplete.UseVisualStyleBackColor = false;
+            this.btnDueItemSetAsIncomplete.Click += new System.EventHandler(this.btnDueItemSetAsIncomplete_Click);
             // 
             // versionLabel
             // 
@@ -278,7 +373,6 @@
             resources.ApplyResources(this.tabPanelSwitch, "tabPanelSwitch");
             this.tabPanelSwitch.Controls.Add(this.tabPage1);
             this.tabPanelSwitch.Controls.Add(this.tabPage2);
-            this.tabPanelSwitch.Controls.Add(this.tabPage3);
             this.tabPanelSwitch.Multiline = true;
             this.tabPanelSwitch.Name = "tabPanelSwitch";
             this.tabPanelSwitch.SelectedIndex = 0;
@@ -297,114 +391,12 @@
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // tabPage3
-            // 
-            resources.ApplyResources(this.tabPage3, "tabPage3");
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // btnPrint
-            // 
-            resources.ApplyResources(this.btnPrint, "btnPrint");
-            this.btnPrint.BackgroundImage = global::RadinProjectNotes.Properties.Resources.printer;
-            this.btnPrint.Name = "btnPrint";
-            this.toolTips.SetToolTip(this.btnPrint, resources.GetString("btnPrint.ToolTip"));
-            this.btnPrint.UseVisualStyleBackColor = true;
-            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
-            // 
-            // btnAddComment
-            // 
-            resources.ApplyResources(this.btnAddComment, "btnAddComment");
-            this.btnAddComment.BackColor = System.Drawing.SystemColors.Control;
-            this.btnAddComment.BackgroundImage = global::RadinProjectNotes.Properties.Resources.add_note;
-            this.btnAddComment.Name = "btnAddComment";
-            this.toolTips.SetToolTip(this.btnAddComment, resources.GetString("btnAddComment.ToolTip"));
-            this.btnAddComment.UseVisualStyleBackColor = false;
-            this.btnAddComment.Click += new System.EventHandler(this.btnAddComment_Click);
-            // 
-            // btnOpenFolder
-            // 
-            this.btnOpenFolder.BackgroundImage = global::RadinProjectNotes.Properties.Resources.folder;
-            resources.ApplyResources(this.btnOpenFolder, "btnOpenFolder");
-            this.btnOpenFolder.Name = "btnOpenFolder";
-            this.toolTips.SetToolTip(this.btnOpenFolder, resources.GetString("btnOpenFolder.ToolTip"));
-            this.btnOpenFolder.UseVisualStyleBackColor = true;
-            this.btnOpenFolder.Click += new System.EventHandler(this.btnOpenFolder_Click);
-            // 
-            // btnListActiveProjects
-            // 
-            this.btnListActiveProjects.BackgroundImage = global::RadinProjectNotes.Properties.Resources.filter;
-            resources.ApplyResources(this.btnListActiveProjects, "btnListActiveProjects");
-            this.btnListActiveProjects.Name = "btnListActiveProjects";
-            this.toolTips.SetToolTip(this.btnListActiveProjects, resources.GetString("btnListActiveProjects.ToolTip"));
-            this.btnListActiveProjects.UseVisualStyleBackColor = true;
-            this.btnListActiveProjects.Click += new System.EventHandler(this.btnListActiveProjects_Click);
-            // 
-            // btnProjectInfo
-            // 
-            this.btnProjectInfo.BackgroundImage = global::RadinProjectNotes.Properties.Resources.info;
-            resources.ApplyResources(this.btnProjectInfo, "btnProjectInfo");
-            this.btnProjectInfo.Name = "btnProjectInfo";
-            this.toolTips.SetToolTip(this.btnProjectInfo, resources.GetString("btnProjectInfo.ToolTip"));
-            this.btnProjectInfo.UseVisualStyleBackColor = true;
-            this.btnProjectInfo.Click += new System.EventHandler(this.btnProjectInfo_Click);
-            // 
-            // btnAddDueItem
-            // 
-            resources.ApplyResources(this.btnAddDueItem, "btnAddDueItem");
-            this.btnAddDueItem.BackColor = System.Drawing.SystemColors.Control;
-            this.btnAddDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.calendar_add;
-            this.btnAddDueItem.Name = "btnAddDueItem";
-            this.toolTips.SetToolTip(this.btnAddDueItem, resources.GetString("btnAddDueItem.ToolTip"));
-            this.btnAddDueItem.UseVisualStyleBackColor = false;
-            this.btnAddDueItem.Click += new System.EventHandler(this.btnNewDueItem_Click);
-            // 
-            // btnEditDueItem
-            // 
-            resources.ApplyResources(this.btnEditDueItem, "btnEditDueItem");
-            this.btnEditDueItem.BackColor = System.Drawing.SystemColors.Control;
-            this.btnEditDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.calendar_edit;
-            this.btnEditDueItem.Name = "btnEditDueItem";
-            this.toolTips.SetToolTip(this.btnEditDueItem, resources.GetString("btnEditDueItem.ToolTip"));
-            this.btnEditDueItem.UseVisualStyleBackColor = false;
-            this.btnEditDueItem.Click += new System.EventHandler(this.btnEditDueItem_Click);
-            // 
-            // btnDeleteDueItem
-            // 
-            resources.ApplyResources(this.btnDeleteDueItem, "btnDeleteDueItem");
-            this.btnDeleteDueItem.BackColor = System.Drawing.SystemColors.Control;
-            this.btnDeleteDueItem.BackgroundImage = global::RadinProjectNotes.Properties.Resources.calendar_delete;
-            this.btnDeleteDueItem.Name = "btnDeleteDueItem";
-            this.toolTips.SetToolTip(this.btnDeleteDueItem, resources.GetString("btnDeleteDueItem.ToolTip"));
-            this.btnDeleteDueItem.UseVisualStyleBackColor = false;
-            this.btnDeleteDueItem.Click += new System.EventHandler(this.btnDeleteDueItem_Click);
-            // 
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImage = global::RadinProjectNotes.Properties.Resources.search;
             resources.ApplyResources(this.pictureBox1, "pictureBox1");
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
-            // 
-            // btnDueItemSetAsComplete
-            // 
-            resources.ApplyResources(this.btnDueItemSetAsComplete, "btnDueItemSetAsComplete");
-            this.btnDueItemSetAsComplete.BackColor = System.Drawing.SystemColors.Control;
-            this.btnDueItemSetAsComplete.BackgroundImage = global::RadinProjectNotes.Properties.Resources.check;
-            this.btnDueItemSetAsComplete.Name = "btnDueItemSetAsComplete";
-            this.toolTips.SetToolTip(this.btnDueItemSetAsComplete, resources.GetString("btnDueItemSetAsComplete.ToolTip"));
-            this.btnDueItemSetAsComplete.UseVisualStyleBackColor = false;
-            this.btnDueItemSetAsComplete.Click += new System.EventHandler(this.btnDueItemSetAsComplete_Click);
-            // 
-            // btnDueItemSetAsIncomplete
-            // 
-            resources.ApplyResources(this.btnDueItemSetAsIncomplete, "btnDueItemSetAsIncomplete");
-            this.btnDueItemSetAsIncomplete.BackColor = System.Drawing.SystemColors.Control;
-            this.btnDueItemSetAsIncomplete.BackgroundImage = global::RadinProjectNotes.Properties.Resources.uncheck;
-            this.btnDueItemSetAsIncomplete.Name = "btnDueItemSetAsIncomplete";
-            this.toolTips.SetToolTip(this.btnDueItemSetAsIncomplete, resources.GetString("btnDueItemSetAsIncomplete.ToolTip"));
-            this.btnDueItemSetAsIncomplete.UseVisualStyleBackColor = false;
-            this.btnDueItemSetAsIncomplete.Click += new System.EventHandler(this.btnDueItemSetAsIncomplete_Click);
             // 
             // calendarDueItemsHostPanel
             // 
@@ -517,7 +509,6 @@
         private Controls.AssignedServicesPanel servicesHostPanel;
         private System.Windows.Forms.Button btnAddDueItem;
         private System.Windows.Forms.Button btnEditDueItem;
-        private System.Windows.Forms.TabPage tabPage3;
         private Controls.CalendarDueItems calendarDueItemsHostPanel;
         private System.Windows.Forms.Button btnDeleteDueItem;
         private System.Windows.Forms.Button btnDueItemSetAsComplete;

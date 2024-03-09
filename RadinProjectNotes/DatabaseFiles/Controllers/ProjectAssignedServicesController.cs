@@ -19,8 +19,8 @@ namespace RadinProjectNotes.DatabaseFiles.Controllers
         /// <exception cref="CouldNotLoadDatabase"></exception>
         public static ProjectAssignedServices TryLoadProjectServices(ProjectFolder projectFolder)
         {
-            EncryptedDatabaseSerializer<ProjectAssignedServices>  encryptedDbSerializer = 
-                new EncryptedDatabaseSerializer<ProjectAssignedServices>(GetProjectAssignedServicesFilePath(projectFolder));
+            EncryptedDatabaseProtobufSerializer<ProjectAssignedServices>  encryptedDbSerializer = 
+                new EncryptedDatabaseProtobufSerializer<ProjectAssignedServices>(GetProjectAssignedServicesFilePath(projectFolder));
 
             try
             {
@@ -44,9 +44,9 @@ namespace RadinProjectNotes.DatabaseFiles.Controllers
         /// <returns>True if the assigned services could be saved.</returns>
         /// <exception cref="CouldNotSaveDatabase"></exception>
         public static bool TrySaveProjectServices(ProjectFolder projectFolder, ProjectAssignedServices projectAssignedServices)
-        {            
-            EncryptedDatabaseSerializer<ProjectAssignedServices> encryptedDbSerializer =
-                new EncryptedDatabaseSerializer<ProjectAssignedServices>(GetProjectAssignedServicesFilePath(projectFolder));
+        {
+            EncryptedDatabaseProtobufSerializer<ProjectAssignedServices> encryptedDbSerializer =
+                new EncryptedDatabaseProtobufSerializer<ProjectAssignedServices>(GetProjectAssignedServicesFilePath(projectFolder));
 
             try
             {   

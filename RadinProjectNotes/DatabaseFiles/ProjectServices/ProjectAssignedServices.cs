@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProtoBuf;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -7,7 +8,7 @@ namespace RadinProjectNotes.DatabaseFiles.ProjectServices
     /// <summary>
     /// Services assigned to a project.
     /// </summary>
-    [Serializable]
+    [ProtoContract]
     public class ProjectAssignedServices
     {
         public static ProjectAssignedServices CreateEmpty()
@@ -15,13 +16,21 @@ namespace RadinProjectNotes.DatabaseFiles.ProjectServices
             return new ProjectAssignedServices();
         }
 
-        [IgnoreDataMember]
+        /// <summary>Version string to match the assigned services to a service category list from the configuration.</summary>
+        [ProtoMember(2)]
+        private string _versionString;
+
+        [ProtoMember(1)]
         private List<AssignedService> _assignedServices = new List<AssignedService>();
 
         public ProjectAssignedServices()
         { }
 
+        public bool IsEmpty { get { return _assignedServices.Count == 0; } }
+
         public List<AssignedService> AssignedServices { get { return _assignedServices; } }
+
+        public string versionString { get { return _versionString; } set { _versionString = value; } }
 
         public void AddAssignedService(AssignedService service)
         {
@@ -51,17 +60,23 @@ namespace RadinProjectNotes.DatabaseFiles.ProjectServices
         /// <summary>
         /// A service assigned to a project with a category title and service description.
         /// </summary>
-        [Serializable]
-        
+        [ProtoContract]
         public class AssignedService
         {
+            public AssignedService()
+            {
+                // parameterless constructor for protobuf
+            }
+
             public AssignedService(string categoryTitle, string description)
             {
                 CategoryTitle = categoryTitle;
                 ServiceDescription = description;
             }
 
+            [ProtoMember(1)]
             public string CategoryTitle { get; set; }
+            [ProtoMember(2)]
             public string ServiceDescription { get; set; }
 
             public override bool Equals(object obj)

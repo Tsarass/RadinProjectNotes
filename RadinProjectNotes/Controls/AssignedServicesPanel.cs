@@ -6,6 +6,8 @@ using System;
 using RadinProjectNotes.DatabaseFiles.ProjectServices;
 using RadinProjectNotes.DatabaseFiles.Controllers;
 using RadinProjectNotesCommon.EncryptedDatabaseSerializer;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RadinProjectNotes.Controls
 {
@@ -19,6 +21,7 @@ namespace RadinProjectNotes.Controls
 
         private ProjectAssignedServices _cachedAssignedServices;
         private Label _warningLabel;
+        private string _currentServicesVersion;
 
         public AssignedServicesPanel()
         {
@@ -47,11 +50,9 @@ namespace RadinProjectNotes.Controls
             // Clear panel.
             ClearServicesPanel();
 
-            RadinProjectServices services;
             try
             {
                 _cachedAssignedServices = ProjectAssignedServicesController.TryLoadProjectServices(MainForm.currentProject);
-                services = ProjectServicesController.TryLoadProjectServices();
             }
             catch (CouldNotLoadDatabase)
             {
@@ -59,7 +60,22 @@ namespace RadinProjectNotes.Controls
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            
+
+            // Read the version string from the assigned services. If there are no assigned services, use the latest version.
+            string servicesVersion = _cachedAssignedServices.versionString;
+            if (_cachedAssignedServices.IsEmpty) {
+                servicesVersion = ProjectServicesDatabase.LATEST_VERSION_STRING;
+            }
+
+            Dictionary<string, ProjectServicesDatabase> servicesPerVersion = ProjectServicesController.LoadProjectServices();
+            if (!servicesPerVersion.ContainsKey(servicesVersion)) {
+                MessageBox.Show($"Could not load assigned services for the selected project. Saved file might be corrupted.", "Could not load services",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            _currentServicesVersion = servicesVersion;
+            ProjectServicesDatabase services = servicesPerVersion[servicesVersion];
             SetUpServiceColumns(services);
 
             int columnId = 0;
@@ -84,7 +100,7 @@ namespace RadinProjectNotes.Controls
             }
         }
 
-        private void SetUpServiceColumns(RadinProjectServices services)
+        private void SetUpServiceColumns(ProjectServicesDatabase services)
         {
             servicePanel.ColumnCount = services.GetCategoriesCount();
             servicePanel.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 25f);
@@ -135,6 +151,7 @@ namespace RadinProjectNotes.Controls
         private ProjectAssignedServices GetCurrentProjectAssignedServices()
         {
             ProjectAssignedServices currentAssignedServices = ProjectAssignedServices.CreateEmpty();
+            currentAssignedServices.versionString = _currentServicesVersion;
 
             // Loop all checkbox items in the table layout panel.
             foreach (var control in servicePanel.Controls)
