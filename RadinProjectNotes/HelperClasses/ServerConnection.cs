@@ -8,8 +8,8 @@ namespace RadinProjectNotes
 {
     public partial class ServerConnection
     {
-        //public readonly static string serverFolder = @"\\nas-radin-lp\DATEN\notes";
-        public readonly static string serverFolder = @"C:\Users\Tsaras\Desktop\test_notes_server";
+        public readonly static string serverFolder = @"\\nas-radin-lp\DATEN\notes";
+        //public readonly static string serverFolder = @"C:\Users\Tsaras\Desktop\test_notes_server";
         
         private readonly static string[] possibleServerPaths = new string[] {  @"C:\Users\Tsaras\Desktop\test_notes_projects",
                                                                                @"\\nas-radin-gr\Projekte",
