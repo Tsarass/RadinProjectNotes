@@ -30,7 +30,12 @@ namespace AutoUpdate
                 return false;
             }
 
-            Version currentVersion = new Version(FileVersionInfo.GetVersionInfo(original).FileVersion);
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(original);
+            string fileVersion = string.Format("{0}.{1}.{2}.{3}", fvi.FileMajorPart,
+                                                                  fvi.FileMinorPart,
+                                                                  fvi.FileBuildPart,
+                                                                  fvi.FilePrivatePart);
+            Version currentVersion = new Version(fileVersion);
 
             if (FileVersionNewer(currentVersion, fv))
             {

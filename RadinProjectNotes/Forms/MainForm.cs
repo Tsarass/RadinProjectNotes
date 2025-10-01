@@ -11,6 +11,7 @@ using RadinProjectNotes.Forms;
 using RadinProjectNotes.HelperClasses;
 using RadinProjectNotesCommon.RetryOnExceptionHelper;
 using RadinProjectNotesCommon;
+using System.Linq;
 
 namespace RadinProjectNotes
 {
@@ -734,7 +735,7 @@ namespace RadinProjectNotes
             if (Notes.currentNoteData == null) { return; }
 
             this.flowPanel.SuspendLayout();
-            foreach (Notes.ProjectNote note in Notes.currentNoteData.noteData)
+            foreach (Notes.ProjectNote note in Notes.currentNoteData.noteData.Reverse<Notes.ProjectNote>())
             {
                 CommentPackage pack = AddCommentPackage(note);
             }
