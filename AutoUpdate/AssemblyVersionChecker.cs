@@ -18,7 +18,7 @@ namespace AutoUpdate
         /// <returns>true if the candidate assembly has a newer version</returns>
         public static bool CheckIfNewerVersion(string original, string candidate)
         {
-            //get the version of the orinial executable's assembly
+            //get the version of the original executable's assembly
             FileVersionInfo fv;
             try
             {

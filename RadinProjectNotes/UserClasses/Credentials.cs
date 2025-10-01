@@ -14,7 +14,7 @@ namespace RadinProjectNotes
     /// </summary>
     public class Credentials
     {
-        private readonly string databaseFile = Path.Combine(ServerConnection.serverFolder, "users.db");
+        private readonly string databaseFile = Path.Combine(ServerConnection.serverFolder, "users.dbp");
 
         public UserDatabase userDatabase;
         private EncryptedDatabaseProtobufSerializer<UserDatabase> _encryptedDbSerializer;
